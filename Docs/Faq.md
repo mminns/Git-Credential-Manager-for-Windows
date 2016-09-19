@@ -12,7 +12,7 @@
 
 ### Q: Why does my GUI freeze when I push, pull, or fetch?
 
- Most likely reason is that your GUI “shells out” to git.exe to perform Git operations. When it does so, it cannot respond to the command line prompts for username and password like a real user can. To avoid being asked for your credentials on the command line, and instead be asked via a modal dialog you’ll need to configure the Credential Manager.
+ Most likely reason is that your GUI “shells out” to git.exe to perform Git operations. When it does so, it cannot respond to the command line prompts for username and password like a real user can. To avoid being asked for your credentials on the command line, and instead be asked via a modal dialog you’ll need to [configure the Credential Manager](Configuration.md#modalprompt).
 
  1. Decide if you want this to be a global setting (all of your repositories) or a local setting (just one repository).
  2. Start your favorite shell. (cmd, powershell, bash, etc.)
