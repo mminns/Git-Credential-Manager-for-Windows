@@ -1,8 +1,13 @@
 # Release - Temp instructions
 Update AssemblyInfo.cs versions of projects that have changed
-Do a 'release' build
-use 7zip to zip up the contents of the Deploy folder in PortableGcm-#.#.#.#.7z 
-upload to downloads.atlassian.com\software\sourcetree\windows
+1. Do a 'release' build
+1. use 7zip to zip up the contents of the Deploy folder in PortableGcmSt-#.#.#.#.7z 
+1. upload to downloads.atlassian.com\software\sourcetree\windows
+
+1. Do a 'debug' build
+1. use 7zip to zip up the contents of the Deploy folder in PortableGcmSt-#.#.#.#-debug.7z 
+1. upload to downloads.atlassian.com\software\sourcetree\windows
+
 update refs in SourceTree project to use new version.
 
 # TODO
