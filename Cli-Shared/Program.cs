@@ -1050,7 +1050,7 @@ namespace Microsoft.Alm.Cli
 
         private static void PrintVersion()
         {
-            Program.WriteLine($"{Title} version {Version.ToString(3)}");
+            Program.WriteLine($"{Title} version {Version}");
         }
 
         private static bool QueryCredentials(OperationArguments operationArguments)
