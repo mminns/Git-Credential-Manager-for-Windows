@@ -157,9 +157,21 @@ namespace Bitbucket.Authentication
         /// <inheritdoc />
         public override void SetCredentials(TargetUri targetUri, Credential credentials)
         {
-            // this is only called from the store() method
+            // this is only called from the store() method so only applies to default host entries
+            // calling this from elsewhere may have unintended consequences, use SetCredentials(targetUri, credentials, username) instead
 
-            // store the credentials as received
+            // only store the credentials as received if they match the uri and user of the existing default entry
+            var currentCredentials = GetCredentials(targetUri);
+            if (currentCredentials != null &&
+                currentCredentials.Username != null &&
+                !currentCredentials.Username.Equals(credentials.Username))
+            {
+                // do nothing as the default is for another username
+                // and we don't want to overwrite it
+                Trace.WriteLine($"        Skipping SetCredentials for {targetUri.ActualUri} new username {currentCredentials.Username} != {credentials.Username}");
+                return;
+            }
+
             SetCredentials(targetUri, credentials, null);
 
             // Store() will not call with a username url
@@ -168,7 +180,7 @@ namespace Bitbucket.Authentication
                 Trace.WriteLine("BitbucketAuthentication::SetCredentials:DontCopyOAuth");
                 return;
             }
-            Trace.WriteLine("BitbucketAuthentication::SetCredentials:CopyOAuth");
+            
             // see if there is a matching personal refresh token
             var username = credentials.Username;
             var userSpecificTargetUri = GetPerUserTargetUri(targetUri, username);
@@ -177,8 +189,12 @@ namespace Bitbucket.Authentication
             if (userCredentials != null && userCredentials.Password.Equals(credentials.Password))
             {
                 var userRefreshCredentials = GetCredentials(GetRefreshTokenTargetUri(userSpecificTargetUri), username);
-                var hostRefreshCredentials = new Credential(credentials.Username, userRefreshCredentials.Password);
-                SetCredentials(GetRefreshTokenTargetUri(targetUri), hostRefreshCredentials, null);
+                if (userRefreshCredentials != null)
+                {
+                    Trace.WriteLine("BitbucketAuthentication::SetCredentials:Copy OAuth RefreshToken");
+                    var hostRefreshCredentials = new Credential(credentials.Username, userRefreshCredentials.Password);
+                    SetCredentials(GetRefreshTokenTargetUri(targetUri), hostRefreshCredentials, null);
+                }
             }
         }
 
@@ -194,7 +210,7 @@ namespace Bitbucket.Authentication
             if (!TargetUriContainsUsername(targetUri) && !string.IsNullOrWhiteSpace(username))
             {
                 Credential tempCredentials = new Credential(username, credentials.Password);
-                SetCredentials(GetPerUserTargetUri(targetUri, username), tempCredentials);
+                SetCredentials(GetPerUserTargetUri(targetUri, username), tempCredentials, null);
             }
 
             PersonalAccessTokenStore.WriteCredentials(targetUri, credentials);
@@ -391,7 +407,7 @@ namespace Bitbucket.Authentication
                     return credentials;
                 }
 
-                SetCredentials(targetUri, tempCredentials);
+                SetCredentials(targetUri, tempCredentials, null);
                 var newRefreshCredentials = GenerateRefreshCredentials(targetUri, username, ref result);
                 SetCredentials(GetRefreshTokenTargetUri(targetUri), newRefreshCredentials, username);
                 
