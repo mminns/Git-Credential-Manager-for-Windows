@@ -19,3 +19,4 @@
 *.suo
 *.user
 *.sln.docstates
+TestResults/

@@ -1145,11 +1145,11 @@ namespace Microsoft.Alm.Cli
                         if (((operationArguments.Interactivity != Interactivity.Always)
                              && ((credentials = bbcAuth.GetCredentials(operationArguments.TargetUri, operationArguments.CredUsername)) != null)
                              && (!operationArguments.ValidateCredentials
-                                 || await bbcAuth.ValidateCredentials(operationArguments.TargetUri, operationArguments.CredUsername, credentials)))
+                                 || ((credentials = await bbcAuth.ValidateCredentials(operationArguments.TargetUri, operationArguments.CredUsername, credentials)) != null)))
                             || ((operationArguments.Interactivity != Interactivity.Never)
                                 && ((credentials = await bbcAuth.InteractiveLogon(operationArguments.TargetUri, operationArguments.CredUsername)) != null)
                                 && (!operationArguments.ValidateCredentials
-                                    || await bbcAuth.ValidateCredentials(operationArguments.TargetUri, operationArguments.CredUsername, credentials))))
+                                    || ((credentials = await bbcAuth.ValidateCredentials(operationArguments.TargetUri, operationArguments.CredUsername, credentials)) != null))))
                         {
                             Git.Trace.WriteLine("   credentials found");
                             if (operationArguments.CredUsername != null)
@@ -1165,6 +1165,7 @@ namespace Microsoft.Alm.Cli
                             LogEvent(
                                 "Bitbucket credentials for " + operationArguments.TargetUri + " successfully retrieved.",
                                 EventLogEntryType.SuccessAudit);
+                            credentialsFound = true;
                         }
                         else
                         {
