@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <Import Project="..\packages\MicroBuild.Core.0.2.0\build\MicroBuild.Core.props" Condition="Exists('..\packages\MicroBuild.Core.0.2.0\build\MicroBuild.Core.props')" />
@@ -6,11 +6,13 @@
     <ProjectGuid>{19770407-3808-4B17-9EE0-21DD3468F875}</ProjectGuid>
     <RootNamespace>Installer</RootNamespace>
     <ProjectDir Condition=" '$(ProjectDir)' == '' Or '$(ProjectDir)' == '*Undefined*' ">$(MSBuildProjectDirectory)</ProjectDir>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' Or '$(Configuration)' == '*Undefined*' "></Configuration>
-    <Platform Condition=" '$(Platform)' == '' Or  '$(Platform)' == '*Undefined*' " >AnyCPU</Platform>
+    <Configuration Condition=" '$(Configuration)' == '' Or '$(Configuration)' == '*Undefined*' ">
+    </Configuration>
+    <Platform Condition=" '$(Platform)' == '' Or  '$(Platform)' == '*Undefined*' ">AnyCPU</Platform>
     <SolutionDir Condition=" '$(SolutionDir)' == '' Or '$(SolutionDir)' == '*Undefined*' ">$([System.IO.Directory]::GetParent($(ProjectDir)))</SolutionDir>
     <InputPath Condition=" '$(Configuration)' == 'Debug' ">bin\Debug</InputPath>
     <InputPath Condition=" '$(Configuration)' == 'Release' ">bin\Release</InputPath>
@@ -108,10 +110,12 @@
       <InProject>false</InProject>
     </ZipContents>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <Target Name="AfterBuild" AfterTargets="Build" />
   <Target Name="Build" BeforeTargets="AfterBuild">
     <MSBuild Projects="@(ProjectReference)" Targets="Build" />
-
     <!-- need to declare the items after dependencies have built, so that glob enumeration happens after the files are produced-->
     <ItemGroup>
       <FilesToCopy Include="$(SolutionDir)\Cli-CredentialHelper\$(InputPath)\*.*">
@@ -128,7 +132,6 @@
       </FilesToCopy>
       <FilesToCopy Include="$(ProjectDir)\Setup.iss" />
     </ItemGroup>
-
     <MakeDir Directories="$(IntermediateOutputPath)" />
     <MakeDir Directories="$(OutputPath)" />
     <Copy SourceFiles="@(FilesToCopy)" DestinationFolder="$(IntermediateOutputPath)" />
@@ -138,8 +141,8 @@
     <Zip Files="@(ZipContents)" Flatten="True" ZipFileName="$(OutputPath)\gcmw-v$(Version).zip" WorkingDirectory="$(IntermediateOutputPath)ZipContents" ZipLevel="9" />
   </Target>
   <Target Name="Clean">
-    <RemoveDir Directories="$(IntermediateOutputPath);$(OutputPath)"/>
-    <RemoveDir Directories="$(SolutionDir)\TestResults"/>
+    <RemoveDir Directories="$(IntermediateOutputPath);$(OutputPath)" />
+    <RemoveDir Directories="$(SolutionDir)\TestResults" />
   </Target>
   <Target Name="Rebuild" AfterTargets="Clean" BeforeTargets="Build" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

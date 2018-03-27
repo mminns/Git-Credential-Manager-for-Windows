@@ -12,6 +12,7 @@
     <AssemblyName>GitHub.Authentication.Test</AssemblyName>
     <NuGetPackageImportStamp />
     <TargetFrameworkProfile />
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
   </PropertyGroup>
   <Import Project="..\test.props" />
   <ItemGroup>

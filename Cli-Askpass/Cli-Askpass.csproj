@@ -21,7 +21,7 @@
     <ProjectGuid>{19770407-B33A-4EBE-92B8-04C93F43CAE0}</ProjectGuid>
     <PublishUrl>publish\</PublishUrl>
     <RootNamespace>Microsoft.Alm.Cli</RootNamespace>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <UpdateEnabled>false</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
@@ -29,6 +29,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <Import Project="..\build.props" />
   <PropertyGroup>

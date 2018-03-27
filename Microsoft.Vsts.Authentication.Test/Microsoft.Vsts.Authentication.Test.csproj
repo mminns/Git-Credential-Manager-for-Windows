@@ -7,9 +7,11 @@
     <AssemblyName>Microsoft.Vsts.Authentication.Test</AssemblyName>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <IsCodedUITest>False</IsCodedUITest>
-    <NuGetPackageImportStamp/>
+    <NuGetPackageImportStamp />
     <ProjectGuid>{19781214-5254-464A-BC69-FAC502046564}</ProjectGuid>
     <RootNamespace>Microsoft.Alm.Authentication.Test</RootNamespace>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <Import Project="..\test.props" />
   <ItemGroup>
