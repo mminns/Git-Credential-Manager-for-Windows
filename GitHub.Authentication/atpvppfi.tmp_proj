@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <ProjectGuid>{CF306116-BBF0-4CC7-AFCE-A506AC4752CB}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GitHub.Authentication</RootNamespace>
+    <AssemblyName>GitHub.Authentication</AssemblyName>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp />
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <Import Project="..\build.props" />
+  <PropertyGroup>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AuthenticationPrompts.cs" />
+    <Compile Include="Controls\CredentialsControl.xaml.cs">
+      <DependentUpon>CredentialsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Text\ValidationMessage.cs" />
+    <Compile Include="CredentialsWindow.xaml.cs">
+      <DependentUpon>CredentialsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Authentication.cs" />
+    <Compile Include="AuthenticationResult.cs" />
+    <Compile Include="Authority.cs" />
+    <Compile Include="TokenScope.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Helpers\BindingProxy.cs" />
+    <Compile Include="IAuthentication.cs" />
+    <Compile Include="IAuthority.cs" />
+    <Compile Include="Tester.xaml.cs">
+      <DependentUpon>Tester.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\CredentialsViewModel.cs" />
+    <Compile Include="ViewModels\TwoFactorViewModel.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\Buttons\OcticonButton.cs" />
+    <Compile Include="Controls\Buttons\OcticonCircleButton.cs" />
+    <Compile Include="Controls\HorizontalShadowDivider.xaml.cs">
+      <DependentUpon>HorizontalShadowDivider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Octicons\OcticonImage.cs" />
+    <Compile Include="Controls\Octicons\OcticonPath.cs" />
+    <Compile Include="Controls\Octicons\OcticonPaths.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OcticonPaths.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Panels\FixedAspectRatioPanel.cs" />
+    <Compile Include="Controls\TwoFactorControl.xaml.cs">
+      <DependentUpon>TwoFactorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TwoFactorInput.xaml.cs">
+      <DependentUpon>TwoFactorInput.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Octicon.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TwoFactorWindow.xaml.cs">
+      <DependentUpon>TwoFactorWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Controls\Octicons\OcticonPaths.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>OcticonPaths.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Alm.Authentication\Microsoft.Alm.Authentication.csproj">
+      <Project>{19770407-B493-459D-BB4F-04FBEFB1BA13}</Project>
+      <Name>Microsoft.Alm.Authentication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Alm.Git\Microsoft.Alm.Git.csproj">
+      <Project>{19770407-5C58-406D-AB3F-3700BB0D06FE}</Project>
+      <Name>Microsoft.Alm.Git</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="..\Gui-Shared\Gui-Shared.projitems" Label="Shared" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
+  <ItemGroup>
+    <ReferencePath Include="C:\Users\mminn\Source\github.com\mminns\Git-Credential-Manager-for-Windows\Microsoft.Alm.Authentication\bin\Debug\Microsoft.Alm.Authentication.dll" />
+    <ReferencePath Include="C:\Users\mminn\Source\github.com\mminns\Git-Credential-Manager-for-Windows\Microsoft.Alm.Git\bin\Debug\Microsoft.Alm.Git.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\Microsoft.CSharp.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\mscorlib.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\PresentationCore.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\PresentationFramework.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\System.ComponentModel.DataAnnotations.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\System.Core.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\System.Data.DataSetExtensions.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\System.Data.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\System.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\System.Net.Http.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\System.Xaml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\System.Xml.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\System.Xml.Linq.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.1\WindowsBase.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="C:\Users\mminn\Source\github.com\mminns\Git-Credential-Manager-for-Windows\GitHub.Authentication\obj\Debug\Controls\CredentialsControl.g.cs" />
+    <Compile Include="C:\Users\mminn\Source\github.com\mminns\Git-Credential-Manager-for-Windows\GitHub.Authentication\obj\Debug\Controls\HorizontalShadowDivider.g.cs" />
+    <Compile Include="C:\Users\mminn\Source\github.com\mminns\Git-Credential-Manager-for-Windows\GitHub.Authentication\obj\Debug\Controls\TwoFactorControl.g.cs" />
+    <Compile Include="C:\Users\mminn\Source\github.com\mminns\Git-Credential-Manager-for-Windows\GitHub.Authentication\obj\Debug\Controls\TwoFactorInput.g.cs" />
+    <Compile Include="C:\Users\mminn\Source\github.com\mminns\Git-Credential-Manager-for-Windows\GitHub.Authentication\obj\Debug\CredentialsWindow.g.cs" />
+    <Compile Include="C:\Users\mminn\Source\github.com\mminns\Git-Credential-Manager-for-Windows\GitHub.Authentication\obj\Debug\Tester.g.cs" />
+    <Compile Include="C:\Users\mminn\Source\github.com\mminns\Git-Credential-Manager-for-Windows\GitHub.Authentication\obj\Debug\TwoFactorWindow.g.cs" />
+    <Compile Include="C:\Users\mminn\Source\github.com\mminns\Git-Credential-Manager-for-Windows\GitHub.Authentication\obj\Debug\App.g.cs" />
+    <Compile Include="C:\Users\mminn\Source\github.com\mminns\Git-Credential-Manager-for-Windows\GitHub.Authentication\obj\Debug\GeneratedInternalTypeHelper.g.cs" />
+  </ItemGroup>
+</Project>

@@ -40,6 +40,7 @@ namespace Microsoft.Alm.Cli
         internal const string ParamForceKey = "--force";
         internal const string FailFace = "U_U";
         internal const string TadaFace = "^_^";
+        public IWhere _where;
 
         //private static readonly Version NetFxMinVersion = new Version(4, 5, 1);
         private static readonly IReadOnlyList<string> FileList = new string[]
@@ -61,9 +62,10 @@ namespace Microsoft.Alm.Cli
             "git-credential-manager.html",
         };
 
-        public Installer(Program program)
+        public Installer(Program program, IWhere where)
         {
             _program = program;
+            _where = where;
 
             var args = Environment.GetCommandLineArgs();
 
@@ -229,9 +231,9 @@ namespace Microsoft.Alm.Cli
 
                     // if the custom path points to a git location then treat it properly
                     GitInstallation installation;
-                    if (Where.FindGitInstallation(_customPath, KnownGitDistribution.GitForWindows64v2, out installation)
-                        || Where.FindGitInstallation(_customPath, KnownGitDistribution.GitForWindows32v2, out installation)
-                        || Where.FindGitInstallation(_customPath, KnownGitDistribution.GitForWindows32v1, out installation))
+                    if (_where.FindGitInstallation(_customPath, KnownGitDistribution.GitForWindows64v2, out installation)
+                        || _where.FindGitInstallation(_customPath, KnownGitDistribution.GitForWindows32v2, out installation)
+                        || _where.FindGitInstallation(_customPath, KnownGitDistribution.GitForWindows32v1, out installation))
                     {
                         Git.Trace.WriteLine($"   Git found: '{installation.Path}'.");
 
@@ -248,7 +250,7 @@ namespace Microsoft.Alm.Cli
                     Program.Out.WriteLine();
                     Program.Out.WriteLine("Looking for Git installation(s)...");
 
-                    if (Where.FindGitInstallations(out installations))
+                    if (_where.FindGitInstallations(out installations))
                     {
                         foreach (var installation in installations)
                         {
@@ -494,9 +496,9 @@ namespace Microsoft.Alm.Cli
 
                     // if the custom path points to a git location then treat it properly
                     GitInstallation installation;
-                    if (Where.FindGitInstallation(_customPath, KnownGitDistribution.GitForWindows64v2, out installation)
-                        || Where.FindGitInstallation(_customPath, KnownGitDistribution.GitForWindows32v2, out installation)
-                        || Where.FindGitInstallation(_customPath, KnownGitDistribution.GitForWindows32v1, out installation))
+                    if (_where.FindGitInstallation(_customPath, KnownGitDistribution.GitForWindows64v2, out installation)
+                        || _where.FindGitInstallation(_customPath, KnownGitDistribution.GitForWindows32v2, out installation)
+                        || _where.FindGitInstallation(_customPath, KnownGitDistribution.GitForWindows32v1, out installation))
                     {
                         Git.Trace.WriteLine($"Git found: '{installation.Path}'.");
 
@@ -511,7 +513,7 @@ namespace Microsoft.Alm.Cli
                     Program.Out.WriteLine();
                     Program.Out.WriteLine("Looking for Git installation(s)...");
 
-                    if (Where.FindGitInstallations(out installations))
+                    if (_where.FindGitInstallations(out installations))
                     {
                         foreach (var installation in installations)
                         {
@@ -701,7 +703,7 @@ namespace Microsoft.Alm.Cli
 
             updated = ConfigurationLevel.None;
 
-            if ((installations == null || installations.Count == 0) && !Where.FindGitInstallations(out installations))
+            if ((installations == null || installations.Count == 0) && !_where.FindGitInstallations(out installations))
             {
                 Git.Trace.WriteLine("No Git installations detected to update.");
                 return false;

@@ -30,6 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication;
+using Microsoft.Alm.Git;
 
 namespace Microsoft.Alm.Cli
 {
@@ -72,9 +73,12 @@ namespace Microsoft.Alm.Cli
             CommandVersion
         };
 
+        private IWhere _where;
+
         internal Program()
         {
             Title = AssemblyTitle;
+            _where = new Where();
         }
 
         internal void Clear()
@@ -112,7 +116,7 @@ namespace Microsoft.Alm.Cli
             {
                 Git.Trace.WriteLine($"converted '{url}' to '{uri.AbsoluteUri}'.");
 
-                OperationArguments operationArguments = new OperationArguments(uri);
+                OperationArguments operationArguments = new OperationArguments(uri, _where);
 
                 LoadOperationArguments(operationArguments);
                 EnableTraceLogging(operationArguments);
@@ -159,7 +163,7 @@ namespace Microsoft.Alm.Cli
             }
 
             // Create operation arguments, and load configuration data.
-            OperationArguments operationArguments = new OperationArguments(targetUri);
+            OperationArguments operationArguments = new OperationArguments(targetUri, _where);
 
             LoadOperationArguments(operationArguments);
             EnableTraceLogging(operationArguments);
@@ -233,7 +237,7 @@ namespace Microsoft.Alm.Cli
 
             using (var stdin = InStream)
             {
-                OperationArguments operationArguments = new OperationArguments(stdin)
+                OperationArguments operationArguments = new OperationArguments(stdin, _where)
                 {
                     QueryUri = uri
                 };
@@ -279,7 +283,7 @@ namespace Microsoft.Alm.Cli
 
         internal void Deploy()
         {
-            var installer = new Installer(this);
+            var installer = new Installer(this, _where);
             installer.DeployConsole();
 
             Git.Trace.WriteLine($"Installer result = '{installer.Result}', exit code = {installer.ExitCode}.");
@@ -294,7 +298,7 @@ namespace Microsoft.Alm.Cli
             // see: https://www.kernel.org/pub/software/scm/git/docs/git-credential.html
             using (var stdin = InStream)
             {
-                OperationArguments operationArguments = new OperationArguments(stdin);
+                OperationArguments operationArguments = new OperationArguments(stdin, _where);
 
                 Debug.Assert(operationArguments != null, "The operationArguments is null");
                 Debug.Assert(operationArguments.TargetUri != null, "The operationArgument.TargetUri is null");
@@ -319,7 +323,7 @@ namespace Microsoft.Alm.Cli
             // see: https://www.kernel.org/pub/software/scm/git/docs/git-credential.html
             using (var stdin = InStream)
             {
-                OperationArguments operationArguments = new OperationArguments(stdin);
+                OperationArguments operationArguments = new OperationArguments(stdin, _where);
 
                 LoadOperationArguments(operationArguments);
                 EnableTraceLogging(operationArguments);
@@ -346,7 +350,7 @@ namespace Microsoft.Alm.Cli
             WriteLine("usage: " + Name + ".exe [" + string.Join("|", CommandList) + "] [<args>]");
 
             List<Git.GitInstallation> installations;
-            if (Git.Where.FindGitInstallations(out installations))
+            if (_where.FindGitInstallations(out installations))
             {
                 foreach (var installation in installations)
                 {
@@ -372,7 +376,7 @@ namespace Microsoft.Alm.Cli
 
         internal void Remove()
         {
-            var installer = new Installer(this);
+            var installer = new Installer(this, _where);
             installer.RemoveConsole();
 
             Git.Trace.WriteLine($"Installer result = {installer.Result}, exit code = {installer.ExitCode}.");
@@ -387,7 +391,7 @@ namespace Microsoft.Alm.Cli
             // see: https://www.kernel.org/pub/software/scm/git/docs/git-credential.html
             using (var stdin = InStream)
             {
-                OperationArguments operationArguments = new OperationArguments(stdin);
+                OperationArguments operationArguments = new OperationArguments(stdin, _where);
 
                 Debug.Assert(operationArguments != null, "The operationArguments is null");
                 Debug.Assert(operationArguments.Username != null, "The operaionArgument.Username is null");

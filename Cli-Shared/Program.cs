@@ -452,7 +452,7 @@ namespace Microsoft.Alm.Cli
         }
 
         internal void EnableTraceLogging(OperationArguments operationArguments)
-            => _enableTraceLogging(this, operationArguments);
+            => _enableTraceLogging(this, operationArguments, _where);
 
         internal void EnableTraceLogging(OperationArguments operationArguments, string logFilePath)
             => _enableTraceLoggingFile(this, operationArguments, logFilePath);

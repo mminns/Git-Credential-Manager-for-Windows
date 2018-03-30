@@ -28,13 +28,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Microsoft.Alm.Authentication;
+using Microsoft.Alm.Git;
 
 namespace Microsoft.Alm.Cli
 {
     internal class OperationArguments
     {
-        public OperationArguments(Stream readableStream)
-                : this()
+        private IWhere _where;
+        public OperationArguments(Stream readableStream, IWhere where)
+                : this(where)
         {
             if (readableStream is null)
                 throw new ArgumentNullException(nameof(readableStream));
@@ -138,8 +140,8 @@ namespace Microsoft.Alm.Cli
             CreateTargetUri();
         }
 
-        public OperationArguments(Uri targetUri)
-            : this()
+        public OperationArguments(Uri targetUri, IWhere where)
+            : this(where)
         {
             if (targetUri is null)
                 throw new ArgumentNullException("targetUri");
@@ -153,8 +155,9 @@ namespace Microsoft.Alm.Cli
             CreateTargetUri();
         }
 
-        public OperationArguments()
+        public OperationArguments(IWhere where)
         {
+            _where = where;
             _authorityType = AuthorityType.Auto;
             _interactivity = Interactivity.Auto;
             _useLocalConfig = true;
@@ -407,7 +410,7 @@ namespace Microsoft.Alm.Cli
 
         public virtual void LoadConfiguration()
         {
-            _configuration = Git.Configuration.ReadConfiuration(Environment.CurrentDirectory, UseConfigLocal, UseConfigSystem);
+            _configuration = Git.Configuration.ReadConfiuration(Environment.CurrentDirectory, UseConfigLocal, UseConfigSystem, _where);
         }
 
         public virtual void SetCredentials(string username, string password)

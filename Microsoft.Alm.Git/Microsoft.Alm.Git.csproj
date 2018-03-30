@@ -34,10 +34,10 @@
     <Compile Include="ConfigurationLevel.cs" />
     <Compile Include="GitInstallation.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IWhere.cs" />
     <Compile Include="KnownGitDistribution.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Trace.cs" />
-    <Compile Include="Where.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

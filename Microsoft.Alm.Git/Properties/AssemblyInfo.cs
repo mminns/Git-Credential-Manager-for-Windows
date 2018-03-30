@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: Guid("4827c16d-5c58-406d-ab3f-3700bb0d06fe")]
 [assembly: AssemblyVersion("1.4.0.0")]
 [assembly: AssemblyFileVersion("1.4.0.0")]
+[assembly: InternalsVisibleTo("Microsoft.Alm.Git.Win32")]
 [assembly: InternalsVisibleTo("Microsoft.Alm.Git.Test")]
 [assembly: InternalsVisibleTo("Microsoft.Alm.CredentialHelper.Test")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

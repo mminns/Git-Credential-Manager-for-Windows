@@ -39,11 +39,14 @@ namespace Microsoft.Alm.Git
         private static readonly Regex CommentRegex = new Regex(@"^\s*[#;]", RegexOptions.CultureInvariant);
         private static readonly Regex KeyValueRegex = new Regex(@"^\s*(\w+)\s*=\s*(.+)", RegexOptions.CultureInvariant);
         private static readonly Regex SectionRegex = new Regex(@"^\s*\[\s*(\w+)\s*(\""[^\]]+){0,1}\]", RegexOptions.CultureInvariant);
+        private IWhere _where;
 
-        internal Configuration()
-        { }
+        internal Configuration(IWhere where)
+        {
+            _where = where != null ? where : throw new ArgumentNullException(nameof(where));
+        }
 
-        internal Configuration(Dictionary<ConfigurationLevel, Dictionary<string, string>> values)
+        internal Configuration(Dictionary<ConfigurationLevel, Dictionary<string, string>> values, IWhere where) : this(where)
         {
             if (values is null)
                 throw new ArgumentNullException(nameof(values));
@@ -182,35 +185,35 @@ namespace Microsoft.Alm.Git
 
             // Find and parse Git's portable configuration file.
             if ((types & ConfigurationLevel.Portable) != 0
-                && Where.GitPortableConfig(out portableConfig))
+                && _where.GitPortableConfig(out portableConfig))
             {
                 ParseGitConfig(ConfigurationLevel.Portable, portableConfig);
             }
 
             // Find and parse Git's system configuration file.
             if ((types & ConfigurationLevel.System) != 0
-                && Where.GitSystemConfig(null, out systemConfig))
+                && _where.GitSystemConfig(null, out systemConfig))
             {
                 ParseGitConfig(ConfigurationLevel.System, systemConfig);
             }
 
             // Find and parse Git's XDG configuration file.
             if ((types & ConfigurationLevel.Xdg) != 0
-                && Where.GitXdgConfig(out xdgConfig))
+                && _where.GitXdgConfig(out xdgConfig))
             {
                 ParseGitConfig(ConfigurationLevel.Xdg, xdgConfig);
             }
 
             // Find and parse Git's global configuration file.
             if ((types & ConfigurationLevel.Global) != 0
-                && Where.GitGlobalConfig(out globalConfig))
+                && _where.GitGlobalConfig(out globalConfig))
             {
                 ParseGitConfig(ConfigurationLevel.Global, globalConfig);
             }
 
             // Find and parse Git's local configuration file.
             if ((types & ConfigurationLevel.Local) != 0
-                && Where.GitLocalConfig(directory, out localConfig))
+                && _where.GitLocalConfig(directory, out localConfig))
             {
                 ParseGitConfig(ConfigurationLevel.Local, localConfig);
             }
@@ -226,7 +229,7 @@ namespace Microsoft.Alm.Git
         /// <param name="directory">Optional working directory of a repository from which to read its Git local configuration.</param>
         /// <param name="loadLocal">Read, parse, and include Git local configuration values if `<see langword="true"/>`; otherwise do not.</param>
         /// <param name="loadSystem">Read, parse, and include Git system configuration values if `<see langword="true"/>`; otherwise do not.</param>
-        public static Configuration ReadConfiuration(string directory, bool loadLocal, bool loadSystem)
+        public static Configuration ReadConfiuration(string directory, bool loadLocal, bool loadSystem, IWhere where)
         {
             if (string.IsNullOrWhiteSpace(directory))
                 throw new ArgumentNullException("directory");
@@ -245,7 +248,7 @@ namespace Microsoft.Alm.Git
                 types ^= ConfigurationLevel.System;
             }
 
-            var config = new Configuration();
+            var config = new Configuration(where);
             config.LoadGitConfiguration(directory, types);
 
             return config;
@@ -319,7 +322,7 @@ namespace Microsoft.Alm.Git
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
-        internal static void ParseGitConfig(TextReader reader, IDictionary<string, string> destination)
+        internal void ParseGitConfig(TextReader reader, IDictionary<string, string> destination)
         {
             Debug.Assert(reader != null, $"The `{nameof(reader)}` parameter is null.");
             Debug.Assert(destination != null, $"The `{nameof(destination)}` parameter is null.");
@@ -397,7 +400,7 @@ namespace Microsoft.Alm.Git
                             {
                                 // This is an include directive, import the configuration values from the included file
                                 string includePath = (val.StartsWith("~/", StringComparison.OrdinalIgnoreCase))
-                                    ? Where.Home() + val.Substring(1, val.Length - 1)
+                                    ? _where.Home() + val.Substring(1, val.Length - 1)
                                     : val;
 
                                 includePath = Path.GetFullPath(includePath);

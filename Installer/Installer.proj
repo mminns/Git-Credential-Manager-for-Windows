@@ -31,13 +31,13 @@
     <SigningTarget>$(OutputPath)\GCMW-$(Version).exe</SigningTarget>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cli-Askpass\Cli-Askpass.csproj">
+    <ProjectReference Include="..\Cli-AskPass\Cli-Askpass.Win32.csproj">
       <Project>{19770407-B33A-4EBE-92B8-04C93F43CAE0}</Project>
-      <Name>Cli-Askpass</Name>
+      <Name>Cli-Askpass.Win32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Cli-CredentialHelper\Cli-CredentialHelper.csproj">
+    <ProjectReference Include="..\Cli-CredentialHelper\Cli-CredentialHelper.Win32.csproj">
       <Project>{19770407-63D4-40A8-A9DF-F1C4B473308A}</Project>
-      <Name>Cli-CredentialHelper</Name>
+      <Name>Cli-CredentialHelper.Win32</Name>
     </ProjectReference>
     <ProjectReference Include="..\Bitbucket.Authentication\Bitbucket.Authentication.csproj">
       <Project>{ee663736-5bad-4ca6-a4f8-99978925ad8a}</Project>

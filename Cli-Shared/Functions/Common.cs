@@ -258,7 +258,7 @@ namespace Microsoft.Alm.Cli
             program.Exit(-1, message, path, line, name);
         }
 
-        public static void EnableTraceLogging(Program program, OperationArguments operationArguments)
+        public static void EnableTraceLogging(Program program, OperationArguments operationArguments, IWhere where)
         {
             if (program is null)
                 throw new ArgumentNullException(nameof(program));
@@ -270,7 +270,7 @@ namespace Microsoft.Alm.Cli
                 Git.Trace.WriteLine("trace logging enabled.");
 
                 string gitConfigPath;
-                if (Where.GitLocalConfig(out gitConfigPath))
+                if (where.GitLocalConfig(out gitConfigPath))
                 {
                     Git.Trace.WriteLine($"git local config found at '{gitConfigPath}'.");
 
@@ -281,7 +281,7 @@ namespace Microsoft.Alm.Cli
                         program.EnableTraceLogging(operationArguments, gitDirPath);
                     }
                 }
-                else if (Where.GitGlobalConfig(out gitConfigPath))
+                else if (where.GitGlobalConfig(out gitConfigPath))
                 {
                     Git.Trace.WriteLine($"git global config found at '{gitConfigPath}'.");
 

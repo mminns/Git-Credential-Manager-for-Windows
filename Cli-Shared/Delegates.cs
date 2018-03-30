@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication;
+using Microsoft.Alm.Git;
 using Bitbucket = Atlassian.Bitbucket.Authentication;
 using Github = GitHub.Authentication;
 
@@ -49,7 +50,7 @@ namespace Microsoft.Alm.Cli
 
         internal delegate void DieMessageDelegate(Program program, string message, string path, int line, string name);
 
-        internal delegate void EnableTraceLoggingDelegate(Program program, OperationArguments operationArguments);
+        internal delegate void EnableTraceLoggingDelegate(Program program, OperationArguments operationArguments, IWhere where);
 
         internal delegate void EnableTraceLoggingFileDelegate(Program program, OperationArguments operationArguments, string logFilePath);
 
