@@ -41,7 +41,7 @@ namespace Microsoft.Alm.Authentication.Git.Test
             var type = GetType();
             var assembly = type.Assembly;
 
-            using (var rs = assembly.GetManifestResourceStream("Microsoft.Alm.Authentication.Test.Git.sample.gitconfig"))
+            using (var rs = assembly.GetManifestResourceStream("Microsoft.Alm.Authentication.Test.Core.Git.sample.gitconfig"))
             using (var sr = new StreamReader(rs))
             {
                 await Configuration.ParseGitConfig(RuntimeContext.Default, sr, values);

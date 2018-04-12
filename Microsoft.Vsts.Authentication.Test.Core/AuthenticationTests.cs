@@ -22,11 +22,14 @@ namespace Microsoft.Alm.Authentication.Test
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")]
         protected static readonly TargetUri InvalidTargetUri = new TargetUri("https://invlaid-test.uri/git-credential");
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")]
+        protected static readonly VstsTokenScope DefaultTokenScope = VstsTokenScope.CodeWrite;
+
         protected AuthenticationTests()
         {
             if (Trace.Listeners.Count == 0)
             {
-                Trace.Listeners.AddRange(Debug.Listeners);
+                // TODO Win32 Trace.Listeners.AddRange(Debug.Listeners);
             }
         }
     }

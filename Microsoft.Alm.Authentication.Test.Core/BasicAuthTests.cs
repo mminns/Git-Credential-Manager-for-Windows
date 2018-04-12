@@ -8,7 +8,7 @@ namespace Microsoft.Alm.Authentication.Test
     {
         public BasicAuthTests()
         {
-            Trace.Listeners.AddRange(Debug.Listeners);
+            // TODO Win32 Trace.Listeners.AddRange(Debug.Listeners);
         }
 
         [Fact]
