@@ -29,7 +29,6 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication;
-using Bitbucket = Atlassian.Bitbucket.Authentication;
 using Git = Microsoft.Alm.Authentication.Git;
 using Github = GitHub.Authentication;
 
@@ -56,15 +55,15 @@ namespace Microsoft.Alm.Cli
                     ? new AcquireCredentialsDelegate(program.ModalPromptForCredentials)
                     : new AcquireCredentialsDelegate(program.BasicCredentialPrompt);
 
-            var bitbucketPrompts = new Bitbucket.AuthenticationPrompts(program.Context);
+            var bitbucketPrompts = new Atlassian.Bitbucket.Authentication.AuthenticationPrompts(program.Context);
 
             var bitbucketCredentialCallback = (operationArguments.UseModalUi)
                     ? bitbucketPrompts.CredentialModalPrompt
-                    : new Bitbucket.Authentication.AcquireCredentialsDelegate(program.BitbucketCredentialPrompt);
+                    : new Atlassian.Bitbucket.Authentication.Authentication.AcquireCredentialsDelegate(program.BitbucketCredentialPrompt);
 
             var bitbucketOauthCallback = (operationArguments.UseModalUi)
                     ? bitbucketPrompts.AuthenticationOAuthModalPrompt
-                    : new Bitbucket.Authentication.AcquireAuthenticationOAuthDelegate(program.BitbucketOAuthPrompt);
+                    : new Atlassian.Bitbucket.Authentication.Authentication.AcquireAuthenticationOAuthDelegate(program.BitbucketOAuthPrompt);
 
             var githubPrompts = new Github.AuthenticationPrompts(program.Context);
 
@@ -95,7 +94,7 @@ namespace Microsoft.Alm.Cli
                                                                         githubCredentialCallback,
                                                                         githubAuthcodeCallback,
                                                                         null)
-                            ?? Bitbucket.Authentication.GetAuthentication(program.Context,
+                            ?? Atlassian.Bitbucket.Authentication.Authentication.GetAuthentication(program.Context,
                                                                           operationArguments.TargetUri,
                                                                           new SecretStore(program.Context, secretsNamespace, Secret.UriToIdentityUrl),
                                                                           bitbucketCredentialCallback,
@@ -119,7 +118,7 @@ namespace Microsoft.Alm.Cli
                             operationArguments.Authority = AuthorityType.GitHub;
                             goto case AuthorityType.GitHub;
                         }
-                        else if (authority is Bitbucket.Authentication)
+                        else if (authority is Atlassian.Bitbucket.Authentication.Authentication)
                         {
                             operationArguments.Authority = AuthorityType.Bitbucket;
                             goto case AuthorityType.Bitbucket;
@@ -167,7 +166,7 @@ namespace Microsoft.Alm.Cli
                     program.Trace.WriteLine($"authority for '{operationArguments.TargetUri}'  is Bitbucket");
 
                     // Return a Bitbucket authentication object.
-                    return authority ?? new Bitbucket.Authentication(program.Context,
+                    return authority ?? new Atlassian.Bitbucket.Authentication.Authentication(program.Context,
                                                                      new SecretStore(program.Context, secretsNamespace, Secret.UriToIdentityUrl),
                                                                      bitbucketCredentialCallback,
                                                                      bitbucketOauthCallback);
@@ -226,7 +225,7 @@ namespace Microsoft.Alm.Cli
 
                 case AuthorityType.Bitbucket:
                     program.Trace.WriteLine($"deleting Bitbucket credentials for '{operationArguments.TargetUri}'.");
-                    var bbAuth = authentication as Bitbucket.Authentication;
+                    var bbAuth = authentication as Atlassian.Bitbucket.Authentication.Authentication;
                     return await bbAuth.DeleteCredentials(operationArguments.TargetUri, operationArguments.Username);
             }
         }
@@ -781,7 +780,7 @@ namespace Microsoft.Alm.Cli
 
                 case AuthorityType.Bitbucket:
                     {
-                        var bbcAuth = authentication as Bitbucket.Authentication;
+                        var bbcAuth = authentication as Atlassian.Bitbucket.Authentication.Authentication;
 
                         if (((operationArguments.Interactivity != Interactivity.Always)
                                 && ((credentials = await bbcAuth.GetCredentials(operationArguments.TargetUri, operationArguments.Username)) != null)

@@ -1,0 +1,64 @@
+﻿using GLib;
+using Xamarin.Forms;
+using System;
+using Xamarin.Forms.Platform.GTK;
+using Xamarin.Forms.Platform.GTK.Renderers;
+using Xamarin.Forms.Maps.GTK;
+
+namespace Bitbucket.Authentication.Tester.Core.GTK
+{
+    class Program
+    {
+        [STAThread]
+        static void Main(string[] args)
+        {
+            ExceptionManager.UnhandledException += OnUnhandledException;
+
+            GtkOpenGL.Init();
+            GtkThemes.Init();
+            Gtk.Application.Init();
+            FormsMaps.Init(string.Empty);
+            Forms.Init();
+            var app = new App();
+            //var app = new BasicOpenGLApp();
+            //var app = new AdvancedOpenGLApp();
+            var window = new FormsWindow();
+            window.LoadApplication(app);
+            window.SetApplicationTitle("Xamarin.Forms GTK# Backend");
+            window.SetApplicationIcon("xamarinlogo.png");
+            window.Show();
+            Gtk.Application.Run();
+        }
+
+        private static void OnUnhandledException(UnhandledExceptionArgs args)
+        {
+            System.Diagnostics.Debug.WriteLine($"Unhandled GTK# exception: {args.ExceptionObject}");
+        }
+    }
+
+    public class DisposePageRenderer : PageRenderer
+    {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                //((DisposePage)Element).SendRendererDisposed();
+            }
+
+            base.Dispose(disposing);
+        }
+    }
+
+    public class DisposeLabelRenderer : LabelRenderer
+    {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                //((DisposeLabel)Element).SendRendererDisposed();
+            }
+
+            base.Dispose(disposing);
+        }
+    }
+}

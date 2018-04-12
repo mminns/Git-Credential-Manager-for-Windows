@@ -7,7 +7,7 @@
     <ProjectGuid>{333A7DBC-6E13-4D42-865C-B974E78468A7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bitbucket.Authentication.Win32</RootNamespace>
+    <RootNamespace>Atlassian.Bitbucket.Authentication</RootNamespace>
     <AssemblyName>Bitbucket.Authentication.Win32</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -173,9 +173,9 @@
       <Project>{4bfd8d81-dd72-48c4-82ae-f95754ace80c}</Project>
       <Name>Bitbucket.Authentication.Standard</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Alm.Authentication\Microsoft.Alm.Authentication.csproj">
-      <Project>{19770407-b493-459d-bb4f-04fbefb1ba13}</Project>
-      <Name>Microsoft.Alm.Authentication</Name>
+    <ProjectReference Include="..\Microsoft.Alm.Authentication.Standard\Microsoft.Alm.Authentication.Standard.csproj">
+      <Project>{f60e6f70-2271-483a-b408-4bd69d3e4c4f}</Project>
+      <Name>Microsoft.Alm.Authentication.Standard</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -29,7 +29,6 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Alm.Authentication;
-using Bitbucket = Atlassian.Bitbucket.Authentication;
 
 namespace Microsoft.Alm.Cli
 {
@@ -52,7 +51,7 @@ namespace Microsoft.Alm.Cli
             return false;
         }
 
-        public static bool OAuthPrompt(Program program, string title, TargetUri targetUri, Bitbucket.AuthenticationResultType resultType, string username)
+        public static bool OAuthPrompt(Program program, string title, TargetUri targetUri, Atlassian.Bitbucket.Authentication.AuthenticationResultType resultType, string username)
         {
             const int BufferReadSize = 16 * 1024;
 

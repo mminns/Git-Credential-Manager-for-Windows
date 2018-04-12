@@ -58,16 +58,6 @@
     <Compile Include="Xunit\WpfTheoryDiscoverer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GitHub.Authentication\GitHub.Authentication.csproj">
-      <Project>{cf306116-bbf0-4cc7-afce-a506ac4752cb}</Project>
-      <Name>GitHub.Authentication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Alm.Authentication\Microsoft.Alm.Authentication.csproj">
-      <Project>{19770407-b493-459d-bb4f-04fbefb1ba13}</Project>
-      <Name>Microsoft.Alm.Authentication</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>

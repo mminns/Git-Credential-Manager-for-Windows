@@ -1,7 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>GitHub.Authentication</RootNamespace>
+    <Title>GitHub.Authentication</Title>
+    <Description>GitHub Authentication Dialogs</Description>
+    <Company>GitHub</Company>
+    <Product>GitHub.Authentication</Product>
+    <Copyright>Copyright © GitHub 2017</Copyright>
+    <Version>2.0.0.0</Version>
+    <Version>2.0.0.0</Version>
+    <FileVersion>2.0.0.0</FileVersion>
+    <AssemblyName>GitHub.Authentication</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

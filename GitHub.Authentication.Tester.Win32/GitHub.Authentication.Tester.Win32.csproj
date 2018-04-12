@@ -73,10 +73,6 @@
       <Project>{24a80b80-1fa2-4a0d-b3b6-c0db18c04133}</Project>
       <Name>GitHub.Authentication.Win32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Alm.Authentication\Microsoft.Alm.Authentication.csproj">
-      <Project>{19770407-b493-459d-bb4f-04fbefb1ba13}</Project>
-      <Name>Microsoft.Alm.Authentication</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="Tester.xaml">

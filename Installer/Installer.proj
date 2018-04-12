@@ -6,7 +6,8 @@
     <ProjectGuid>{19770407-3808-4B17-9EE0-21DD3468F875}</ProjectGuid>
     <RootNamespace>Installer</RootNamespace>
     <ProjectDir Condition=" '$(ProjectDir)' == '' Or '$(ProjectDir)' == '*Undefined*' ">$(MSBuildProjectDirectory)</ProjectDir>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' Or '$(Configuration)' == '*Undefined*' ">
@@ -30,6 +31,14 @@
     <SigningTarget>$(OutputPath)\GCMW-$(Version).exe</SigningTarget>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bitbucket.Authentication.Standard\Bitbucket.Authentication.Standard.csproj">
+      <Project>{4bfd8d81-dd72-48c4-82ae-f95754ace80c}</Project>
+      <Name>Bitbucket.Authentication.Standard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bitbucket.Authentication.Win32\Bitbucket.Authentication.Win32.csproj">
+      <Project>{333a7dbc-6e13-4d42-865c-b974e78468a7}</Project>
+      <Name>Bitbucket.Authentication.Win32</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cli-Askpass\Cli-Askpass.csproj">
       <Project>{19770407-B33A-4EBE-92B8-04C93F43CAE0}</Project>
       <Name>Cli-Askpass</Name>
@@ -38,21 +47,21 @@
       <Project>{19770407-63D4-40A8-A9DF-F1C4B473308A}</Project>
       <Name>Cli-CredentialHelper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bitbucket.Authentication\Bitbucket.Authentication.csproj">
-      <Project>{ee663736-5bad-4ca6-a4f8-99978925ad8a}</Project>
-      <Name>Bitbucket.Authentication</Name>
+    <ProjectReference Include="..\GitHub.Authentication.Standard\GitHub.Authentication.Standard.csproj">
+      <Project>{c8d6ae60-b442-40f9-89b8-95d489c4164c}</Project>
+      <Name>GitHub.Authentication.Standard</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GitHub.Authentication\GitHub.Authentication.csproj">
-      <Project>{cf306116-bbf0-4cc7-afce-a506ac4752cb}</Project>
-      <Name>GitHub.Authentication</Name>
+    <ProjectReference Include="..\GitHub.Authentication.Win32\GitHub.Authentication.Win32.csproj">
+      <Project>{24a80b80-1fa2-4a0d-b3b6-c0db18c04133}</Project>
+      <Name>GitHub.Authentication.Win32</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Alm.Authentication\Microsoft.Alm.Authentication.csproj">
-      <Project>{19770407-b493-459d-bb4f-04fbefb1ba13}</Project>
-      <Name>Microsoft.Alm.Authentication</Name>
+    <ProjectReference Include="..\Microsoft.Alm.Authentication.Standard\Microsoft.Alm.Authentication.Standard.csproj">
+      <Project>{f60e6f70-2271-483a-b408-4bd69d3e4c4f}</Project>
+      <Name>Microsoft.Alm.Authentication.Standard</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Vsts.Authentication\Microsoft.Vsts.Authentication.csproj">
-      <Project>{19770407-d7d8-4a37-914c-f552ff4b90d4}</Project>
-      <Name>Microsoft.Vsts.Authentication</Name>
+    <ProjectReference Include="..\Microsoft.Vsts.Authentication.Standard\Microsoft.Vsts.Authentication.Standard.csproj">
+      <Project>{4ffdf2c4-1d0b-4f7f-84a7-112cb3c9d294}</Project>
+      <Name>Microsoft.Vsts.Authentication.Standard</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +110,9 @@
     <ZipContents Include="$(SolutionDir)\README.md">
       <InProject>false</InProject>
     </ZipContents>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Target Name="AfterBuild" AfterTargets="Build" />
   <Target Name="Build" BeforeTargets="AfterBuild">

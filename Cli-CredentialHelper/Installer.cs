@@ -48,11 +48,12 @@ namespace Microsoft.Alm.Cli
         {
             "Microsoft.Vsts.Authentication.dll",
             "Microsoft.Alm.Authentication.dll",
-            "Microsoft.Alm.Authentication.Git.dll",
             "Microsoft.IdentityModel.Clients.ActiveDirectory.dll",
             "Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll",
             "Bitbucket.Authentication.dll",
-            "GitHub.Authentication.exe",
+            "Bitbucket.Authentication.Win32.dll",
+            "GitHub.Authentication.dll",
+            "GitHub.Authentication.Win32.dll",
             "git-credential-manager.exe",
             "git-askpass.exe",
         };

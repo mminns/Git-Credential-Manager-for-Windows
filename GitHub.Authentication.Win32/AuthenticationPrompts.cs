@@ -114,7 +114,7 @@ namespace GitHub.Authentication
                 UriParser.Register(new GenericUriParser(GenericUriParserOptions.GenericAuthority), "pack", -1);
             }
 
-            var appResourcesUri = new Uri("pack://application:,,,/GitHub.Authentication;component/AppResources.xaml", UriKind.RelativeOrAbsolute);
+            var appResourcesUri = new Uri("pack://application:,,,/GitHub.Authentication.Win32;component/AppResources.xaml", UriKind.RelativeOrAbsolute);
 
             // If we launch two dialogs in the same process (Credential followed by 2fa), calling new
             // App() throws an exception stating the Application class can't be created twice.

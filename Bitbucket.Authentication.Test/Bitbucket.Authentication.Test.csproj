@@ -41,16 +41,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Bitbucket.Authentication\Bitbucket.Authentication.csproj">
-      <Project>{ee663736-5bad-4ca6-a4f8-99978925ad8a}</Project>
-      <Name>Bitbucket.Authentication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Alm.Authentication\Microsoft.Alm.Authentication.csproj">
-      <Project>{C1DAABC1-B493-459D-BB4F-04FBEFB1BA13}</Project>
-      <Name>Microsoft.Alm.Authentication</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\xunit.runner.json">
       <Link>xunit.runner.json</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

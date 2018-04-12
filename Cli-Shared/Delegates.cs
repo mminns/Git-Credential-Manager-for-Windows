@@ -28,7 +28,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication;
-using Bitbucket = Atlassian.Bitbucket.Authentication;
 using Github = GitHub.Authentication;
 
 namespace Microsoft.Alm.Cli
@@ -39,7 +38,7 @@ namespace Microsoft.Alm.Cli
 
         internal delegate bool BitbucketCredentialPromptDelegate(Program program, string titleMessage, TargetUri targetUri, out string username, out string password);
 
-        internal delegate bool BitbucketOAuthPromptDelegate(Program program, string title, TargetUri targetUri, Bitbucket.AuthenticationResultType resultType, string username);
+        internal delegate bool BitbucketOAuthPromptDelegate(Program program, string title, TargetUri targetUri, Atlassian.Bitbucket.Authentication.AuthenticationResultType resultType, string username);
 
         internal delegate Task<BaseAuthentication> CreateAuthenticationDelegate(Program program, OperationArguments operationArguments);
 

@@ -42,14 +42,14 @@
     -->
 
     <Style x:Key="AtlassianLogo" TargetType="{x:Type Image}" BasedOn="{StaticResource ImageX}">
-        <Setter Property="Source" Value="/Bitbucket.Authentication;Component/Assets/ADG3/Images/Atlassian-horizontal-white@2x-rgb.png" />
+        <Setter Property="Source" Value="/Bitbucket.Authentication.Win32;Component/Assets/ADG3/Images/Atlassian-horizontal-white@2x-rgb.png" />
         <Setter Property="Width" Value="285" />
         <Setter Property="Height" Value="48" />
         <Setter Property="Stretch" Value="Uniform" />
     </Style>
 
     <Style x:Key="ErrorIcon" TargetType="{x:Type Image}" BasedOn="{StaticResource ImageX}">
-        <Setter Property="Source" Value="/Bitbucket.Authentication;Component/Assets/ADG3/Images/error.png" />
+        <Setter Property="Source" Value="/Bitbucket.Authentication.Win32;Component/Assets/ADG3/Images/error.png" />
         <Setter Property="Width" Value="16" />
         <Setter Property="Height" Value="16" />
         <Setter Property="Stretch" Value="Uniform" />

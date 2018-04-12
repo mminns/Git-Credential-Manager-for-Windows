@@ -509,7 +509,7 @@ namespace Microsoft.Alm.Cli
         internal bool BitbucketCredentialPrompt(string titleMessage, TargetUri targetUri, out string username, out string password)
             => _bitbucketCredentialPrompt(this, titleMessage, targetUri, out username, out password);
 
-        internal bool BitbucketOAuthPrompt(string title, TargetUri targetUri, Bitbucket.AuthenticationResultType resultType, string username)
+        internal bool BitbucketOAuthPrompt(string title, TargetUri targetUri, Atlassian.Bitbucket.Authentication.AuthenticationResultType resultType, string username)
             => _bitbucketOauthPrompt(this, title, targetUri, resultType, username);
 
         internal string KeyTypeName(KeyType type)
