@@ -27,10 +27,10 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
+//using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Alm.Authentication;
-using Microsoft.Win32.SafeHandles;
+//using Microsoft.Win32.SafeHandles;
 
 using Git = Microsoft.Alm.Authentication.Git;
 
@@ -40,6 +40,66 @@ namespace Microsoft.Alm.Cli
     {
         public static Credential CredentialPrompt(Program program, TargetUri targetUri, string titleMessage)
         {
+            titleMessage = titleMessage ?? "Please enter your credentials for ";
+
+            const int BufferReadSize = 16 * 1024;
+            StringBuilder buffer = new StringBuilder(BufferReadSize);
+            string username = null;
+            string password = null;
+
+            buffer.Append(titleMessage)
+                      .Append(targetUri)
+                      .AppendLine();
+
+            Console.WriteLine(buffer);
+
+            // Clear the buffer for the next operation.
+            buffer.Clear();
+
+            // Prompt the user for the username wanted.
+            buffer.Append("username: ");
+            Console.Write(buffer);
+
+            username = Console.ReadLine();
+
+            // Clear the buffer for the next operation.
+            buffer.Clear();
+
+            // Prompt the user for password.
+            buffer.Append("password: ");
+            Console.Write(buffer);
+
+            ConsoleKeyInfo keyInfo;
+
+            do
+            {
+                keyInfo = Console.ReadKey(true);
+                //Skip if Backspace or Enter is pressed
+                if (keyInfo.Key != ConsoleKey.Backspace && keyInfo.Key != ConsoleKey.Enter)
+                {
+                    password += keyInfo.KeyChar;
+                    Console.Write("*");
+                }
+                else
+                {
+                    if (keyInfo.Key == ConsoleKey.Backspace && password.Length > 0)
+                    {
+                        // remove last character if Backspace is pressed
+                        password = password.Substring(0, (password.Length - 1));
+                        Console.Write("\b \b");
+                    }
+                }
+            }
+            while (keyInfo.Key != ConsoleKey.Enter);
+            Console.WriteLine();
+            Console.WriteLine("...");
+
+            if (username != null && password != null)
+                return new Credential(username, password);
+
+            return null;
+
+            /* TODO Win32
             // ReadConsole 32768 fail, 32767 OK @linquize [https://github.com/Microsoft/Git-Credential-Manager-for-Windows/commit/a62b9a19f430d038dcd85a610d97e5f763980f85]
             const int BufferReadSize = 16 * 1024;
 
@@ -167,6 +227,7 @@ namespace Microsoft.Alm.Cli
             }
 
             return null;
+            */
         }
 
         public static void Exit(Program program, int exitcode, string message, string path, int line, string name)

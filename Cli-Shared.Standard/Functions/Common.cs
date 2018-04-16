@@ -209,7 +209,9 @@ namespace Microsoft.Alm.Cli
                 throw new ArgumentNullException(nameof(operationArguments));
 
             BaseAuthentication authentication = await program.CreateAuthentication(operationArguments,
-                                                                                   new Atlassian.Bitbucket.Authentication.BaseAuthenticationPrompts(program.Context),
+                                                                                   new Atlassian.Bitbucket.Authentication.BaseAuthenticationPrompts(program.Context, (targetUri, title) => {
+                                                                                       return ConsoleFunctions.CredentialPrompt(program, targetUri, title);
+                                                                                    }),
                                                                                    new GitHub.Authentication.BaseAuthenticationPrompts(program.Context));
 
             switch (operationArguments.Authority)
@@ -669,7 +671,9 @@ namespace Microsoft.Alm.Cli
             }
 
             BaseAuthentication authentication = await program.CreateAuthentication(operationArguments,
-                                                                                   new Atlassian.Bitbucket.Authentication.BaseAuthenticationPrompts(program.Context),
+                                                                                   new Atlassian.Bitbucket.Authentication.BaseAuthenticationPrompts(program.Context, (targetUri, title) => {
+                                                                                       return ConsoleFunctions.CredentialPrompt(program, targetUri, title);
+                                                                                   }),
                                                                                    new GitHub.Authentication.BaseAuthenticationPrompts(program.Context));
             Credential credentials = null;
 

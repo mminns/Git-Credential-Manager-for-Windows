@@ -100,7 +100,7 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
             var authorizationUri = GetAuthorizationUri(scope);
 
             // Open the browser to prompt the user to authorize the token request
-            Process.Start(authorizationUri.AbsoluteUri);
+            Process.Start("open", authorizationUri.AbsoluteUri);
 
             string rawUrlData;
             try

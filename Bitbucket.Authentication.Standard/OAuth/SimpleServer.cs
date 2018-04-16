@@ -50,36 +50,45 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
         /// <exception cref="RemoteHostException">Throws when there's a timeout, or other error</exception>
         public static async Task<string> WaitForURLAsync(string url, CancellationToken cancellationToken)
         {
-            var listener = new HttpListener { Prefixes = { url } };
-            listener.Start();
-
             string rawUrl = "";
             try
             {
-                var context = await listener.GetContextAsync().RunWithCancellation(cancellationToken);
-                rawUrl = context.Request.RawUrl;
+                using (var listener = new HttpListener { Prefixes = { url } })
+                {
+                    listener.Start();
 
-                //Serve back a simple auth message.
-                var html = GetSuccessString();
-                context.Response.ContentType = "text/html";
-                context.Response.OutputStream.WriteStringUtf8(html);
+                    try
+                    {
+                        var context = await listener.GetContextAsync().RunWithCancellation(cancellationToken);
+                        rawUrl = context.Request.RawUrl;
 
-                await Task.Delay(100); //Wait 100ms without this the server closes before the complete response has been written
+                        //Serve back a simple auth message.
+                        var html = GetSuccessString();
+                        context.Response.ContentType = "text/html";
+                        context.Response.OutputStream.WriteStringUtf8(html);
 
-                context.Response.Close();
+                        await Task.Delay(100); //Wait 100ms without this the server closes before the complete response has been written
+
+                        context.Response.Close();
+                    }
+                    catch (TimeoutException ex)
+                    {
+                        throw new Exception("Timeout awaiting incoming request.", ex);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Failure awating incoming request.", ex);
+                    }
+                    finally
+                    {
+                        listener.Stop();
+                        //listener.Close();
+                    }
+                }
             }
-            catch (TimeoutException ex)
+            catch(Exception ex)
             {
-                throw new Exception("Timeout awaiting incoming request.", ex);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failure awating incoming request.", ex);
-            }
-            finally
-            {
-                listener.Stop();
-                listener.Close();
+                // do nothing on macOS see corefx/issues/24562
             }
 
             return rawUrl;

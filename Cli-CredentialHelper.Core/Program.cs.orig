@@ -253,9 +253,13 @@ namespace Microsoft.Alm.Cli
                     await LoadOperationArguments(operationArguments);
 
                     BaseAuthentication authentication = await CreateAuthentication(operationArguments,
+<<<<<<< Updated upstream
+                                                                                   new Atlassian.Bitbucket.Authentication.BaseAuthenticationPrompts(this.Context),
+=======
                                                                                    new Atlassian.Bitbucket.Authentication.BaseAuthenticationPrompts(this.Context, (targetUri, title) => {
                                                                                        return ConsoleFunctions.CredentialPrompt(this, targetUri, title);
                                                                                    }),
+>>>>>>> Stashed changes
                                                                                    new GitHub.Authentication.BaseAuthenticationPrompts(this.Context));
 
                     switch (operationArguments.Authority)
@@ -420,9 +424,13 @@ namespace Microsoft.Alm.Cli
 
                 var credentials = operationArguments.Credentials;
                 var task = Task.Run(async () => { return await CreateAuthentication(operationArguments,
+<<<<<<< Updated upstream
+                                                                                   new Atlassian.Bitbucket.Authentication.BaseAuthenticationPrompts(this.Context),
+=======
                                                                                     new Atlassian.Bitbucket.Authentication.BaseAuthenticationPrompts(this.Context, (targetUri, title) => {
                                                                                        return ConsoleFunctions.CredentialPrompt(this, targetUri, title);
                                                                                    }),
+>>>>>>> Stashed changes
                                                                                    new GitHub.Authentication.BaseAuthenticationPrompts(this.Context)); });
                 BaseAuthentication authentication = task.Result;
 
