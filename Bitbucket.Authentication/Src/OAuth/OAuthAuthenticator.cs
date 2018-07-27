@@ -50,7 +50,18 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
 
         public OAuthAuthenticator(RuntimeContext context)
             : base(context)
-        { }
+        {
+            var processService = GetService<IProcessService>();
+
+            if (processService is null)
+            {
+                processService = new ProcessService();
+                SetService(processService);
+            }
+        }
+
+        protected IProcessService ProcessService
+            => GetService<IProcessService>();
 
         public string AuthorizeUrlPath { get { return "/site/oauth2/authorize"; } }
 
@@ -100,7 +111,7 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
             var authorizationUri = GetAuthorizationUri(scope);
 
             // Open the browser to prompt the user to authorize the token request
-            Process.Start(authorizationUri.AbsoluteUri);
+            ProcessService.StartProcess(authorizationUri.AbsoluteUri);
 
             string rawUrlData;
             try

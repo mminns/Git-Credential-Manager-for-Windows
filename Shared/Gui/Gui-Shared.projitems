@@ -9,6 +9,7 @@
     <Import_RootNamespace>Wpf_Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Api\IGui.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\AuthenticationDialogWindow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DialogUserControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\MaskedPasswordBox.cs" />

@@ -1,38 +1,13 @@
-﻿/**** Git Credential Manager for Windows ****
- *
- * Copyright (c) Microsoft Corporation
- * All rights reserved.
- *
- * MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the """"Software""""), to deal
- * in the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-**/
-
-using System;
-using System.Collections.Generic;
-using GitHub.Authentication.ViewModels;
+﻿using Atlassian.Bitbucket.Authentication.ViewModels;
 using GitHub.Shared.Api;
 using GitHub.Shared.Controls;
 using GitHub.Shared.ViewModels;
 using Microsoft.Alm.Authentication;
 using Microsoft.Alm.Authentication.Test;
+using System;
+using System.Collections.Generic;
 
-namespace GitHub.Authentication.Test
+namespace Atlassian.Bitbucket.Authentication.Test
 {
     public class CaptureGui : IGui, ICaptureService<CapturedGuiData>
     {
@@ -58,7 +33,7 @@ namespace GitHub.Authentication.Test
         private readonly object _syncpoint;
 
         public string ServiceName
-            => nameof(Gui);
+            => "Gui";
 
         public Type ServiceType
             => typeof(IGui);
@@ -73,6 +48,56 @@ namespace GitHub.Authentication.Test
 
             return success;
         }
+
+        private void Capture(bool success, DialogViewModel viewModel)
+        {
+            var capture = default(CapturedGuiOperation);
+
+            switch (viewModel)
+            {
+                case CredentialsViewModel credentialsViewModel:
+                    {
+                        capture = new CapturedGuiOperation
+                        {
+                            Output = new CapturedGuiOutput
+                            {
+                                Login = credentialsViewModel.Login,
+                                IsValid = viewModel.IsValid,
+                                Password = credentialsViewModel.Password,
+                                Result = (int)viewModel.Result,
+                                Success = success,
+                            },
+                            DialogType = credentialsViewModel.GetType().FullName,
+                        };
+                    }
+                    break;
+
+                case OAuthViewModel oauthViewModel:
+                    {
+                        capture = new CapturedGuiOperation
+                        {
+                            Output = new CapturedGuiOutput
+                            {
+                                UsesOAuth = true,
+                                IsValid = viewModel.IsValid,
+                                Result = (int)viewModel.Result,
+                                Success = success,
+                            },
+                            DialogType = oauthViewModel.GetType().FullName,
+                        };
+                    }
+                    break;
+
+                default:
+                    throw new ReplayDataException($"Unknown type `{viewModel.GetType().FullName}`");
+            }
+
+            lock (_syncpoint)
+            {
+                _captured.Enqueue(capture);
+            }
+        }
+
 
         internal bool GetCapturedData(ICapturedDataFilter filter, out CapturedGuiData capturedData)
         {
@@ -92,7 +117,7 @@ namespace GitHub.Authentication.Test
                     {
                         Output = new CapturedGuiOutput
                         {
-                            AuthenticationCode = item.Output.AuthenticationCode,
+                            UsesOAuth = item.Output.UsesOAuth,
                             IsValid = item.Output.IsValid,
                             Login = item.Output.Login != null
                                 ? FauxUsername
@@ -111,55 +136,6 @@ namespace GitHub.Authentication.Test
             }
 
             return true;
-        }
-
-        private void Capture(bool success, DialogViewModel viewModel)
-        {
-            var capture = default(CapturedGuiOperation);
-
-            switch (viewModel)
-            {
-                case CredentialsViewModel cvm:
-                {
-                    capture = new CapturedGuiOperation
-                    {
-                        Output = new CapturedGuiOutput
-                        {
-                            Login = cvm.Login,
-                            IsValid = viewModel.IsValid,
-                            Password = cvm.Password,
-                            Result = (int)viewModel.Result,
-                            Success = success,
-                        },
-                        DialogType = cvm.GetType().FullName,
-                    };
-                }
-                break;
-
-                case TwoFactorViewModel tfvm:
-                {
-                    capture = new CapturedGuiOperation
-                    {
-                        Output = new CapturedGuiOutput
-                        {
-                            AuthenticationCode = tfvm.AuthenticationCode,
-                            IsValid = viewModel.IsValid,
-                            Result = (int)viewModel.Result,
-                            Success = success,
-                        },
-                        DialogType = tfvm.GetType().FullName,
-                    };
-                }
-                break;
-
-                default:
-                    throw new ReplayDataException($"Unknown type `{viewModel.GetType().FullName}`");
-            }
-
-            lock (_syncpoint)
-            {
-                _captured.Enqueue(capture);
-            }
         }
 
         bool ICaptureService<CapturedGuiData>.GetCapturedData(ICapturedDataFilter filter, out CapturedGuiData capturedData)

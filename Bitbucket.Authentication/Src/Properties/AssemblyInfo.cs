@@ -25,4 +25,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("2.0.1.0")]
 
 [assembly: InternalsVisibleTo("Bitbucket.Authentication.Test")]
+[assembly: InternalsVisibleTo("Bitbucket.Authentication.Proxy")]
 

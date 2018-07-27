@@ -24,6 +24,7 @@
 **/
 
 using System.Runtime.CompilerServices;
+using GitHub.Shared.Api;
 using Microsoft.Alm.Authentication.Test;
 
 namespace GitHub.Authentication.Test

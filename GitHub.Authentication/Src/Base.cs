@@ -23,6 +23,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 **/
 
+using GitHub.Shared.Api;
 using Microsoft.Alm.Authentication;
 
 namespace GitHub.Authentication

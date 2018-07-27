@@ -41,6 +41,10 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Bitbucket.Authentication\Proxy\Bitbucket.Authentication.Proxy.csproj">
+      <Project>{25e6abb0-1ad6-4d30-acdf-c449ebc1bbc5}</Project>
+      <Name>Bitbucket.Authentication.Proxy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\GitHub.Authentication\Proxy\GitHub.Authentication.Proxy.csproj">
       <Project>{f24e0e80-4df4-4312-8f35-72bad788f741}</Project>
       <Name>GitHub.Authentication.Proxy</Name>

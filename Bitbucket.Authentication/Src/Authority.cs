@@ -89,9 +89,15 @@ namespace Atlassian.Bitbucket.Authentication
                         return new AuthenticationResult(AuthenticationResultType.Failure);
                     }
 
-                    // We got a toke but lets check to see the usernames match.
+                    // We got a token but lets check to see the usernames match.
+                    // 
+                    // We also construct a new token so that oauth works correctly:
+                    //   Tokens with the type 'Personal' don't get sent with a "Authorization: Bearer" header...?
                     var restRootUri = new Uri(_restRootUrl);
-                    var userResult = await (new RestClient(Context)).TryGetUser(targetUri, RequestTimeout, restRootUri, result.Token);
+                    var userResult = await (new RestClient(Context))
+                        .TryGetUser(targetUri, RequestTimeout, restRootUri,
+                            result.Token);
+                        //new Token(result.Token.Value, result.Token.TargetIdentity, TokenType.BitbucketAccess));
 
                     if (!userResult.IsSuccess)
                     {

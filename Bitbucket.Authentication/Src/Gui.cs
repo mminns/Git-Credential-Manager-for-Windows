@@ -1,40 +1,17 @@
-﻿/**** Git Credential Manager for Windows ****
- *
- * Copyright (c) GitHub Corporation
- * All rights reserved.
- *
- * MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the """"Software""""), to deal
- * in the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-**/
-
-using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using GitHub.Shared.Api;
+﻿using GitHub.Shared.Api;
 using GitHub.Shared.Controls;
 using GitHub.Shared.ViewModels;
 using Microsoft.Alm.Authentication;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 
-namespace GitHub.Authentication
+namespace Atlassian.Bitbucket.Authentication
 {
     internal class Gui : Microsoft.Alm.Authentication.Base, IGui
     {
@@ -50,17 +27,13 @@ namespace GitHub.Authentication
             StartSTATask(() =>
             {
                 EnsureApplicationResources();
-
                 var window = windowCreator();
-
                 window.DataContext = viewModel;
-
                 window.ShowDialog();
-            })
-            .Wait();
+            }).Wait();
 
             return viewModel.Result == AuthenticationDialogResult.Ok
-                && viewModel.IsValid;
+                   && viewModel.IsValid;
         }
 
         private static void EnsureApplicationResources()
@@ -70,7 +43,7 @@ namespace GitHub.Authentication
                 UriParser.Register(new GenericUriParser(GenericUriParserOptions.GenericAuthority), "pack", -1);
             }
 
-            var appResourcesUri = new Uri("pack://application:,,,/GitHub.Authentication;component/AppResources.xaml", UriKind.RelativeOrAbsolute);
+            var appResourcesUri = new Uri("pack://application:,,,/Bitbucket.Authentication;component/AppResources.xaml", UriKind.RelativeOrAbsolute);
 
             // If we launch two dialogs in the same process (Credential followed by 2fa), calling new
             // App() throws an exception stating the Application class can't be created twice.
@@ -80,9 +53,7 @@ namespace GitHub.Authentication
             if (Application.Current == null)
             {
                 var app = new Application();
-
                 Debug.Assert(Application.Current == app, "Current application not set");
-
                 app.ShutdownMode = ShutdownMode.OnExplicitShutdown;
                 app.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = appResourcesUri });
             }
@@ -93,7 +64,10 @@ namespace GitHub.Authentication
                 var resourcesExist = Application.Current.Resources.MergedDictionaries.Any(r => r.Source == appResourcesUri);
                 if (!resourcesExist)
                 {
-                    Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary { Source = appResourcesUri });
+                    Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary
+                    {
+                        Source = appResourcesUri
+                    });
                 }
             }
         }
@@ -113,10 +87,8 @@ namespace GitHub.Authentication
                     completionSource.SetException(e);
                 }
             });
-
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
-
             return completionSource.Task;
         }
     }

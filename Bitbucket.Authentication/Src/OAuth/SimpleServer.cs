@@ -56,14 +56,20 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
                 var context = await listener.GetContextAsync().RunWithCancellation(cancellationToken);
                 rawUrl = context.Request.RawUrl;
 
+                await Task.Delay(100); //Wait 100ms before writing the response out
+
                 //Serve back a simple auth message.
                 var html = GetSuccessString();
-                context.Response.ContentType = "text/html";
-                context.Response.OutputStream.WriteStringUtf8(html);
 
-                await Task.Delay(100); //Wait 100ms without this the server closes before the complete response has been written
+                var buffer = System.Text.Encoding.UTF8.GetBytes(html);
+                context.Response.ContentLength64 = buffer.Length;
+                Task responseTask = context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length).ContinueWith((task) =>
+                {
+                    context.Response.OutputStream.Close();
+                    listener.Stop();
+                });
 
-                context.Response.Close();
+                await Task.Delay(100); //Wait 100ms before writing the response out
             }
             catch (TimeoutException ex)
             {
