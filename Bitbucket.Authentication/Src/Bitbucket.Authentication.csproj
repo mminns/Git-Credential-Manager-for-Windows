@@ -44,7 +44,9 @@
     </Compile>
     <Compile Include="Controls\Text\ValidationMessage.cs" />
     <Compile Include="Gui.cs" />
-    <Compile Include="Rest\RestClient.cs" />
+    <Compile Include="Rest\IRestClient.cs" />
+    <Compile Include="Rest\Cloud\RestClient.cs" />
+    <Compile Include="Rest\Server\RestClient.cs" />
     <Compile Include="TokenScope.cs" />
     <Compile Include="Controls\OAuthControl.xaml.cs">
       <DependentUpon>OAuthControl.xaml</DependentUpon>

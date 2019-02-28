@@ -193,6 +193,7 @@ namespace Microsoft.Alm.Cli
 
                     // Return a Bitbucket authentication object.
                     return authority ?? new Bitbucket.Authentication(program.Context,
+                                                                     operationArguments.TargetUri,
                                                                      new SecretStore(program.Context,
                                                                                      secretsNamespace,
                                                                                      Secret.UriToIdentityUrl),

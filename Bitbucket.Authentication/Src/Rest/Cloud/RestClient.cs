@@ -4,9 +4,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication;
 
-namespace Atlassian.Bitbucket.Authentication.Rest
+namespace Atlassian.Bitbucket.Authentication.Rest.Cloud
 {
-    public class RestClient : Base
+    public class RestClient : Base, IRestClient
     {
         internal static readonly Regex UsernameRegex = new Regex(@"\s*""username""\s*:\s*""([^""]+)""\s*", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
@@ -82,6 +82,16 @@ namespace Atlassian.Bitbucket.Authentication.Rest
             }
 
             return null;
+        }
+
+        public static bool IsAcceptableUri(TargetUri targetUri)
+        {
+            if (targetUri.DnsSafeHost.EndsWith(Authentication.BitbucketBaseUrlHost, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -43,6 +43,8 @@ namespace Atlassian.Bitbucket.Authentication
         /// <summary>
         /// Default constructor
         /// </summary>
+        /// <param name="context"></param>
+        /// <param name="targetUri"></param>
         /// <param name="personalAccessTokenStore">where to store validated credentials</param>
         /// <param name="acquireCredentialsCallback">
         /// what to call to promot the user for Basic Auth credentials
@@ -50,8 +52,10 @@ namespace Atlassian.Bitbucket.Authentication
         /// <param name="acquireAuthenticationOAuthCallback">
         /// what to call to prompt the user to run the OAuth process
         /// </param>
+        /// <param name="authority">a predefined instance of <see cref="IAuthority"/>. Primarily used for Mock testing</param>
         public Authentication(
             RuntimeContext context,
+            TargetUri targetUri,
             ICredentialStore personalAccessTokenStore,
             AcquireCredentialsDelegate acquireCredentialsCallback,
             AcquireAuthenticationOAuthDelegate acquireAuthenticationOAuthCallback,
@@ -63,7 +67,7 @@ namespace Atlassian.Bitbucket.Authentication
 
             PersonalAccessTokenStore = personalAccessTokenStore;
 
-            BitbucketAuthority = authority ?? new Authority(context);
+            BitbucketAuthority = authority ?? new Authority(context, targetUri);
             TokenScope = TokenScope.SnippetWrite | TokenScope.RepositoryWrite;
 
             AcquireCredentialsCallback = acquireCredentialsCallback;
@@ -309,7 +313,7 @@ namespace Atlassian.Bitbucket.Authentication
 
             if (targetUri.QueryUri.DnsSafeHost.EndsWith(BitbucketBaseUrlHost, StringComparison.OrdinalIgnoreCase))
             {
-                authentication = new Authentication(context, personalAccessTokenStore, acquireCredentialsCallback, acquireAuthenticationOAuthCallback);
+                authentication = new Authentication(context, targetUri, personalAccessTokenStore, acquireCredentialsCallback, acquireAuthenticationOAuthCallback);
                 context.Trace.WriteLine("authentication for Bitbucket created");
             }
             else

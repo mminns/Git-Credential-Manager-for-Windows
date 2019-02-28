@@ -54,10 +54,20 @@ namespace Atlassian.Bitbucket.Authentication
         /// to be overridden.
         /// </summary>
         /// <param name="restRootUrl">overriding root URL for REST API call.</param>
-        public Authority(RuntimeContext context, string restRootUrl = null)
+        public Authority(RuntimeContext context, TargetUri targetUri = null)
             : base(context)
         {
-            _restRootUrl = restRootUrl ?? DefaultRestRoot;
+            // The Bitbucket Cloud API endpoints
+            if (targetUri == null 
+                || targetUri.DnsSafeHost.Equals(Authentication.BitbucketBaseUrlHost, StringComparison.OrdinalIgnoreCase))
+            {
+                _restRootUrl = DefaultRestRoot;
+            }
+            else
+            {
+                // If we're here, it's Bitbucket Server via a configured authority
+                _restRootUrl = targetUri.QueryUri.GetLeftPart(UriPartial.Authority) + "/rest/api";
+            }
         }
 
         private readonly string _restRootUrl;
@@ -91,7 +101,7 @@ namespace Atlassian.Bitbucket.Authentication
 
                     // We got a toke but lets check to see the usernames match.
                     var restRootUri = new Uri(_restRootUrl);
-                    var userResult = await (new RestClient(Context)).TryGetUser(targetUri, RequestTimeout, restRootUri, result.Token);
+                    var userResult = await (new Rest.Cloud.RestClient(Context)).TryGetUser(targetUri, RequestTimeout, restRootUri, result.Token);
 
                     if (!userResult.IsSuccess)
                     {
@@ -214,7 +224,15 @@ namespace Atlassian.Bitbucket.Authentication
             Trace.WriteLine($"authentication type = '{authorization.GetType().Name}'.");
 
             var restRootUrl = new Uri(_restRootUrl);
-            var result = await (new RestClient(Context)).TryGetUser(targetUri, RequestTimeout, restRootUrl, authorization);
+            AuthenticationResult result;
+            if (Rest.Cloud.RestClient.IsAcceptableUri(targetUri))
+            {
+                result = await (new Rest.Cloud.RestClient(Context)).TryGetUser(targetUri, RequestTimeout, restRootUrl, authorization);
+            }
+            else
+            {
+                result = await (new Rest.Server.RestClient(Context)).TryGetUser(targetUri, RequestTimeout, restRootUrl, authorization);
+            }
 
             if (result.Type.Equals(AuthenticationResultType.Success))
             {
