@@ -33,7 +33,7 @@ Use `AAD` or `MSA` if the host is 'visualstudio.com' Azure Domain or Live Accoun
 
 Use `GitHub` if the host is 'github.com'.
 
-Use `BitBucket` or `Atlassian` if the host is 'bitbucket.org'.
+Use `Bitbucket` if the host is 'bitbucket.org'.
 
 Use `Integrated` or `NTLM` if the host is a Team Foundation, or other NTLM authentication based, server.
 
