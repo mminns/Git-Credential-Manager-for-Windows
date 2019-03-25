@@ -85,9 +85,13 @@
         <StackPanel DockPanel.Dock="Top">
             <Image Style="{StaticResource AtlassianLogo}"
                    HorizontalAlignment="Center" />
-            <TextBlock Style="{StaticResource LightLogoStrapline}"
-                       HorizontalAlignment="Center"
-                       Text="{x:Static properties:Resources.OAuthAuthText}"/>
+            <TextBlock Style="{StaticResource LightLogoStrapline}" 
+                       TextTrimming="CharacterEllipsis"
+                       MaxWidth="400"
+                       HorizontalAlignment="Center">
+                <Run Text="OAuth for"></Run>
+                <Run Text="{Binding host, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></Run>
+            </TextBlock>
         </StackPanel>
 
         <Border Style="{StaticResource ForegroundStackPanelBorder}"

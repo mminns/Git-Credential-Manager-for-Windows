@@ -36,7 +36,7 @@ namespace Atlassian.Bitbucket.Authentication.Test
                 {
                     Interlocked.Increment(ref count);
 
-                    AuthenticationResult token = await authority.AcquireToken(targetUri, credentials, resultType, tokenScope);
+                    AuthenticationResult token = await authority.AcquireToken(targetUri, credentials, resultType, tokenScope, null, null);
 
                     Assert.NotNull(token);
                 }).Wait();

@@ -29,7 +29,7 @@ namespace Atlassian.Bitbucket.Authentication.Rest.Server
 
             // TDOD slugify username
             var cred = authorization as Credential;
-            var apiUrl = new Uri(restRootUrl + UserUrl + "/" + cred.Username);
+            var apiUrl = new Uri(restRootUrl + UserUrl + "/" + cred?.Username);
             var requestUri = targetUri.CreateWith(apiUrl);
             try
             {

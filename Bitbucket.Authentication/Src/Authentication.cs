@@ -59,6 +59,8 @@ namespace Atlassian.Bitbucket.Authentication
             ICredentialStore personalAccessTokenStore,
             AcquireCredentialsDelegate acquireCredentialsCallback,
             AcquireAuthenticationOAuthDelegate acquireAuthenticationOAuthCallback,
+            string bbsConsumerKey,
+            string bbsConsumerSecret,
             IAuthority authority = null)
             : base(context)
         {
@@ -69,6 +71,9 @@ namespace Atlassian.Bitbucket.Authentication
 
             BitbucketAuthority = authority ?? new Authority(context, targetUri);
             TokenScope = TokenScope.SnippetWrite | TokenScope.RepositoryWrite;
+
+            BbSConsumerKey = bbsConsumerKey;
+            BbSConsumerSecret = bbsConsumerSecret;
 
             AcquireCredentialsCallback = acquireCredentialsCallback;
             AcquireAuthenticationOAuthCallback = acquireAuthenticationOAuthCallback;
@@ -189,7 +194,7 @@ namespace Atlassian.Bitbucket.Authentication
                 // No refresh token return null.
                 return credentials;
 
-            Credential refreshedCredentials = await RefreshCredentials(targetUri, refreshCredentials.Password, null);
+            Credential refreshedCredentials = await RefreshCredentials(targetUri, refreshCredentials.Password, null, BbSConsumerKey, BbSConsumerSecret);
 
             if (refreshedCredentials is null)
                 // Refresh failed return null.
@@ -299,7 +304,9 @@ namespace Atlassian.Bitbucket.Authentication
             TargetUri targetUri,
             ICredentialStore personalAccessTokenStore,
             AcquireCredentialsDelegate acquireCredentialsCallback,
-            AcquireAuthenticationOAuthDelegate acquireAuthenticationOAuthCallback)
+            AcquireAuthenticationOAuthDelegate acquireAuthenticationOAuthCallback,
+            string bbsConsumerKey,
+            string bbsConsumerSecret)
         {
             if (context is null)
                 throw new ArgumentNullException(nameof(context));
@@ -313,7 +320,7 @@ namespace Atlassian.Bitbucket.Authentication
 
             if (targetUri.QueryUri.DnsSafeHost.EndsWith(BitbucketBaseUrlHost, StringComparison.OrdinalIgnoreCase))
             {
-                authentication = new Authentication(context, targetUri, personalAccessTokenStore, acquireCredentialsCallback, acquireAuthenticationOAuthCallback);
+                authentication = new Authentication(context, targetUri, personalAccessTokenStore, acquireCredentialsCallback, acquireAuthenticationOAuthCallback, bbsConsumerKey, bbsConsumerSecret);
                 context.Trace.WriteLine("authentication for Bitbucket created");
             }
             else
@@ -346,12 +353,22 @@ namespace Atlassian.Bitbucket.Authentication
             string password;
 
             // Ask the user for basic authentication credentials
-            if (AcquireCredentialsCallback("Please enter your Bitbucket credentials for ", targetUri, out username, out password))
+            if (AcquireCredentialsCallback("Please enter your Bitbucket credentials for ", targetUri, BbSConsumerKey, BbSConsumerSecret, out username, out password))
             {
-                AuthenticationResult result;
+                AuthenticationResult result = new AuthenticationResult(AuthenticationResultType.None);
                 credentials = new Credential(username, password);
+                bool skipToOAuth = false;
+                if ("skiptooauth".Equals(username)
+                    && "skiptooauth".Equals(password))
+                {
+                    result = new AuthenticationResult(AuthenticationResultType.TwoFactor);
+                    skipToOAuth = true;
+                    username = null;
+                    password = null;
+                }
 
-                if (result = await BitbucketAuthority.AcquireToken(targetUri, credentials, AuthenticationResultType.None, TokenScope))
+                if (!skipToOAuth && 
+                    (result = await BitbucketAuthority.AcquireToken(targetUri, credentials, AuthenticationResultType.None, TokenScope, BbSConsumerKey, BbSConsumerSecret)))
                 {
                     Trace.WriteLine("token acquisition succeeded");
 
@@ -369,18 +386,20 @@ namespace Atlassian.Bitbucket.Authentication
                     // the user to run the OAuth dance.
                     if (AcquireAuthenticationOAuthCallback("", targetUri, result, username))
                     {
-                        if (result = await BitbucketAuthority.AcquireToken(targetUri, credentials, AuthenticationResultType.TwoFactor, TokenScope))
+                        if (result = await BitbucketAuthority.AcquireToken(targetUri, credentials, AuthenticationResultType.TwoFactor, TokenScope, BbSConsumerKey, BbSConsumerSecret))
                         {
                             Trace.WriteLine("token acquisition succeeded");
 
                             credentials = GenerateCredentials(targetUri, username, ref result);
 
                             await SetCredentials(targetUri, credentials, username);
-
-                            await SetCredentials(GetRefreshTokenTargetUri(targetUri), 
+                            if(result.RefreshToken != null)
+                            {
+                                await SetCredentials(GetRefreshTokenTargetUri(targetUri), 
                                                  new Credential(result.RefreshToken.Type.ToString(),
                                                                 result.RefreshToken.Value),
                                                  username);
+                            }
 
                             // If a result callback was registered, call it.
                             AuthenticationResultCallback?.Invoke(targetUri, result);
@@ -474,7 +493,8 @@ namespace Atlassian.Bitbucket.Authentication
 
             Credential refreshedCredentials;
 
-            if ((refreshedCredentials = await RefreshCredentials(userSpecificTargetUri, userSpecificRefreshCredentials.Password, username ?? credentials.Username)) != null)
+            if ((refreshedCredentials = await RefreshCredentials(userSpecificTargetUri, userSpecificRefreshCredentials.Password, username ?? credentials.Username,
+                    BbSConsumerKey, BbSConsumerSecret)) != null)
                 return refreshedCredentials;
 
             return null;
@@ -489,12 +509,12 @@ namespace Atlassian.Bitbucket.Authentication
         /// <returns>
         /// A <see cref="Credential"/> containing the new access_token if successful, null otherwise
         /// </returns>
-        private async Task<Credential> RefreshCredentials(TargetUri targetUri, string refreshToken, string username)
+        private async Task<Credential> RefreshCredentials(TargetUri targetUri, string refreshToken, string username, string bbsConsumerKey, string bbsConsumerSecret)
         {
             Credential credentials = null;
             AuthenticationResult result;
 
-            if ((result = await BitbucketAuthority.RefreshToken(targetUri, refreshToken)) == true)
+            if ((result = await BitbucketAuthority.RefreshToken(targetUri, refreshToken, bbsConsumerKey, bbsConsumerSecret)) == true)
             {
                 Trace.WriteLine("token refresh succeeded");
 
@@ -518,6 +538,8 @@ namespace Atlassian.Bitbucket.Authentication
         }
 
         private IAuthority BitbucketAuthority { get; }
+        private string BbSConsumerKey { get; }
+        private string BbSConsumerSecret { get; }
 
         /// <summary>
         /// Delegate for Basic Auth credential acquisition from the UX.
@@ -529,7 +551,7 @@ namespace Atlassian.Bitbucket.Authentication
         /// <param name="username">The username supplied by the user.</param>
         /// <param name="password">The password supplied by the user.</param>
         /// <returns>True if successful; otherwise false.</returns>
-        public delegate bool AcquireCredentialsDelegate(string titleMessage, TargetUri targetUri, out string username, out string password);
+        public delegate bool AcquireCredentialsDelegate(string titleMessage, TargetUri targetUri, string bbsConsumerKey, string bbsConsumerSecret, out string username, out string password);
 
         /// <summary>
         /// Delegate for OAuth token acquisition from the UX.

@@ -89,6 +89,9 @@ namespace Microsoft.Alm.Cli
         private bool _useSystemConfig;
         private bool _validateCredentials;
         private bool _writeLog;
+        private string _consumerKey;
+        private string _consumerSecret;
+        private string _relativePath;
 
         /// <summary>
         /// Gets or sets the authority to be used during the current operation.
@@ -445,6 +448,33 @@ namespace Microsoft.Alm.Cli
             set { _writeLog = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the consumer key to use for configurable OAuth
+        /// </summary>
+        public virtual string ConsumerKey
+        {
+            get { return _consumerKey; }
+            set { _consumerKey = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the consumer secret to use for configurable OAuth
+        /// </summary>
+        public virtual string ConsumerSecret
+        {
+            get { return _consumerSecret; }
+            set { _consumerSecret = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the relative path to use for sef ver installations
+        /// </summary>
+        public virtual string RelativePath
+        {
+            get { return _relativePath; }
+            set { _relativePath = value; }
+        }
+
         internal string DebuggerDisplay
         {
             get { return $"{nameof(OperationArguments)}: TargetUri: {TargetUri}, Authority: {Authority}, Credentials: {Credentials}"; }
@@ -676,6 +706,51 @@ namespace Microsoft.Alm.Cli
             return builder.ToString();
         }
 
+        public string ToString2()
+        {
+            var builder = new StringBuilder();
+
+            builder.Append("protocol=")
+                .Append('[')
+                .Append(_queryProtocol ?? string.Empty)
+                .Append(']')
+                .Append('\n');
+            builder.Append("host=")
+                .Append('[')
+                .Append(_queryHost ?? string.Empty)
+                .Append(']')
+                .Append('\n');
+            builder.Append("path=")
+                .Append('[')
+                .Append(_queryPath ?? string.Empty)
+                .Append(']')
+                .Append('\n');
+
+            // Only write out username if we know it.
+            if (_credentials?.Username != null)
+            {
+                builder.Append("username=")
+                    .Append('[')
+                    .Append(_credentials.Username)
+                    .Append(']')
+                    .Append('\n');
+            }
+
+            // Only write out password if we know it.
+            if (_credentials?.Password != null)
+            {
+                builder.Append("password=")
+                    .Append('[')
+                    .Append(_credentials.Password)
+                    .Append(']')
+                    .Append('\n');
+            }
+
+            builder.Append('\n');
+
+            return builder.ToString();
+        }
+
         /// <summary>
         /// Writes the UTF-8 encoded value of `<see cref="ToString"/>` directly to `<paramref name="writableStream"/>`.
         /// </summary>
@@ -696,6 +771,7 @@ namespace Microsoft.Alm.Cli
             // Git reads/writes UTF-8, we'll explicitly encode to Utf-8 to avoid NetFx or the
             // operating system making the wrong encoding decisions.
             string output = ToString();
+            Trace.WriteLine(ToString2());
             byte[] bytes = Encoding.UTF8.GetBytes(output);
 
             // write the bytes.
@@ -754,6 +830,16 @@ namespace Microsoft.Alm.Cli
                 if (Uri.TryCreate(_urlOverride, UriKind.Absolute, out Uri uri))
                 {
                     actualUrl = uri.ToString();
+                    queryUrl = actualUrl;
+                    //if (uri.AbsolutePath.StartsWith("/"))
+                    //{
+                    //    _queryPath = uri.AbsolutePath.Substring(1);
+                    //    queryUrl = abs
+                    //}
+                    //else
+                    //{
+                    //    _queryPath = uri.AbsolutePath;
+                    //}
                 }
                 else
                 {

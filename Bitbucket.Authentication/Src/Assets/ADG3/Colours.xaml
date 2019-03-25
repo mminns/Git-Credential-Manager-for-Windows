@@ -259,6 +259,9 @@
     <SolidColorBrush x:Key="PrimaryBackground" Color="{StaticResource PacificBridge}" />
     <SolidColorBrush x:Key="PrimaryHighlight" Color="{StaticResource SquidInk}" />
 
+    <SolidColorBrush x:Key="SecondaryForeground" Color="{StaticResource PacificBridge}" />
+    <SolidColorBrush x:Key="SecondaryBackground" Color="{StaticResource Doctor}" />
+    <SolidColorBrush x:Key="SecondaryHighlight" Color="{StaticResource Blanche}" />
 
     <SolidColorBrush x:Key="BitbucketAccentBrush" Color="{DynamicResource Coogee}"
                      PresentationOptions:Freeze="true" />

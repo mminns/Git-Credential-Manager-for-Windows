@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Atlassian.Bitbucket.Authentication.OAuth.v1;
 using Microsoft.Alm.Authentication;
 
 namespace Atlassian.Bitbucket.Authentication.Rest.Cloud

@@ -20,10 +20,23 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="RestSharp, Version=104.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RestSharp.104.0\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Threading, Version=1.0.2856.102, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xaml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Net.Http" />
@@ -44,16 +57,41 @@
     </Compile>
     <Compile Include="Controls\Text\ValidationMessage.cs" />
     <Compile Include="Gui.cs" />
+    <Compile Include="OAuth\DotNetAuth\Common\UriExtensions.cs" />
+    <Compile Include="OAuth\IOAuthAuthenticator.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\ApplicationCredentials.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\Framework\HMACSHA1.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\Framework\Names.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\Framework\OAuth1aUtil.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\Framework\Parameter.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\Framework\ParameterSet.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\Framework\PercentEncode.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\Framework\TimestampUtil.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\IOAuth10aStateManager.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\IOAuth1aErrorProcessing.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\OAuth1aProcess.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\OAuth1aProviderDefinition.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\ProcessUserResponseOutput.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\Providers\FlickrOAuth1a.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\Providers\LinkedInOAuth1a.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\Providers\TwitterOAuth1a.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\Providers\VimeoOAuth1a.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\Providers\YahooOAuth1a.cs" />
+    <Compile Include="OAuth\DotNetAuth\OAuth1a\RestSharpExtensions.cs" />
+    <Compile Include="OAuth\OAuthAuthenticatorFactory.cs" />
+    <Compile Include="OAuth\v1\BbSOauth1AProvider.cs" />
+    <Compile Include="OAuth\v1\OAuthAuthenticator.cs" />
     <Compile Include="Rest\IRestClient.cs" />
     <Compile Include="Rest\Cloud\RestClient.cs" />
     <Compile Include="Rest\Server\RestClient.cs" />
+    <Compile Include="Security\OpenSslKey.cs" />
     <Compile Include="TokenScope.cs" />
     <Compile Include="Controls\OAuthControl.xaml.cs">
       <DependentUpon>OAuthControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="IAuthentication.cs" />
     <Compile Include="IAuthority.cs" />
-    <Compile Include="OAuth\OAuthAuthenticator.cs" />
+    <Compile Include="OAuth\v2\OAuthAuthenticator.cs" />
     <Compile Include="OAuth\SimpleServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

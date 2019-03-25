@@ -34,11 +34,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication;
 
-namespace Atlassian.Bitbucket.Authentication.OAuth
+namespace Atlassian.Bitbucket.Authentication.OAuth.v2
 {
     /// <summary>
     /// </summary>
-    public class OAuthAuthenticator : Base
+    public class OAuthAuthenticator : Base, IOAuthAuthenticator
     {
         /// <summary>
         /// The maximum wait time for a network request before timing out
@@ -76,6 +76,40 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
             return await GetAccessToken(targetUri, authToken);
         }
 
+        public async Task<AuthenticationResult> Authenticate(string restRootUrl, TargetUri targetUri, Credential credentials, TokenScope scope)
+        {
+            var result = await GetAuthAsync(targetUri, scope, CancellationToken.None);
+
+            if (!result.IsSuccess)
+            {
+                Trace.WriteLine($"oauth authentication failed");
+                return new AuthenticationResult(AuthenticationResultType.Failure);
+            }
+
+            // We got a token but lets check to see the usernames match.
+            var restRootUri = new Uri(restRootUrl);
+            var userResult =
+                await (new Rest.Cloud.RestClient(Context)).TryGetUser(targetUri, RequestTimeout, restRootUri, result.Token);
+
+            if (!userResult.IsSuccess)
+            {
+                Trace.WriteLine($"oauth user check failed");
+                return new AuthenticationResult(AuthenticationResultType.Failure);
+            }
+
+            if (!string.IsNullOrWhiteSpace(userResult.RemoteUsername) &&
+                !credentials.Username.Equals(userResult.RemoteUsername))
+            {
+                Trace.WriteLine($"Remote username [{userResult.RemoteUsername}] != [{credentials.Username}] supplied username");
+                // Make sure the 'real' username is returned.
+                return new AuthenticationResult(AuthenticationResultType.Success, result.Token, result.RefreshToken,
+                    userResult.RemoteUsername);
+            }
+
+            // Everything is hunky dory.
+            return result;
+        }
+
         /// <summary>
         /// Uses a refresh_token to get a new access_token
         /// </summary>
@@ -102,11 +136,11 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
             // Open the browser to prompt the user to authorize the token request
             Process.Start(authorizationUri.AbsoluteUri);
 
-            string rawUrlData;
+            Uri uri;
             try
             {
                 // Start a temporary server to handle the callback request and await for the reply.
-                rawUrlData = await SimpleServer.WaitForURLAsync(CallbackUri, cancellationToken);
+                uri = await SimpleServer.WaitForURLAsync(CallbackUri, cancellationToken);
             }
             catch (Exception ex)
             {
@@ -124,7 +158,7 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
             }
 
             //Parse the callback url
-            Dictionary<string, string> qs = GetQueryParameters(rawUrlData);
+            Dictionary<string, string> qs = GetQueryParameters(uri.Query);
 
             // look for a request_token code in the parameters
             string authCode = GetAuthenticationCode(qs);

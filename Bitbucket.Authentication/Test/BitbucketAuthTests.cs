@@ -83,7 +83,7 @@ namespace Atlassian.Bitbucket.Authentication.Test
         {
             ICredentialStore credentialStore = new SecretCache(context, @namespace);
 
-            return new Authentication(context, targetUri, credentialStore, null, null);
+            return new Authentication(context, targetUri, credentialStore, null, null, null, null);
         }
     }
 }

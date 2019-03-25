@@ -45,16 +45,16 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         /// <exception cref="RemoteHostException">Throws when there's a timeout, or other error</exception>
-        public static async Task<string> WaitForURLAsync(string url, CancellationToken cancellationToken)
+        public static async Task<Uri> WaitForURLAsync(string url, CancellationToken cancellationToken)
         {
             var listener = new HttpListener { Prefixes = { url } };
             listener.Start();
 
-            string rawUrl = "";
+            Uri uri = null;
             try
             {
                 var context = await listener.GetContextAsync().RunWithCancellation(cancellationToken);
-                rawUrl = context.Request.RawUrl;
+                uri = context.Request.Url;
 
                 // Serve back a simple authentication message.
                 var html = GetSuccessString();
@@ -77,7 +77,7 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
                 listener.Close();
             }
 
-            return rawUrl;
+            return uri;
         }
 
         /// <summary>

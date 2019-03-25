@@ -106,7 +106,10 @@ namespace Microsoft.Alm.Cli
                                                                                           secretsNamespace, 
                                                                                           Secret.UriToIdentityUrl),
                                                                           bitbucketCredentialCallback,
-                                                                          bitbucketOauthCallback);
+                                                                          bitbucketOauthCallback,
+                                                                          operationArguments.ConsumerKey,
+                                                                          operationArguments.ConsumerSecret
+                                                                          );
 
                     if (authority != null)
                     {
@@ -198,7 +201,9 @@ namespace Microsoft.Alm.Cli
                                                                                      secretsNamespace,
                                                                                      Secret.UriToIdentityUrl),
                                                                      bitbucketCredentialCallback,
-                                                                     bitbucketOauthCallback);
+                                                                     bitbucketOauthCallback,
+                                                                     operationArguments.ConsumerKey,
+                                                                     operationArguments.ConsumerSecret);
                 }
 
                 case AuthorityType.MicrosoftAccount:
@@ -555,6 +560,31 @@ namespace Microsoft.Alm.Cli
 
                 operationArguments.SetProxy(value);
             }
+
+            // Look for write consumerKey config settings.
+            if (program.TryReadString(operationArguments, KeyType.ConsumerKey, out value))
+            {
+                program.Trace.WriteLine($"{program.KeyTypeName(KeyType.ConsumerKey)} = '{value}'.");
+
+                operationArguments.ConsumerKey = value;
+            }
+
+            // Look for write consumerKey config settings.
+            if (program.TryReadString(operationArguments, KeyType.ConsumerSecret, out value))
+            {
+                program.Trace.WriteLine($"{program.KeyTypeName(KeyType.ConsumerSecret)} = '{value}'.");
+
+                operationArguments.ConsumerSecret = value;
+            }
+
+            // for server relative paths
+            if (program.TryReadString(operationArguments, KeyType.Authority, out value))
+            {
+                program.Trace.WriteLine($"{program.KeyTypeName(KeyType.Authority)} = '{value}'.");
+
+                operationArguments.RelativePath = value;
+            }
+
             // Check environment variables just-in-case.
             else if ((operationArguments.EnvironmentVariables.TryGetValue("GCM_HTTP_PROXY", out value)
                     && !string.IsNullOrWhiteSpace(value)))

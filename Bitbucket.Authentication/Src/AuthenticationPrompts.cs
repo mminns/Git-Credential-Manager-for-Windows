@@ -78,6 +78,37 @@ namespace Atlassian.Bitbucket.Authentication
         }
 
         /// <summary>
+        /// Utility method used to extract a host from a URL of the form http(s)://username@domain/
+        /// </summary>
+        /// <param name="targetUri"></param>
+        /// <returns></returns>
+        public static string GetHostFromTargetUri(TargetUri targetUri)
+        {
+            return targetUri.DnsSafeHost;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="targetUri"></param>
+        /// <returns></returns>
+        public static bool GetHostSupportsOAuth(TargetUri targetUri, string bbsConsumerKey, string bbsConsumerSecret)
+        {
+            if (targetUri.QueryUri.DnsSafeHost.EndsWith(Authentication.BitbucketBaseUrlHost,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+            else if (!string.IsNullOrWhiteSpace(bbsConsumerSecret) &&
+                     !string.IsNullOrWhiteSpace(bbsConsumerSecret))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Opens a Modal UI prompting the user for Basic Auth credentials.
         /// </summary>
         /// <param name="title"></param>
@@ -88,17 +119,26 @@ namespace Atlassian.Bitbucket.Authentication
         /// returns true if the user provides credentials which are then successfully validated,
         /// false otherwise
         /// </returns>
-        public bool CredentialModalPrompt(string title, TargetUri targetUri, out string username, out string password)
+        public bool CredentialModalPrompt(string title, TargetUri targetUri, string bbsConsumerKey, string bbsConsumerSecret, out string username, out string password)
         {
             // if there is a user in the remote URL then prepopulate the UI with it.
-            var credentialViewModel = new CredentialsViewModel(GetUserFromTargetUri(targetUri));
+            var credentialViewModel = new CredentialsViewModel(GetUserFromTargetUri(targetUri), 
+                GetHostFromTargetUri(targetUri), GetHostSupportsOAuth(targetUri, bbsConsumerKey, bbsConsumerSecret));
 
             Trace.WriteLine("prompting user for credentials.");
 
             bool credentialValid = Gui.ShowViewModel(credentialViewModel, () => new CredentialsWindow(Context, _parentHwnd));
 
-            username = credentialViewModel.Login;
-            password = credentialViewModel.Password;
+            if (credentialViewModel.SkippedToOAuth)
+            {
+                username = "skiptooauth";
+                password = "skiptooauth";
+            }
+            else
+            {
+                username = credentialViewModel.Login;
+                password = credentialViewModel.Password;
+            }
 
             return credentialValid;
         }

@@ -76,5 +76,11 @@ namespace Atlassian.Bitbucket.Authentication.BasicAuth
             Trace.WriteLine("authentication failed");
             return result;
         }
+
+        public async Task<AuthenticationResult> Authenticate(string restRootUrl, TargetUri targetUri, Credential credentials, TokenScope scope, int RequestTimeout)
+        {
+            var restRootUri = new Uri(restRootUrl);
+            return await GetAuthAsync(targetUri, scope, RequestTimeout, restRootUri, credentials);
+        }
     }
 }

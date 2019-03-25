@@ -28,6 +28,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Atlassian.Bitbucket.Authentication.BasicAuth;
+using Atlassian.Bitbucket.Authentication.OAuth;
 using Atlassian.Bitbucket.Authentication.Rest;
 using Microsoft.Alm.Authentication;
 
@@ -57,6 +58,7 @@ namespace Atlassian.Bitbucket.Authentication
         public Authority(RuntimeContext context, TargetUri targetUri = null)
             : base(context)
         {
+            // HACK why not just use a new 'API' TargetUri
             // The Bitbucket Cloud API endpoints
             if (targetUri == null 
                 || targetUri.DnsSafeHost.Equals(Authentication.BitbucketBaseUrlHost, StringComparison.OrdinalIgnoreCase))
@@ -66,14 +68,14 @@ namespace Atlassian.Bitbucket.Authentication
             else
             {
                 // If we're here, it's Bitbucket Server via a configured authority
-                _restRootUrl = targetUri.QueryUri.GetLeftPart(UriPartial.Authority) + "/rest/api";
+                _restRootUrl = targetUri.ToString() + "/rest/api"; //QueryUri.GetLeftPart(UriPartial.Authority) + "/rest/api";
             }
         }
 
         private readonly string _restRootUrl;
 
         /// <inheritdoc/>
-        public async Task<AuthenticationResult> AcquireToken(TargetUri targetUri, Credential credentials, AuthenticationResultType resultType, TokenScope scope)
+        public async Task<AuthenticationResult> AcquireToken(TargetUri targetUri, Credential credentials, AuthenticationResultType resultType, TokenScope scope, string bbsConsumerKey, string bbsConsumerSecret)
         {
             if (targetUri is null)
                 throw new ArgumentNullException(nameof(targetUri));
@@ -88,36 +90,10 @@ namespace Atlassian.Bitbucket.Authentication
             {
                 // A previous attempt to acquire a token failed in a way that suggests the user has
                 // Bitbucket 2FA turned on. so attempt to run the OAuth dance...
-                var oauth = new OAuth.OAuthAuthenticator(Context);
+                var oauth = OAuth.OAuthAuthenticatorFactory.GetAuthenticator(Context, bbsConsumerKey, bbsConsumerSecret);
                 try
                 {
-                    var result = await oauth.GetAuthAsync(targetUri, scope, CancellationToken.None);
-
-                    if (!result.IsSuccess)
-                    {
-                        Trace.WriteLine($"oauth authentication failed");
-                        return new AuthenticationResult(AuthenticationResultType.Failure);
-                    }
-
-                    // We got a toke but lets check to see the usernames match.
-                    var restRootUri = new Uri(_restRootUrl);
-                    var userResult = await (new Rest.Cloud.RestClient(Context)).TryGetUser(targetUri, RequestTimeout, restRootUri, result.Token);
-
-                    if (!userResult.IsSuccess)
-                    {
-                        Trace.WriteLine($"oauth user check failed");
-                        return new AuthenticationResult(AuthenticationResultType.Failure);
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(userResult.RemoteUsername) && !credentials.Username.Equals(userResult.RemoteUsername))
-                    {
-                        Trace.WriteLine($"Remote username [{userResult.RemoteUsername}] != [{credentials.Username}] supplied username");
-                        // Make sure the 'real' username is returned.
-                        return new AuthenticationResult(AuthenticationResultType.Success, result.Token, result.RefreshToken, userResult.RemoteUsername);
-                    }
-
-                    // Everything is hunky dory.
-                    return result;
+                    return await oauth.Authenticate(_restRootUrl, targetUri, credentials, scope);
                 }
                 catch (Exception ex)
                 {
@@ -130,8 +106,7 @@ namespace Atlassian.Bitbucket.Authentication
                 var basicauth = new BasicAuthAuthenticator(Context);
                 try
                 {
-                    var restRootUri = new Uri(_restRootUrl);
-                    return await basicauth.GetAuthAsync(targetUri, scope, RequestTimeout, restRootUri, credentials);
+                    return await basicauth.Authenticate(_restRootUrl, targetUri, credentials, scope, RequestTimeout);
                 }
                 catch (Exception ex)
                 {
@@ -141,11 +116,12 @@ namespace Atlassian.Bitbucket.Authentication
             }
         }
 
+
         /// <inheritdoc/>
-        public async Task<AuthenticationResult> RefreshToken(TargetUri targetUri, string refreshToken)
+        public async Task<AuthenticationResult> RefreshToken(TargetUri targetUri, string refreshToken, string bbSConsumerKey, string bbSConsumerSecret)
         {
             // Refreshing is only an OAuth concept so use the OAuth tools
-            var oauth = new OAuth.OAuthAuthenticator(Context);
+            var oauth = OAuth.OAuthAuthenticatorFactory.GetAuthenticator(Context, bbSConsumerKey, bbSConsumerSecret);
             try
             {
                 return await oauth.RefreshAuthAsync(targetUri, refreshToken, CancellationToken.None);

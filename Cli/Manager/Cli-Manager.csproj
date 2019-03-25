@@ -24,6 +24,9 @@
     <StartArguments Condition=" '$(StartArguments)' == '' OR '$(StartArguments)' == '*Undefined*' ">get</StartArguments>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RestSharp, Version=104.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RestSharp.104.0\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />

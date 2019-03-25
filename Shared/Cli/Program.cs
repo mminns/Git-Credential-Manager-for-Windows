@@ -61,6 +61,9 @@ namespace Microsoft.Alm.Cli
         ParentHwnd,
         VstsScope,
         Writelog,
+        ConsumerSecret,
+        ConsumerKey,
+        RelativePath
     }
 
     partial class Program
@@ -129,12 +132,16 @@ namespace Microsoft.Alm.Cli
             { KeyType.Namespace, "namespace" },
             { KeyType.PreserveCredentials, "preserve" },
             { KeyType.TokenDuration, "tokenDuration" },
+            { KeyType.UrlOverride, "urlOverride" },
             { KeyType.HttpPath, "useHttpPath" },
             { KeyType.HttpTimeout, "httpTimeout" },
             { KeyType.Username, "username" },
             { KeyType.Validate, "validate" },
             { KeyType.VstsScope,"vstsScope" },
             { KeyType.Writelog, "writeLog" },
+            { KeyType.ConsumerKey, "consumerKey" },
+            { KeyType.ConsumerSecret, "consumerSecret" },
+            { KeyType.RelativePath, "relativePath" }
         };
         internal readonly Dictionary<KeyType, string> _environmentKeys = new Dictionary<KeyType, string>()
         {
@@ -156,6 +163,9 @@ namespace Microsoft.Alm.Cli
             { KeyType.Validate, "GCM_VALIDATE" },
             { KeyType.VstsScope, "GCM_VSTS_SCOPE" },
             { KeyType.Writelog, "GCM_WRITELOG" },
+            { KeyType.ConsumerKey, "GCM_CONSUMER_KEY" },
+            { KeyType.ConsumerSecret, "GCM_CONSUMER_SECRET" },
+            { KeyType.RelativePath, "GCM_RELATIVE_PATH" }
         };
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline")]
@@ -568,7 +578,7 @@ namespace Microsoft.Alm.Cli
         internal void EnableTraceLogging(OperationArguments operationArguments, string logFilePath)
             => _enableTraceLoggingFile(this, operationArguments, logFilePath);
 
-        internal bool BitbucketCredentialPrompt(string titleMessage, TargetUri targetUri, out string username, out string password)
+        internal bool BitbucketCredentialPrompt(string titleMessage, TargetUri targetUri, string bbsConsumerKey, string bbsConsumerSecret, out string username, out string password)
             => _bitbucketCredentialPrompt(this, titleMessage, targetUri, out username, out password);
 
         internal bool BitbucketOAuthPrompt(string title, TargetUri targetUri, Bitbucket.AuthenticationResultType resultType, string username)
