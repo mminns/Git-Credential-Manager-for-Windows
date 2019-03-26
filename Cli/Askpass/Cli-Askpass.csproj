@@ -42,6 +42,10 @@
       <Project>{ee663736-5bad-4ca6-a4f8-99978925ad8a}</Project>
       <Name>Bitbucket.Authentication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Bitbucket.Authentication\Win32\Bitbucket.Authentication.Win32.csproj">
+      <Project>{2266ce7d-c608-4921-a99d-7308b79f800f}</Project>
+      <Name>Bitbucket.Authentication.Win32</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\GitHub.Authentication\Src\GitHub.Authentication.csproj">
       <Project>{cf306116-bbf0-4cc7-afce-a506ac4752cb}</Project>
       <Name>GitHub.Authentication</Name>
@@ -50,9 +54,9 @@
       <Project>{19770407-b493-459d-bb4f-04fbefb1ba13}</Project>
       <Name>Microsoft.Alm.Authentication</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\AzureDevops.Authentication\Src\AzureDevops.Authentication.csproj">
+    <ProjectReference Include="..\..\AzureDevOps.Authentication\Src\AzureDevOps.Authentication.csproj">
       <Project>{19770407-d7d8-4a37-914c-f552ff4b90d4}</Project>
-      <Name>AzureDevops.Authentication</Name>
+      <Name>AzureDevOps.Authentication</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Win32\Microsoft.Alm.Authentication.Win32.csproj">
       <Project>{59289F97-3A84-4365-8642-88491F971546}</Project>

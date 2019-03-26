@@ -32,7 +32,7 @@ using Microsoft.Alm.Authentication;
 
 namespace GitHub.Shared.Controls
 {
-    public abstract class AuthenticationDialogWindow : Window
+    public abstract class AuthenticationDialogWindow : Window, IAuthenticationDialogWindow
     {
         protected AuthenticationDialogWindow(RuntimeContext context, IntPtr parentHwnd)
         {

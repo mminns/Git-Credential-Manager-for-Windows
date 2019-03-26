@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>889e87a6-d512-4dc5-aacc-0af3d9cb23e3</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Gui.Win32</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\AuthenticationDialogWindow.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\DialogUserControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MaskedPasswordBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\PromptTextBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\AspectRatioConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToHiddenVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToInverseHiddenVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ThicknessConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ValueConverterMarkupExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\AccessKeysManagerScoping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\FocusHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\StreamExtensions.cs" />
+  </ItemGroup>
+</Project>

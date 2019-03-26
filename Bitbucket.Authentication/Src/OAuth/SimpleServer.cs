@@ -91,13 +91,12 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
 
             try
             {
-                if (!UriParser.IsKnownScheme("pack"))
-                    new System.Windows.Application();
+                var assembly = typeof(SimpleServer).Assembly;
+                var htmlStream = assembly.GetManifestResourceStream("Bitbucket.Authentication.Assets.auth.html");
 
-                var html = Application.GetResourceStream(new Uri("pack://application:,,,/Bitbucket.Authentication;Component/Assets/auth.html", UriKind.Absolute));
-                if (html != null && html.Stream != null)
+                if (htmlStream != null)
                 {
-                    using (StreamReader reader = new StreamReader(html.Stream))
+                    using (StreamReader reader = new StreamReader(htmlStream))
                     {
                         result = reader.ReadToEnd();
                     }

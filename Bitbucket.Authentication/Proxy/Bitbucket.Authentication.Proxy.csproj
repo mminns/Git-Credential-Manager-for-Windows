@@ -23,6 +23,10 @@
       <Project>{ee663736-5bad-4ca6-a4f8-99978925ad8a}</Project>
       <Name>Bitbucket.Authentication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Win32\Bitbucket.Authentication.Win32.csproj">
+      <Project>{2266ce7d-c608-4921-a99d-7308b79f800f}</Project>
+      <Name>Bitbucket.Authentication.Win32</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">

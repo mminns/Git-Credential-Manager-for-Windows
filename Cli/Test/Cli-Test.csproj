@@ -57,9 +57,9 @@
       <Project>{19781214-fe04-4a05-943a-54eb952cea62}</Project>
       <Name>Microsoft.Alm.Authentication.Proxy</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\AzureDevops.Authentication\Proxy\AzureDevops.Authentication.Proxy.csproj">
+    <ProjectReference Include="..\..\AzureDevOps.Authentication\Proxy\AzureDevOps.Authentication.Proxy.csproj">
       <Project>{04151231-4FA4-49B2-AE6D-EBDBA36B1169}</Project>
-      <Name>AzureDevops.Authentication.Proxy</Name>
+      <Name>AzureDevOps.Authentication.Proxy</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Win32\Microsoft.Alm.Authentication.Win32.csproj">
       <Project>{59289F97-3A84-4365-8642-88491F971546}</Project>
@@ -73,9 +73,9 @@
       <Project>{19770407-b493-459d-bb4f-04fbefb1ba13}</Project>
       <Name>Microsoft.Alm.Authentication</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\AzureDevops.Authentication\Src\AzureDevops.Authentication.csproj">
+    <ProjectReference Include="..\..\AzureDevOps.Authentication\Src\AzureDevOps.Authentication.csproj">
       <Project>{19770407-d7d8-4a37-914c-f552ff4b90d4}</Project>
-      <Name>AzureDevops.Authentication</Name>
+      <Name>AzureDevOps.Authentication</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
