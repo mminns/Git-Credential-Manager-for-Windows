@@ -11,7 +11,8 @@
     <ProjectGuid>{19770407-63D4-40A8-A9DF-F1C4B473308A}</ProjectGuid>
     <ProjectName>Cli-Manager</ProjectName>
     <RootNamespace>Microsoft.Alm.Cli</RootNamespace>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <Import Project="..\..\build.props" />
   <PropertyGroup>
@@ -46,6 +47,10 @@
       <Project>{19770407-d7d8-4a37-914c-f552ff4b90d4}</Project>
       <Name>AzureDevops.Authentication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Win32\Microsoft.Alm.Authentication.Win32.csproj">
+      <Project>{59289F97-3A84-4365-8642-88491F971546}</Project>
+      <Name>Microsoft.Alm.Authentication.Win32</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
@@ -57,6 +62,7 @@
     <None Include="app.config">
       <InProject>false</InProject>
     </None>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

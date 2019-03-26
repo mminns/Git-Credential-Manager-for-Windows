@@ -34,11 +34,29 @@ namespace Microsoft.Alm.Authentication
     [System.Diagnostics.DebuggerDisplay("{DebuggerDisplay, nq}")]
     public class RuntimeContext
     {
-        /// <summary>
-        /// The default `<see cref="RuntimeContext"/>` instance.
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")]
-        public static readonly RuntimeContext Default = Create();
+        public RuntimeContext(Func<RuntimeContext, INetwork> getNetwork, Func<RuntimeContext, ISettings> getSettings, Func<RuntimeContext, IStorage> getStorage, Func<RuntimeContext, Git.ITrace> getTrace, Func<RuntimeContext, Git.IUtilities> getUtilities, Func<RuntimeContext, Git.IWhere> getWhere)
+            : this()
+        {
+            if (getNetwork is null)
+                throw new ArgumentNullException(nameof(getNetwork));
+            if (getSettings is null)
+                throw new ArgumentNullException(nameof(getSettings));
+            if (getStorage is null)
+                throw new ArgumentNullException(nameof(getStorage));
+            if (getTrace is null)
+                throw new ArgumentNullException(nameof(getTrace));
+            if (getUtilities is null)
+                throw new ArgumentNullException(nameof(getUtilities));
+            if (getWhere is null)
+                throw new ArgumentNullException(nameof(getWhere));
+
+            SetService(getNetwork(this));
+            SetService(getSettings(this));
+            SetService(getStorage(this));
+            SetService(getTrace(this));
+            SetService(getUtilities(this));
+            SetService(getWhere(this));
+        }
 
         public RuntimeContext(INetwork network, ISettings settings, IStorage storage, Git.ITrace trace, Git.IUtilities utilities, Git.IWhere where)
             : this()
@@ -64,7 +82,7 @@ namespace Microsoft.Alm.Authentication
             SetService(where);
         }
 
-        private RuntimeContext()
+        internal RuntimeContext()
         {
             _id = Interlocked.Increment(ref _count);
             _services = new Dictionary<Type, IRuntimeService>();
@@ -121,22 +139,7 @@ namespace Microsoft.Alm.Authentication
         {
             get { return $"{nameof(RuntimeContext)}: Id = {_id}, Count = {_services.Count}"; }
         }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-        public static RuntimeContext Create()
-        {
-            var context = new RuntimeContext();
-
-            context.SetService<INetwork>(new Network(context));
-            context.SetService<ISettings>(new Settings(context));
-            context.SetService<IStorage>(new Storage(context));
-            context.SetService<Git.ITrace>(new Git.Trace(context));
-            context.SetService<Git.IUtilities>(new Git.Utilities(context));
-            context.SetService<Git.IWhere>(new Git.Where(context));
-
-            return context;
-        }
-
+        
         internal IEnumerable<IRuntimeService> EnumerateServices()
         {
             List<IRuntimeService> services;

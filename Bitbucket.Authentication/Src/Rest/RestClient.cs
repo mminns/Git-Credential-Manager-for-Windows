@@ -21,7 +21,7 @@ namespace Atlassian.Bitbucket.Authentication.Rest
 
         public async Task<AuthenticationResult> TryGetUser(TargetUri targetUri, int requestTimeout, Uri restRootUrl, Secret authorization)
         {
-            var options = new NetworkRequestOptions(true)
+            var options = new NetworkRequestOptions(true, Global.GetUserAgent(Context))
             {
                 Authorization = authorization,
                 Timeout = TimeSpan.FromMilliseconds(requestTimeout),

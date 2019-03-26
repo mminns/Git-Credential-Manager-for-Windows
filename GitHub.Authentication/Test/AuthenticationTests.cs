@@ -1,5 +1,6 @@
 ﻿using GitHub.Authentication.Test.Fakes;
 using Microsoft.Alm.Authentication;
+using Microsoft.Alm.Authentication.Win32;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -16,10 +17,10 @@ namespace GitHub.Authentication.Test
         {
             var retrieveUri = new Uri(retrieveUriString);
             var credentialStore = new InMemoryCredentialStore();
-            var prompts = new AuthenticationPrompts(RuntimeContext.Default, IntPtr.Zero);
+            var prompts = new AuthenticationPrompts(Win32RuntimeContext.Default, IntPtr.Zero);
             
             var authentication = new Authentication(
-                RuntimeContext.Default,
+                Win32RuntimeContext.Default,
                 new Uri(writeUriString),
                 TokenScope.Gist,
                 credentialStore,
@@ -37,10 +38,10 @@ namespace GitHub.Authentication.Test
         {
             var retrieveUri = new Uri("https://example.com/");
             var credentialStore = new InMemoryCredentialStore();
-            var prompts = new AuthenticationPrompts(RuntimeContext.Default, IntPtr.Zero);
+            var prompts = new AuthenticationPrompts(Win32RuntimeContext.Default, IntPtr.Zero);
 
             var authentication = new Authentication(
-                RuntimeContext.Default,
+                Win32RuntimeContext.Default,
                 new Uri("https://github.com/"),
                 TokenScope.Gist,
                 credentialStore,

@@ -426,7 +426,7 @@ namespace Microsoft.Alm.Cli
             {
                 program.Trace.WriteLine($"{program.KeyTypeName(KeyType.HttpUserAgent)} = '{value}'.");
 
-                Global.UserAgent = value;
+                Global.SetUserAgent(value);
             }
 
             // Look for authority settings.

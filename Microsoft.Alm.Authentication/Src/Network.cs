@@ -87,7 +87,7 @@ namespace Microsoft.Alm.Authentication
         internal const string CacheControlName = "cache-control";
         internal const string CacheControlValue = "no-cache";
 
-        public NetworkRequestOptions(bool setDefaults)
+        public NetworkRequestOptions(bool setDefaults, string userAgent)
             : this()
         {
             if (setDefaults)
@@ -97,10 +97,11 @@ namespace Microsoft.Alm.Authentication
                 _flags = NetworkRequestOptionFlags.AllowRedirections
                        | NetworkRequestOptionFlags.PreAuthenticate
                        | NetworkRequestOptionFlags.UseProxy;
-                _headers.Add("User-Agent", Global.UserAgent);
                 _maxRedirections = Global.MaxAutomaticRedirections;
                 Timeout = TimeSpan.FromMilliseconds(Global.RequestTimeout);
             }
+
+            _headers.Add("User-Agent", userAgent);
         }
 
         private NetworkRequestOptions()
@@ -155,17 +156,6 @@ namespace Microsoft.Alm.Authentication
                 _flags = (value is null)
                     ? (_flags & ~NetworkRequestOptionFlags.UseCookies)
                     : (_flags | NetworkRequestOptionFlags.UseCookies);
-            }
-        }
-
-        /// <summary>
-        /// Gets an instance of `<see cref="NetworkRequestOptions"/>` with all default property values set.
-        /// </summary>
-        public static NetworkRequestOptions Default
-        {
-            get
-            {
-                return new NetworkRequestOptions(true);
             }
         }
 
@@ -384,7 +374,7 @@ namespace Microsoft.Alm.Authentication
         }
 
         public Task<INetworkResponseMessage> HttpGetAsync(TargetUri targetUri)
-            => HttpGetAsync(targetUri, NetworkRequestOptions.Default);
+            => HttpGetAsync(targetUri, new NetworkRequestOptions(true, Global.GetUserAgent(Context)));
 
         public Task<INetworkResponseMessage> HttpHeadAsync(TargetUri targetUri, NetworkRequestOptions options)
         {
@@ -418,7 +408,7 @@ namespace Microsoft.Alm.Authentication
         }
 
         public Task<INetworkResponseMessage> HttpHeadAsync(TargetUri targetUri)
-            => HttpHeadAsync(targetUri, NetworkRequestOptions.Default);
+            => HttpHeadAsync(targetUri, new NetworkRequestOptions(true, Global.GetUserAgent(Context)));
 
         public Task<INetworkResponseMessage> HttpPostAsync(TargetUri targetUri, HttpContent content, NetworkRequestOptions options)
         {
@@ -446,7 +436,7 @@ namespace Microsoft.Alm.Authentication
         }
 
         public Task<INetworkResponseMessage> HttpPostAsync(TargetUri targetUri, StringContent content)
-            => HttpPostAsync(targetUri, content, NetworkRequestOptions.Default);
+            => HttpPostAsync(targetUri, content, new NetworkRequestOptions(true, Global.GetUserAgent(Context)));
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         private static HttpMessageHandler GetHttpMessageHandler(TargetUri targetUri, NetworkRequestOptions options)
@@ -598,7 +588,7 @@ namespace Microsoft.Alm.Authentication
             if (httpClient.DefaultRequestHeaders.UserAgent is null
                 || httpClient.DefaultRequestHeaders.UserAgent.Count == 0)
             {
-                httpClient.DefaultRequestHeaders.Add("User-Agent", Global.UserAgent);
+                httpClient.DefaultRequestHeaders.Add("User-Agent", Global.GetUserAgent(Context));
             }
 
             return httpClient;

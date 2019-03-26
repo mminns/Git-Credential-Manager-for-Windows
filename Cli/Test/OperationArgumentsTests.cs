@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication;
+using Microsoft.Alm.Authentication.Win32;
 using Xunit;
 
 namespace Microsoft.Alm.Cli.Test
@@ -189,7 +190,7 @@ namespace Microsoft.Alm.Cli.Test
 
                 memory.Seek(0, SeekOrigin.Begin);
 
-                var oparg = new OperationArguments(RuntimeContext.Default);
+                var oparg = new OperationArguments(Win32RuntimeContext.Default);
 
                 await oparg.ReadInput(memory);
 

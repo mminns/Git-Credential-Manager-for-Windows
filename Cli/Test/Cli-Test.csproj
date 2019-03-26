@@ -61,6 +61,10 @@
       <Project>{04151231-4FA4-49B2-AE6D-EBDBA36B1169}</Project>
       <Name>AzureDevops.Authentication.Proxy</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Win32\Microsoft.Alm.Authentication.Win32.csproj">
+      <Project>{59289F97-3A84-4365-8642-88491F971546}</Project>
+      <Name>Microsoft.Alm.Authentication.Win32</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Manager\Cli-Manager.csproj">
       <Project>{19770407-63d4-40a8-a9df-f1c4b473308a}</Project>
       <Name>Cli-Manager</Name>

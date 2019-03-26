@@ -292,18 +292,21 @@ namespace Microsoft.Alm.Authentication.Test
 
         public string RegistryReadString(RegistryHive registryHive, RegistryView registryView, string registryPath, string keyName)
         {
-            var output = _storage.RegistryReadString(registryHive, registryView, registryPath, keyName);
-            var input = new CapturedStorageQuery.RegistryReadInput
-            {
-                Hive = (int)registryHive,
-                Name = keyName,
-                Path = registryPath,
-                View = (int)registryView,
-            };
+            // TODO MMINNS - WIN32
+            return null;
 
-            Capture(nameof(RegistryReadString), output, input);
+            //var output = _storage.RegistryReadString(registryHive, registryView, registryPath, keyName);
+            //var input = new CapturedStorageQuery.RegistryReadInput
+            //{
+            //    Hive = (int)registryHive,
+            //    Name = keyName,
+            //    Path = registryPath,
+            //    View = (int)registryView,
+            //};
 
-            return output;
+            //Capture(nameof(RegistryReadString), output, input);
+
+            //return output;
         }
 
         public string RegistryReadString(RegistryHive registryHive, string registryPath, string keyName)

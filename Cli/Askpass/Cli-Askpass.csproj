@@ -11,7 +11,8 @@
     <ProjectGuid>{19770407-B33A-4EBE-92B8-04C93F43CAE0}</ProjectGuid>
     <ProjectName>Cli-Askpass</ProjectName>
     <RootNamespace>Microsoft.Alm.Cli</RootNamespace>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <Import Project="..\..\build.props" />
   <PropertyGroup>
@@ -52,6 +53,10 @@
     <ProjectReference Include="..\..\AzureDevops.Authentication\Src\AzureDevops.Authentication.csproj">
       <Project>{19770407-d7d8-4a37-914c-f552ff4b90d4}</Project>
       <Name>AzureDevops.Authentication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Win32\Microsoft.Alm.Authentication.Win32.csproj">
+      <Project>{59289F97-3A84-4365-8642-88491F971546}</Project>
+      <Name>Microsoft.Alm.Authentication.Win32</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

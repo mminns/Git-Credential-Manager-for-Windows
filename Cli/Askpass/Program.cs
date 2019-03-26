@@ -31,7 +31,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication;
-
+using Microsoft.Alm.Authentication.Win32;
 using Git = Microsoft.Alm.Authentication.Git;
 
 namespace Microsoft.Alm.Cli
@@ -344,7 +344,7 @@ namespace Microsoft.Alm.Cli
         [STAThread]
         private static void Main(string[] args)
         {
-            Program program = new Program(RuntimeContext.Default);
+            Program program = new Program(Win32RuntimeContext.Default);
 
             program.Run(args);
         }

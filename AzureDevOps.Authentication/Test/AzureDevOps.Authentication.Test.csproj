@@ -54,6 +54,10 @@
       <Project>{19781214-371f-415c-93c5-44ceaa0e9a34}</Project>
       <Name>Microsoft.Alm.Authentication.Test</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Win32\Microsoft.Alm.Authentication.Win32.csproj">
+      <Project>{59289F97-3A84-4365-8642-88491F971546}</Project>
+      <Name>Microsoft.Alm.Authentication.Win32</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Proxy\AzureDevOps.Authentication.Proxy.csproj">
       <Project>{04151231-4fa4-49b2-ae6d-ebdba36b1169}</Project>
       <Name>AzureDevOps.Authentication.Proxy</Name>

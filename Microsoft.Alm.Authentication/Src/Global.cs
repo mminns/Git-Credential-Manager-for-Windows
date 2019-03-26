@@ -24,6 +24,7 @@
 **/
 
 using System;
+using Microsoft.Alm.Authentication.Git;
 
 namespace Microsoft.Alm.Authentication
 {
@@ -36,7 +37,7 @@ namespace Microsoft.Alm.Authentication
 
         private static int _requestTimeout = 90 * 1000; // 90 second default limit.
         private static readonly object _syncpoint = new object();
-        private static string _useragent = BuildDefaultUserAgent(RuntimeContext.Default);
+        private static string _useragent;
 
         /// <summary>
         /// Gets or sets the user-agent string sent as part of the header in any HTTP operations.
@@ -45,23 +46,36 @@ namespace Microsoft.Alm.Authentication
         /// <para/>
         /// Set the value to `<see langword="null"/>` to reset the value to default value.
         /// </summary>
-        public static string UserAgent
+        public static string GetUserAgent(RuntimeContext runtimeContext)
         {
-            get
+            lock (_syncpoint)
             {
-                lock (_syncpoint)
+                if (_useragent is null)
                 {
-                    if (_useragent is null)
-                    {
-                        _useragent = BuildDefaultUserAgent(RuntimeContext.Default);
-                    }
-
-                    return _useragent;
+                    _useragent = BuildDefaultUserAgent(runtimeContext);
                 }
-            }
-            set { lock (_syncpoint) _useragent = value; }
 
+                return _useragent;
+            }
         }
+
+        public static void SetUserAgent(string value)
+        {
+            lock (_syncpoint)
+            {
+                _useragent = value;
+            }
+        }
+
+        //private static RuntimeContext GetRuntimeContext()
+        //{
+        //    return new RuntimeContext((rc) => {  return new Network(rc);},
+        //        (rc) => { return new Settings(rc); },
+        //        (rc) => { return new Network(rc); },
+        //        (rc) => { return new Git.Trace(rc); },
+        //        (rc) => { return new Utilities(rc); },
+        //        (rc) => { return new Where(rc); });
+        //}
 
         public static int RequestTimeout
         {

@@ -25,6 +25,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication;
+using Microsoft.Alm.Authentication.Win32;
 using Xunit;
 
 namespace AzureDevOps.Authentication.Test
@@ -39,7 +40,7 @@ namespace AzureDevOps.Authentication.Test
         public async Task VstsAadDeleteCredentialsTest()
         {
             TargetUri targetUri = DefaultTargetUri;
-            AadAuthentication aadAuthentication = GetDevOpsAadAuthentication(RuntimeContext.Default, "aad-delete");
+            AadAuthentication aadAuthentication = GetDevOpsAadAuthentication(Win32RuntimeContext.Default, "aad-delete");
 
             if (aadAuthentication.Authority is AuthorityFake fake)
             {
@@ -59,7 +60,7 @@ namespace AzureDevOps.Authentication.Test
         public async Task VstsAadGetCredentialsTest()
         {
             TargetUri targetUri = DefaultTargetUri;
-            AadAuthentication aadAuthentication = GetDevOpsAadAuthentication(RuntimeContext.Default, "aad-get");
+            AadAuthentication aadAuthentication = GetDevOpsAadAuthentication(Win32RuntimeContext.Default, "aad-get");
 
             Assert.Null(await aadAuthentication.GetCredentials(targetUri));
 
@@ -72,7 +73,7 @@ namespace AzureDevOps.Authentication.Test
         public async Task VstsAadInteractiveLogonTest()
         {
             TargetUri targetUri = DefaultTargetUri;
-            AadAuthentication aadAuthentication = GetDevOpsAadAuthentication(RuntimeContext.Default, "aad-logon");
+            AadAuthentication aadAuthentication = GetDevOpsAadAuthentication(Win32RuntimeContext.Default, "aad-logon");
 
             Assert.Null(await aadAuthentication.PersonalAccessTokenStore.ReadCredentials(targetUri));
 
@@ -85,7 +86,7 @@ namespace AzureDevOps.Authentication.Test
         public async Task VstsAadNoninteractiveLogonTest()
         {
             TargetUri targetUri = DefaultTargetUri;
-            AadAuthentication aadAuthentication = GetDevOpsAadAuthentication(RuntimeContext.Default, "aad-noninteractive");
+            AadAuthentication aadAuthentication = GetDevOpsAadAuthentication(Win32RuntimeContext.Default, "aad-noninteractive");
 
             Assert.NotNull(await aadAuthentication.NoninteractiveLogon(targetUri, new PersonalAccessTokenOptions { RequireCompactToken = false }));
 
@@ -96,7 +97,7 @@ namespace AzureDevOps.Authentication.Test
         public async Task VstsAadSetCredentialsTest()
         {
             TargetUri targetUri = DefaultTargetUri;
-            AadAuthentication aadAuthentication = GetDevOpsAadAuthentication(RuntimeContext.Default, "aad-set");
+            AadAuthentication aadAuthentication = GetDevOpsAadAuthentication(Win32RuntimeContext.Default, "aad-set");
             Credential credentials = DefaultCredentials;
 
             await aadAuthentication.SetCredentials(targetUri, credentials);
@@ -108,7 +109,7 @@ namespace AzureDevOps.Authentication.Test
         [Fact]
         public async Task VstsAadValidateCredentialsTest()
         {
-            AadAuthentication aadAuthentication = GetDevOpsAadAuthentication(RuntimeContext.Default, "aad-validate");
+            AadAuthentication aadAuthentication = GetDevOpsAadAuthentication(Win32RuntimeContext.Default, "aad-validate");
             Credential credentials = null;
 
             Assert.False(await aadAuthentication.ValidateCredentials(DefaultTargetUri, credentials), "Credential validation unexpectedly failed.");

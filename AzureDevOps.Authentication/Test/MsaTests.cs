@@ -25,6 +25,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication;
+using Microsoft.Alm.Authentication.Win32;
 using Xunit;
 
 namespace AzureDevOps.Authentication.Test
@@ -39,7 +40,7 @@ namespace AzureDevOps.Authentication.Test
         public async Task DevOpsMsaDeleteCredentialsTest()
         {
             TargetUri targetUri = DefaultTargetUri;
-            MsaAuthentication msaAuthority = GetDevOpsMsaAuthentication(RuntimeContext.Default, "msa-delete");
+            MsaAuthentication msaAuthority = GetDevOpsMsaAuthentication(Win32RuntimeContext.Default, "msa-delete");
 
             if (msaAuthority.Authority is AuthorityFake fake)
             {
@@ -59,7 +60,7 @@ namespace AzureDevOps.Authentication.Test
         public async Task DevOpsMsaGetCredentialsTest()
         {
             TargetUri targetUri = DefaultTargetUri;
-            MsaAuthentication msaAuthority = GetDevOpsMsaAuthentication(RuntimeContext.Default, "msa-get");
+            MsaAuthentication msaAuthority = GetDevOpsMsaAuthentication(Win32RuntimeContext.Default, "msa-get");
 
             Assert.Null(await msaAuthority.GetCredentials(targetUri));
 
@@ -72,7 +73,7 @@ namespace AzureDevOps.Authentication.Test
         public async Task DevOpsMsaInteractiveLogonTest()
         {
             TargetUri targetUri = DefaultTargetUri;
-            MsaAuthentication msaAuthority = GetDevOpsMsaAuthentication(RuntimeContext.Default, "msa-logon");
+            MsaAuthentication msaAuthority = GetDevOpsMsaAuthentication(Win32RuntimeContext.Default, "msa-logon");
 
             Assert.Null(await msaAuthority.PersonalAccessTokenStore.ReadCredentials(targetUri));
 
@@ -85,7 +86,7 @@ namespace AzureDevOps.Authentication.Test
         public async Task DevOpsMsaSetCredentialsTest()
         {
             TargetUri targetUri = DefaultTargetUri;
-            MsaAuthentication msaAuthority = GetDevOpsMsaAuthentication(RuntimeContext.Default, "msa-set");
+            MsaAuthentication msaAuthority = GetDevOpsMsaAuthentication(Win32RuntimeContext.Default, "msa-set");
 
             await msaAuthority.SetCredentials(targetUri, DefaultCredentials);
 
@@ -95,7 +96,7 @@ namespace AzureDevOps.Authentication.Test
         [Fact]
         public async Task DevOpsMsaValidateCredentialsTest()
         {
-            MsaAuthentication msaAuthority = GetDevOpsMsaAuthentication(RuntimeContext.Default, "msa-validate");
+            MsaAuthentication msaAuthority = GetDevOpsMsaAuthentication(Win32RuntimeContext.Default, "msa-validate");
             Credential credentials = null;
 
             Assert.False( await msaAuthority.ValidateCredentials(DefaultTargetUri, credentials), "Credential validation unexpectedly failed.");

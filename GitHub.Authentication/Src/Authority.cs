@@ -79,7 +79,7 @@ namespace GitHub.Authentication
 
             Token token = null;
 
-            var options = new NetworkRequestOptions(true)
+            var options = new NetworkRequestOptions(true, Global.GetUserAgent(Context))
             {
                 Authorization = new Credential(username, password),
                 Timeout = TimeSpan.FromMilliseconds(RequestTimeout),
@@ -181,7 +181,7 @@ namespace GitHub.Authentication
                 throw new ArgumentNullException(nameof(credentials));
 
             // Allocate a network options object.
-            var options = new NetworkRequestOptions(true)
+            var options = new NetworkRequestOptions(true, Global.GetUserAgent(Context))
             {
                 Authorization = credentials,
                 Timeout = TimeSpan.FromMilliseconds(RequestTimeout),

@@ -1,39 +1,19 @@
-﻿/**** Git Credential Manager for Windows ****
- *
- * Copyright (c) Microsoft Corporation
- * All rights reserved.
- *
- * MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the """"Software""""), to deal
- * in the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
- * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
-**/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
+using Microsoft.Alm.Authentication;
+using Microsoft.Alm.Win32;
+using Microsoft.Win32;
 using static System.Diagnostics.Debug;
 
-namespace Microsoft.Alm.Authentication
+namespace Microsoft.Alm.Authentication.Win32
 {
-    internal class Storage : Base, IStorage
+    internal class Win32Storage : Storage, IRegistryStorage
     {
-        public Storage(RuntimeContext context)
+        public Win32Storage(RuntimeContext context)
             : base(context)
         { }
 
@@ -185,7 +165,7 @@ namespace Microsoft.Alm.Authentication
                                 int error = Marshal.GetLastWin32Error();
                                 if (error != NativeMethods.Win32Error.FileNotFound)
                                 {
-                                    Fail("Failed with error code " + error.ToString("X"));
+                                    System.Diagnostics.Debug.Fail("Failed with error code " + error.ToString("X"));
                                 }
                             }
                         }
@@ -208,15 +188,133 @@ namespace Microsoft.Alm.Authentication
 
             return purgeCount;
         }
+        #region Registry
+        public string RegistryReadString(RegistryHive registryHive, RegistryView registryView, string registryPath, string keyName)
+        {
+            if (registryPath is null)
+                throw new ArgumentNullException(nameof(registryPath));
+            if (keyName is null)
+                throw new ArgumentNullException(nameof(keyName));
+
+            using (var baseKey = RegistryKey.OpenBaseKey(registryHive, registryView))
+            using (var dataKey = baseKey?.OpenSubKey(registryPath))
+            {
+                return dataKey?.GetValue(keyName, null) as string;
+            }
+        }
+
+        public string RegistryReadString(RegistryHive registryHive, string registryPath, string keyName)
+            => RegistryReadString(registryHive, RegistryView.Default, registryPath, keyName);
+
+        public string RegistryReadString(string registryPath, string keyName)
+            => RegistryReadString(RegistryHive.CurrentUser, RegistryView.Default, registryPath, keyName);
+
+        #endregion
+
+
+
+        #region SecureData
 
         public bool TryReadSecureData(string key, out string name, out byte[] data)
         {
-            throw new NotImplementedException();
+            const string NoSuchSessionMessage = "The logon session does not exist or there is no credential set associated with this logon session. Network logon sessions do not have an associated credential set.";
+
+            if (key is null)
+                throw new ArgumentNullException(nameof(key));
+
+            var credPtr = IntPtr.Zero;
+
+            if (NativeMethods.CredRead(key, NativeMethods.CredentialType.Generic, 0, out credPtr))
+            {
+                try
+                {
+                    var credStruct = (NativeMethods.Credential)Marshal.PtrToStructure(credPtr, typeof(NativeMethods.Credential));
+                    if (credStruct.CredentialBlob != null && credStruct.CredentialBlobSize > 0)
+                    {
+                        int size = credStruct.CredentialBlobSize;
+                        data = new byte[size];
+                        Marshal.Copy(credStruct.CredentialBlob, data, 0, size);
+                        name = credStruct.UserName;
+
+                        return true;
+                    }
+                }
+                finally
+                {
+                    if (credPtr != IntPtr.Zero)
+                    {
+                        NativeMethods.CredFree(credPtr);
+                    }
+                }
+            }
+            else
+            {
+                int error = Marshal.GetLastWin32Error();
+                var errorCode = (ErrorCode)error;
+
+                if (errorCode == ErrorCode.NoSuchLogonSession)
+                    throw new InvalidOperationException(NoSuchSessionMessage);
+            }
+
+            data = null;
+            name = null;
+
+            return false;
         }
 
         public bool TryWriteSecureData(string key, string name, byte[] data)
         {
-            throw new NotImplementedException();
+            const string BadUsernameMessage = "The UserName member of the passed in Credential structure is not valid.";
+            const string NoSuchSessionMessage = "The logon session does not exist or there is no credential set associated with this logon session. Network logon sessions do not have an associated credential set.";
+
+            if (key is null)
+                throw new ArgumentNullException(nameof(key));
+            if (name is null)
+                throw new ArgumentNullException(nameof(name));
+            if (data is null)
+                throw new ArgumentNullException(nameof(data));
+
+            var credential = new NativeMethods.Credential
+            {
+                Type = NativeMethods.CredentialType.Generic,
+                TargetName = key,
+                CredentialBlob = Marshal.AllocCoTaskMem(data.Length),
+                CredentialBlobSize = data.Length,
+                Persist = NativeMethods.CredentialPersist.LocalMachine,
+                AttributeCount = 0,
+                UserName = name,
+            };
+
+            try
+            {
+                Marshal.Copy(data, 0, credential.CredentialBlob, data.Length);
+
+                if (NativeMethods.CredWrite(ref credential, 0))
+                    return true;
+
+                int error = Marshal.GetLastWin32Error();
+                var errorCode = (ErrorCode)error;
+
+                switch (errorCode)
+                {
+                    case ErrorCode.NoSuchLogonSession:
+                        throw new InvalidOperationException(NoSuchSessionMessage);
+
+                    case ErrorCode.BadUserName:
+                        throw new ArgumentException(BadUsernameMessage, nameof(name));
+                }
+            }
+            finally
+            {
+                if (credential.CredentialBlob != IntPtr.Zero)
+                {
+                    Marshal.FreeCoTaskMem(credential.CredentialBlob);
+                }
+            }
+
+            return false;
         }
+    
+        #endregion
     }
 }

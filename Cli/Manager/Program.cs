@@ -30,6 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication;
+using Microsoft.Alm.Authentication.Win32;
 using static System.StringComparer;
 using Git = Microsoft.Alm.Authentication.Git;
 
@@ -538,7 +539,7 @@ namespace Microsoft.Alm.Cli
         [STAThread]
         private static void Main(string[ ] args)
         {
-            var program = new Program(RuntimeContext.Default);
+            var program = new Program(Win32RuntimeContext.Default);
 
             program.Run(args);
         }
