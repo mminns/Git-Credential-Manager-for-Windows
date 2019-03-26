@@ -100,7 +100,7 @@ namespace AzureDevOps.Authentication
             try
             {
                 var requestUri = await CreatePersonalAccessTokenRequestUri(targetUri, authorization, requireCompactToken);
-                var options = new NetworkRequestOptions(true, Global.GetUserAgent(Context))
+                var options = new NetworkRequestOptions(true, Context)
                 {
                     Authorization = authorization,
                 };
@@ -261,7 +261,7 @@ namespace AzureDevOps.Authentication
             {
                 // Create an request to the Azure DevOps deployment data end-point.
                 var requestUri = GetConnectionDataUri(targetUri);
-                var options = new NetworkRequestOptions(true, Global.GetUserAgent(Context))
+                var options = new NetworkRequestOptions(true, Context)
                 {
                     Authorization = authorization,
                 };
@@ -349,7 +349,7 @@ namespace AzureDevOps.Authentication
             string tenantUrl = GetTargetUrl(targetUri, false);
             var locationServiceUrl = tenantUrl + LocationServiceUrlPathAndQuery;
             var requestUri = targetUri.CreateWith(queryUrl: locationServiceUrl);
-            var options = new NetworkRequestOptions(true, Global.GetUserAgent(Context))
+            var options = new NetworkRequestOptions(true, Context)
             {
                 Authorization = authorization,
             };
@@ -437,7 +437,7 @@ namespace AzureDevOps.Authentication
 
             // Create an request to the Azure DevOps deployment data end-point.
             var requestUri = GetConnectionDataUri(targetUri);
-            var options = new NetworkRequestOptions(true, Global.GetUserAgent(Context))
+            var options = new NetworkRequestOptions(true, Context)
             {
                 Authorization = secret,
                 CookieContainer = new CookieContainer(),

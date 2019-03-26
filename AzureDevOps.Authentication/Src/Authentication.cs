@@ -204,7 +204,7 @@ namespace AzureDevOps.Authentication
                     // Use the properly formatted URL
                     requestUri = requestUri.CreateWith(queryUrl: requestUrl);
 
-                    var options = new NetworkRequestOptions(false, Global.GetUserAgent(context))
+                    var options = new NetworkRequestOptions(false,context)
                     {
                         Flags = NetworkRequestOptionFlags.UseProxy,
                         Timeout = TimeSpan.FromMilliseconds(Global.RequestTimeout),

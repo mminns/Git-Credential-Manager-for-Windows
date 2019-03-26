@@ -69,6 +69,10 @@
       <Project>{19770407-b493-459d-bb4f-04fbefb1ba13}</Project>
       <Name>Microsoft.Alm.Authentication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Win32\Microsoft.Alm.Authentication.Win32.csproj">
+      <Project>{59289F97-3A84-4365-8642-88491F971546}</Project>
+      <Name>Microsoft.Alm.Authentication.Win32</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

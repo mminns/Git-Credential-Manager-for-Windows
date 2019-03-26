@@ -30,6 +30,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using static System.StringComparer;
 using static System.FormattableString;
+using Microsoft.Alm.Authentication.Win32;
 
 namespace Microsoft.Alm.Authentication.Test
 {
@@ -69,7 +70,7 @@ namespace Microsoft.Alm.Authentication.Test
         public static readonly UnitTestMode ProjectTestMode;
 
         protected UnitTestBase(IUnitTestTrace output, string projectDirectory, [CallerFilePath] string filePath = "")
-            : base(RuntimeContext.Create())
+            : base(Win32RuntimeContext.Create())
         {
             if (output is null)
                 throw new ArgumentNullException(nameof(output));

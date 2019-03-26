@@ -63,6 +63,10 @@
       <Project>{19781214-371F-415C-93C5-44CEAA0E9A34}</Project>
       <Name>Microsoft.Alm.Authentication.Test</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Win32\Microsoft.Alm.Authentication.Win32.csproj">
+      <Project>{59289F97-3A84-4365-8642-88491F971546}</Project>
+      <Name>Microsoft.Alm.Authentication.Win32</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Proxy\Bitbucket.Authentication.Proxy.csproj">
       <Project>{04151231-2501-4212-a7f7-c07e932b4a4c}</Project>
       <Name>Bitbucket.Authentication.Proxy</Name>

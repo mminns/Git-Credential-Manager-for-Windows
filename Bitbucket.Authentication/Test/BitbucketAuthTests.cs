@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication;
+using Microsoft.Alm.Authentication.Win32;
 using Xunit;
 
 namespace Atlassian.Bitbucket.Authentication.Test
@@ -16,7 +17,7 @@ namespace Atlassian.Bitbucket.Authentication.Test
         public async Task BitbucketAuthDeleteCredentialsTest()
         {
             var targetUri = new TargetUri("http://localhost");
-            var bitbucketAuth = GetBitbucketAuthentication(RuntimeContext.Default, "Bitbucket-delete");
+            var bitbucketAuth = GetBitbucketAuthentication(Win32RuntimeContext.Default, "Bitbucket-delete");
 
             await bitbucketAuth.PersonalAccessTokenStore.WriteCredentials(targetUri, new Credential("username", "password"));
 
@@ -32,7 +33,7 @@ namespace Atlassian.Bitbucket.Authentication.Test
         public async Task BitbucketAuthGetCredentialsTest()
         {
             var targetUri = new TargetUri("http://localhost");
-            var bitbucketAuth = GetBitbucketAuthentication(RuntimeContext.Default, "Bitbucket-get");
+            var bitbucketAuth = GetBitbucketAuthentication(Win32RuntimeContext.Default, "Bitbucket-get");
 
             Credential credentials = null;
 
@@ -51,7 +52,7 @@ namespace Atlassian.Bitbucket.Authentication.Test
         public async Task BitbucketAuthSetCredentialsTest()
         {
             var targetUri = new TargetUri("http://localhost");
-            var bitbucketAuth = GetBitbucketAuthentication(RuntimeContext.Default, "Bitbucket-set");
+            var bitbucketAuth = GetBitbucketAuthentication(Win32RuntimeContext.Default, "Bitbucket-set");
 
             Credential credentials = null;
 

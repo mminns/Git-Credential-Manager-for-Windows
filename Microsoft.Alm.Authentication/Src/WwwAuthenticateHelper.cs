@@ -52,7 +52,7 @@ namespace Microsoft.Alm.Authentication
                 {
                     // Configure the HTTP request to not choose an authentication strategy for us
                     // because we want to deliver the complete payload to the caller.
-                    var options = new NetworkRequestOptions(false, Global.GetUserAgent(context))
+                    var options = new NetworkRequestOptions(false, context)
                     {
                         Flags = NetworkRequestOptionFlags.UseProxy,
                         Timeout = TimeSpan.FromMilliseconds(Global.RequestTimeout),

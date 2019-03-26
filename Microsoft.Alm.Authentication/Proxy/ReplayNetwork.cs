@@ -72,7 +72,7 @@ namespace Microsoft.Alm.Authentication.Test
         }
 
         public Task<INetworkResponseMessage> HttpGetAsync(TargetUri targetUri)
-            => HttpGetAsync(targetUri, NetworkRequestOptions.Default);
+            => HttpGetAsync(targetUri, new NetworkRequestOptions(true, _context));
 
         public Task<INetworkResponseMessage> HttpHeadAsync(TargetUri targetUri, NetworkRequestOptions options)
         {
@@ -90,7 +90,7 @@ namespace Microsoft.Alm.Authentication.Test
         }
 
         public Task<INetworkResponseMessage> HttpHeadAsync(TargetUri targetUri)
-        => HttpHeadAsync(targetUri, NetworkRequestOptions.Default);
+        => HttpHeadAsync(targetUri, new NetworkRequestOptions(true, _context));
 
         public Task<INetworkResponseMessage> HttpPostAsync(TargetUri targetUri, HttpContent content, NetworkRequestOptions options)
         {
@@ -111,7 +111,7 @@ namespace Microsoft.Alm.Authentication.Test
         }
 
         public Task<INetworkResponseMessage> HttpPostAsync(TargetUri targetUri, StringContent content)
-            => HttpPostAsync(targetUri, content, NetworkRequestOptions.Default);
+            => HttpPostAsync(targetUri, content, new NetworkRequestOptions(true, _context));
 
         internal void SetReplayData(CapturedNetworkData data)
         {

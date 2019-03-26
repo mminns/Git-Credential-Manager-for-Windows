@@ -87,7 +87,7 @@ namespace Microsoft.Alm.Authentication
         internal const string CacheControlName = "cache-control";
         internal const string CacheControlValue = "no-cache";
 
-        public NetworkRequestOptions(bool setDefaults, string userAgent)
+        public NetworkRequestOptions(bool setDefaults, RuntimeContext context)
             : this()
         {
             if (setDefaults)
@@ -97,11 +97,10 @@ namespace Microsoft.Alm.Authentication
                 _flags = NetworkRequestOptionFlags.AllowRedirections
                        | NetworkRequestOptionFlags.PreAuthenticate
                        | NetworkRequestOptionFlags.UseProxy;
+                _headers.Add("User-Agent", Global.GetUserAgent(context));
                 _maxRedirections = Global.MaxAutomaticRedirections;
                 Timeout = TimeSpan.FromMilliseconds(Global.RequestTimeout);
             }
-
-            _headers.Add("User-Agent", userAgent);
         }
 
         private NetworkRequestOptions()
@@ -374,7 +373,7 @@ namespace Microsoft.Alm.Authentication
         }
 
         public Task<INetworkResponseMessage> HttpGetAsync(TargetUri targetUri)
-            => HttpGetAsync(targetUri, new NetworkRequestOptions(true, Global.GetUserAgent(Context)));
+            => HttpGetAsync(targetUri, new NetworkRequestOptions(true, Context));
 
         public Task<INetworkResponseMessage> HttpHeadAsync(TargetUri targetUri, NetworkRequestOptions options)
         {
@@ -408,7 +407,7 @@ namespace Microsoft.Alm.Authentication
         }
 
         public Task<INetworkResponseMessage> HttpHeadAsync(TargetUri targetUri)
-            => HttpHeadAsync(targetUri, new NetworkRequestOptions(true, Global.GetUserAgent(Context)));
+            => HttpHeadAsync(targetUri, new NetworkRequestOptions(true,Context));
 
         public Task<INetworkResponseMessage> HttpPostAsync(TargetUri targetUri, HttpContent content, NetworkRequestOptions options)
         {
@@ -436,7 +435,7 @@ namespace Microsoft.Alm.Authentication
         }
 
         public Task<INetworkResponseMessage> HttpPostAsync(TargetUri targetUri, StringContent content)
-            => HttpPostAsync(targetUri, content, new NetworkRequestOptions(true, Global.GetUserAgent(Context)));
+            => HttpPostAsync(targetUri, content, new NetworkRequestOptions(true, Context));
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
         private static HttpMessageHandler GetHttpMessageHandler(TargetUri targetUri, NetworkRequestOptions options)

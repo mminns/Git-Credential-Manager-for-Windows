@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Alm.Authentication.Win32;
 using Xunit;
 
 namespace Microsoft.Alm.Authentication.Git.Test
@@ -15,23 +16,23 @@ namespace Microsoft.Alm.Authentication.Git.Test
         {
             List<Installation> list = new List<Installation>
             {
-                new Installation(RuntimeContext.Default, @"C:\Program Files (x86)\Git", KnownDistribution.GitForWindows32v1),
-                new Installation(RuntimeContext.Default, @"C:\Program Files (x86)\Git", KnownDistribution.GitForWindows32v2),
-                new Installation(RuntimeContext.Default, @"C:\Program Files\Git", KnownDistribution.GitForWindows32v1),
-                new Installation(RuntimeContext.Default, @"C:\Program Files\Git", KnownDistribution.GitForWindows32v2),
-                new Installation(RuntimeContext.Default, @"C:\Program Files\Git", KnownDistribution.GitForWindows64v2),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files (x86)\Git", KnownDistribution.GitForWindows32v1),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files (x86)\Git", KnownDistribution.GitForWindows32v2),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files\Git", KnownDistribution.GitForWindows32v1),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files\Git", KnownDistribution.GitForWindows32v2),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files\Git", KnownDistribution.GitForWindows64v2),
                 // ToLower versions
-                new Installation(RuntimeContext.Default, @"C:\Program Files (x86)\Git".ToLower(), KnownDistribution.GitForWindows32v1),
-                new Installation(RuntimeContext.Default, @"C:\Program Files (x86)\Git".ToLower(), KnownDistribution.GitForWindows32v2),
-                new Installation(RuntimeContext.Default, @"C:\Program Files\Git".ToLower(), KnownDistribution.GitForWindows32v1),
-                new Installation(RuntimeContext.Default, @"C:\Program Files\Git".ToLower(), KnownDistribution.GitForWindows32v2),
-                new Installation(RuntimeContext.Default, @"C:\Program Files\Git".ToLower(), KnownDistribution.GitForWindows64v2),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files (x86)\Git".ToLower(), KnownDistribution.GitForWindows32v1),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files (x86)\Git".ToLower(), KnownDistribution.GitForWindows32v2),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files\Git".ToLower(), KnownDistribution.GitForWindows32v1),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files\Git".ToLower(), KnownDistribution.GitForWindows32v2),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files\Git".ToLower(), KnownDistribution.GitForWindows64v2),
                 // ToUpper versions
-                new Installation(RuntimeContext.Default, @"C:\Program Files (x86)\Git".ToUpper(), KnownDistribution.GitForWindows32v1),
-                new Installation(RuntimeContext.Default, @"C:\Program Files (x86)\Git".ToUpper(), KnownDistribution.GitForWindows32v2),
-                new Installation(RuntimeContext.Default, @"C:\Program Files\Git".ToUpper(), KnownDistribution.GitForWindows32v1),
-                new Installation(RuntimeContext.Default, @"C:\Program Files\Git".ToUpper(), KnownDistribution.GitForWindows32v2),
-                new Installation(RuntimeContext.Default, @"C:\Program Files\Git".ToUpper(), KnownDistribution.GitForWindows64v2),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files (x86)\Git".ToUpper(), KnownDistribution.GitForWindows32v1),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files (x86)\Git".ToUpper(), KnownDistribution.GitForWindows32v2),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files\Git".ToUpper(), KnownDistribution.GitForWindows32v1),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files\Git".ToUpper(), KnownDistribution.GitForWindows32v2),
+                new Installation(Win32RuntimeContext.Default, @"C:\Program Files\Git".ToUpper(), KnownDistribution.GitForWindows64v2),
             };
 
             HashSet<Installation> set = new HashSet<Installation>(list);

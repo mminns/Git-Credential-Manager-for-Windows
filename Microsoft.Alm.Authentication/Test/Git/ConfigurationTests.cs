@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication.Test;
+using Microsoft.Alm.Authentication.Win32;
 using Xunit;
 
 namespace Microsoft.Alm.Authentication.Git.Test
@@ -49,7 +50,7 @@ namespace Microsoft.Alm.Authentication.Git.Test
             using (var rs = assembly.GetManifestResourceStream("Microsoft.Alm.Authentication.Test.Git.sample.gitconfig"))
             using (var sr = new StreamReader(rs))
             {
-                await Configuration.ParseGitConfig(RuntimeContext.Default, sr, values);
+                await Configuration.ParseGitConfig(Win32RuntimeContext.Default, sr, values);
             }
 
             Assert.Equal(36, values.Count);
@@ -77,7 +78,7 @@ namespace Microsoft.Alm.Authentication.Git.Test
             using (var reader = new StringReader(input))
             {
                 var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-                await Configuration.ParseGitConfig(RuntimeContext.Default, reader, dict);
+                await Configuration.ParseGitConfig(Win32RuntimeContext.Default, reader, dict);
 
                 var values = new Dictionary<ConfigurationLevel, Dictionary<string, string>>();
 
@@ -86,7 +87,7 @@ namespace Microsoft.Alm.Authentication.Git.Test
                     values[level] = dict;
                 }
 
-                cut = new Configuration(RuntimeContext.Default, values);
+                cut = new Configuration(Win32RuntimeContext.Default, values);
             }
 
             Assert.True(cut.ContainsKey("CoRe.AuToCrLf"));
@@ -121,7 +122,7 @@ namespace Microsoft.Alm.Authentication.Git.Test
 
             using (var sr = new StringReader(input))
             {
-                await Configuration.ParseGitConfig(RuntimeContext.Default, sr, values);
+                await Configuration.ParseGitConfig(Win32RuntimeContext.Default, sr, values);
             }
 
             return values;

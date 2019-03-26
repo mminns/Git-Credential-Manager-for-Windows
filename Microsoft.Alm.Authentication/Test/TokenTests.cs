@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Alm.Authentication.Win32;
 using Xunit;
 
 namespace Microsoft.Alm.Authentication.Test
@@ -35,8 +36,8 @@ namespace Microsoft.Alm.Authentication.Test
         public async Task Token_WriteDelete(bool useCache, string secretName, string url, string token)
         {
             var tokenStore = useCache
-                ? new SecretCache(RuntimeContext.Default, secretName) as ITokenStore
-                : new SecretStore(RuntimeContext.Default, secretName) as ITokenStore;
+                ? new SecretCache(Win32RuntimeContext.Default, secretName) as ITokenStore
+                : new SecretStore(Win32RuntimeContext.Default, secretName) as ITokenStore;
             var uri = new TargetUri(url);
 
             var writeToken = new Token(token, TokenType.Test);

@@ -27,12 +27,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Microsoft.Alm.Authentication.Win32;
 using Microsoft.Win32;
 using static System.StringComparer;
 
 namespace Microsoft.Alm.Authentication.Test
 {
-    public class ReplayStorage : IStorage, IReplayService<CapturedStorageData>
+    public class ReplayStorage : IRegistryStorage, IReplayService<CapturedStorageData>
     {
         internal ReplayStorage(RuntimeContext context, Func<string, string> normalizePath)
         {

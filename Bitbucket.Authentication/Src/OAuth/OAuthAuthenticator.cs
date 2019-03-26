@@ -169,7 +169,7 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
             if (authCode is null)
                 throw new ArgumentNullException(nameof(authCode));
 
-            var options = new NetworkRequestOptions(true, Global.GetUserAgent(Context))
+            var options = new NetworkRequestOptions(true, Context)
             {
                 Timeout = TimeSpan.FromMilliseconds(RequestTimeout),
             };
@@ -222,7 +222,7 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
 
             var refreshUri = GetRefreshUri();
             var requestUri = targetUri.CreateWith(refreshUri);
-            var options = new NetworkRequestOptions(true, Global.GetUserAgent(Context))
+            var options = new NetworkRequestOptions(true, Context)
             {
                 Timeout = TimeSpan.FromMilliseconds(RequestTimeout),
             };

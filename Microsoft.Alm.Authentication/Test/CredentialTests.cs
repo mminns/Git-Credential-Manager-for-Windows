@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Alm.Authentication.Win32;
 using Xunit;
 
 namespace Microsoft.Alm.Authentication.Test
@@ -59,8 +60,8 @@ namespace Microsoft.Alm.Authentication.Test
                 var uri = new TargetUri(url);
                 var writeCreds = new Credential(username, password);
                 var credentialStore = useCache
-                    ? new SecretCache(RuntimeContext.Default, "test", Secret.UriToName) as ICredentialStore
-                    : new SecretStore(RuntimeContext.Default, "test", null, null, Secret.UriToName) as ICredentialStore;
+                    ? new SecretCache(Win32RuntimeContext.Default, "test", Secret.UriToName) as ICredentialStore
+                    : new SecretStore(Win32RuntimeContext.Default, "test", null, null, Secret.UriToName) as ICredentialStore;
                 Credential readCreds = null;
 
                 await credentialStore.WriteCredentials(uri, writeCreds);
@@ -89,8 +90,8 @@ namespace Microsoft.Alm.Authentication.Test
                 var uri = new TargetUri(url);
                 var writeCreds = new Credential(username, password);
                 var credentialStore = useCache
-                    ? new SecretCache(RuntimeContext.Default, "test", Secret.UriToName) as ICredentialStore
-                    : new SecretStore(RuntimeContext.Default, "test", null, null, Secret.UriToName) as ICredentialStore;
+                    ? new SecretCache(Win32RuntimeContext.Default, "test", Secret.UriToName) as ICredentialStore
+                    : new SecretStore(Win32RuntimeContext.Default, "test", null, null, Secret.UriToName) as ICredentialStore;
                 Credential readCreds = null;
 
                 await credentialStore.WriteCredentials(uri, writeCreds);

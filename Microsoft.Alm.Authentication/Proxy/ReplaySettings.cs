@@ -104,7 +104,7 @@ namespace Microsoft.Alm.Authentication.Test
             }
         }
 
-        public OperatingSystem OsVersion => throw new NotImplementedException();
+        public OperatingSystem OsVersion => Environment.OSVersion;
 
         public string ServiceName
             => "Settings";
@@ -117,7 +117,7 @@ namespace Microsoft.Alm.Authentication.Test
             get
             {
                 if (_captured.Version is null)
-                    throw new ReplayDataException($"`{nameof(NewLine)}` not captured.");
+                    throw new ReplayDataException($"`{nameof(Version)}` not captured.");
                 if (!Version.TryParse(_captured.Version, out Version output))
                     throw new ReplayOutputTypeException($"Failed to parse `{typeof(Version).FullName}` from \"{_captured.Version}\".");
 

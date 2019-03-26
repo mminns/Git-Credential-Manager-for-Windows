@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using Microsoft.Alm.Authentication.Win32;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -31,7 +32,7 @@ namespace Microsoft.Alm.Authentication.Test
                 { "away", "value-7" },
             };
 
-            var settings = new Settings(RuntimeContext.Default);
+            var settings = new Settings(Win32RuntimeContext.Default);
             var result = settings.DeduplicateStringDictionary(vars);
 
             Assert.NotNull(result);

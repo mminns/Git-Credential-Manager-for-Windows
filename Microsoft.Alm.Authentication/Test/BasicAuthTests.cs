@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.Alm.Authentication.Win32;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -15,7 +16,7 @@ namespace Microsoft.Alm.Authentication.Test
         public async Task BasicAuthDeleteCredentialsTest()
         {
             TargetUri targetUri = new TargetUri("http://localhost");
-            BasicAuthentication basicAuth = GetBasicAuthentication(RuntimeContext.Default, "basic-delete");
+            BasicAuthentication basicAuth = GetBasicAuthentication(Win32RuntimeContext.Default, "basic-delete");
 
             await basicAuth.CredentialStore.WriteCredentials(targetUri, new Credential("username", "password"));
 
@@ -28,7 +29,7 @@ namespace Microsoft.Alm.Authentication.Test
         public async Task BasicAuthGetCredentialsTest()
         {
             TargetUri targetUri = new TargetUri("http://localhost");
-            BasicAuthentication basicAuth = GetBasicAuthentication(RuntimeContext.Default, "basic-get");
+            BasicAuthentication basicAuth = GetBasicAuthentication(Win32RuntimeContext.Default, "basic-get");
 
             Credential credentials = null;
 
@@ -45,7 +46,7 @@ namespace Microsoft.Alm.Authentication.Test
         public async Task BasicAuthSetCredentialsTest()
         {
             TargetUri targetUri = new TargetUri("http://localhost");
-            BasicAuthentication basicAuth = GetBasicAuthentication(RuntimeContext.Default, "basic-set");
+            BasicAuthentication basicAuth = GetBasicAuthentication(Win32RuntimeContext.Default, "basic-set");
 
             Credential credentials = null;
 
