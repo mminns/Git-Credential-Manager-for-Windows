@@ -31,63 +31,6 @@ using Alm = Microsoft.Alm.Authentication;
 
 namespace AzureDevOps.Authentication
 {
-    public interface IAdal : Alm.IRuntimeService
-    {
-        /// <summary>
-        /// Initiates an interactive authentication experience.
-        /// <para/>
-        /// Returns an authentication result which contains an access token and other relevant information.
-        /// </summary>
-        /// <param name="authorityHostUrl">Address of the authority to issue token.</param>
-        /// <param name="resource">Identifier of the target resource that is the recipient of the requested token.</param>
-        /// <param name="clientId">Identifier of the client requesting the token.</param>
-        /// <param name="redirectUri">Address to return to upon receiving a response from the authority.</param>
-        /// <param name="extraQueryParameters">
-        /// This parameter will be appended as is to the query string in the HTTP authentication request to the authority.
-        /// <para/>
-        /// The parameter can be null.
-        /// </param>
-        Task<IAdalResult> AcquireTokenAsync(string authorityHostUrl, string resource, string clientId, Uri redirectUri, string extraQueryParameters);
-
-        /// <summary>
-        /// Initiates a non-interactive authentication experience.
-        /// <para/>
-        /// Returns an authentication result which contains an access token and other relevant information.
-        /// </summary>
-        /// <param name="authorityHostUrl">Address of the authority to issue token.</param>
-        /// <param name="resource">Identifier of the target resource that is the recipient of the requested token.</param>
-        /// <param name="clientId">Identifier of the client requesting the token.</param>
-        Task<IAdalResult> AcquireTokenAsync(string authorityHostUrl, string resource, string client);
-    }
-
-    /// <summary>
-    /// Contains the results of one token acquisition operation.
-    /// </summary>
-    public interface IAdalResult
-    {
-        /// <summary>
-        /// Gets the Access Token requested.
-        /// </summary>
-        string AccessToken { get; }
-
-        /// <summary>
-        /// Gets the type of the Access Token returned.
-        /// </summary>
-        string AccessTokenType { get; }
-
-        /// <summary>
-        /// Gets the authority that has issued the token.
-        /// </summary>
-        string Authority { get; }
-
-        /// <summary>
-        /// Gets an identifier for the tenant the token was acquired from.
-        /// <para/>
-        /// This property will be null if tenant information is not returned by the service.
-        /// </summary>
-        string TenantId { get; }
-    }
-
     internal class Adal : Alm.Base, IAdal
     {
         public Adal(Alm.RuntimeContext context)

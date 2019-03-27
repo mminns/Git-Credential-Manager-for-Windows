@@ -32,18 +32,6 @@ namespace AzureDevOps.Authentication
         protected Base(RuntimeContext context)
             : base(context)
         {
-            // If the Adal service is already registered, then we do not need to allocate
-            // and add a new one.
-            var adal = GetService<IAdal>();
-
-            if (adal is null)
-            {
-                // Since there's no pre-existing Adal service registered with the current
-                // context, we'll need to allocate and add one to it.
-                adal = new Adal(Context);
-
-                SetService(adal);
-            }
         }
 
         protected IAdal Adal

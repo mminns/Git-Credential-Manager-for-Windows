@@ -66,6 +66,10 @@
       <Project>{19770407-d7d8-4a37-914c-f552ff4b90d4}</Project>
       <Name>AzureDevOps.Authentication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Win32\AzureDevOps.Authentication.Win32.csproj">
+      <Project>{238c0efd-6dd5-4687-9bfd-faf0a2ce3bd1}</Project>
+      <Name>AzureDevOps.Authentication.Win32</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AadTests.cs" />

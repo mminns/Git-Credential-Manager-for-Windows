@@ -31,6 +31,10 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AzureDevOps.Authentication\Win32\AzureDevOps.Authentication.Win32.csproj">
+      <Project>{238C0EFD-6DD5-4687-9BFD-FAF0A2CE3BD1}</Project>
+      <Name>AzureDevOps.Authentication.Win32</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Bitbucket.Authentication\Src\Bitbucket.Authentication.csproj">
       <Project>{ee663736-5bad-4ca6-a4f8-99978925ad8a}</Project>
       <Name>Bitbucket.Authentication</Name>

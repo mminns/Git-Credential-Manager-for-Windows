@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Azure DevOps Authentication")]
-[assembly: AssemblyDescription("Microsoft Azure DevOps Authentication Library for Windows")]
+[assembly: AssemblyDescription("Microsoft Azure DevOps Authentication Library for Windows Win32")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft Corporation")]
 [assembly: AssemblyProduct("https://github.com/Microsoft/Git-Credential-Manager-for-Windows")]
@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("Microsoft Corporation")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("19770407-b493-1230-bb4f-04fbefb1ba13")]
+[assembly: Guid("19770408-b493-1230-bb4f-04fbefb1ba13")]
 [assembly: AssemblyVersion("1.1.0.0")]
 [assembly: AssemblyFileVersion("1.1.0.0")]
 [assembly: NeutralResourcesLanguage("en-US")]
@@ -22,5 +22,3 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("AzureDevOps.Authentication.Proxy")]
 [assembly: InternalsVisibleTo("AzureDevOps.Authentication.Test")]
 #endif
-
-[assembly: InternalsVisibleTo("AzureDevOps.Authentication.Win32")]

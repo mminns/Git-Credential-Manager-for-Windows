@@ -328,7 +328,8 @@ namespace AzureDevOps.Authentication
             RuntimeContext context,
             TargetUri targetUri,
             TokenScope scope,
-            ICredentialStore personalAccessTokenStore)
+            ICredentialStore personalAccessTokenStore,
+            Action buildGui)
         {
             if (context is null)
                 throw new ArgumentNullException(nameof(context));
@@ -360,6 +361,8 @@ namespace AzureDevOps.Authentication
                 authentication = new AadAuthentication(context, tenantId, scope, personalAccessTokenStore);
                 (authentication as AadAuthentication).TenantId = tenantId;
             }
+
+            buildGui?.Invoke();
 
             return authentication;
         }

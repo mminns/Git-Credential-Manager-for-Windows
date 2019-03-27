@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using AzureDevOps.Authentication;
 using Microsoft.Alm.Authentication;
 using Azure = AzureDevOps.Authentication;
 using Bitbucket = Atlassian.Bitbucket.Authentication;
@@ -57,7 +58,7 @@ namespace Microsoft.Alm.Cli
             var basicCredentialCallback = (operationArguments.UseModalUi)
                     ? new AcquireCredentialsDelegate(program.ModalPromptForCredentials)
                     : new AcquireCredentialsDelegate(program.BasicCredentialPrompt);
-
+            
             var bitbucketPrompts = new Bitbucket.AuthenticationPrompts(program.Context, operationArguments.ParentHwnd);
 
             var bitbucketCredentialCallback = (operationArguments.UseModalUi)
@@ -90,7 +91,13 @@ namespace Microsoft.Alm.Cli
                                                                              Program.DevOpsCredentialScope,
                                                                              new SecretStore(program.Context,
                                                                                              secretsNamespace,
-                                                                                             Azure.Authentication.UriNameConversion))
+                                                                                             Azure.Authentication.UriNameConversion),
+                                                                             () =>
+                                                                             {
+                                                                                 //TODO HACK MMINNS WIN32 - forces the creation of the Adal instance
+                                                                                 // consider extending to use the same callback pattern as the other providers?
+                                                                                 var azurePrompts = new Azure.AuthenticationPrompts(program.Context);
+                                                                             })
                              ?? Github.Authentication.GetAuthentication(program.Context,
                                                                         operationArguments.TargetUri,
                                                                         Program.GitHubCredentialScope,
