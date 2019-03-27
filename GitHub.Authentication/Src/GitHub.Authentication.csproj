@@ -1,210 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>GitHub.Authentication</AssemblyName>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <NuGetPackageImportStamp />
-    <OutputType>WinExe</OutputType>
-    <ProjectGuid>{CF306116-BBF0-4CC7-AFCE-A506AC4752CB}</ProjectGuid>
-    <ProjectName>GitHub.Authentication</ProjectName>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <RootNamespace>GitHub.Authentication</RootNamespace>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
   </PropertyGroup>
-  <Import Project="..\..\build.props" />
-  <PropertyGroup>
-    <ProjectDir>$(MSBuildThisFileDirectory)</ProjectDir>
-    <OutputPath>$(ProjectDir)$(OutputPath)</OutputPath>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-  </PropertyGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Src\Microsoft.Alm.Authentication.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="AuthenticationPrompts.cs" />
-    <Compile Include="Base.cs" />
-    <Compile Include="Controls\CredentialsControl.xaml.cs">
-      <DependentUpon>CredentialsControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Text\ValidationMessage.cs" />
-    <Compile Include="CredentialsWindow.xaml.cs">
-      <DependentUpon>CredentialsWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Authentication.cs" />
-    <Compile Include="AuthenticationResult.cs" />
-    <Compile Include="Authority.cs" />
-    <Compile Include="Gui.cs" />
-    <Compile Include="TokenScope.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Helpers\BindingProxy.cs" />
-    <Compile Include="IAuthentication.cs" />
-    <Compile Include="IAuthority.cs" />
-    <Compile Include="Tester.xaml.cs">
-      <DependentUpon>Tester.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\CredentialsViewModel.cs" />
-    <Compile Include="ViewModels\TwoFactorViewModel.cs" />
-    <Page Include="AppResources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Assets\Styles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Assets\TextBlocks.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Assets\ValidationMessage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Buttons\OcticonCircleButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\CredentialsControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\HorizontalShadowDivider.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Octicons\OcticonImage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\TwoFactorControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\TwoFactorInput.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CredentialsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Tester.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TwoFactorWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controls\Buttons\OcticonButton.cs" />
-    <Compile Include="Controls\Buttons\OcticonCircleButton.cs" />
-    <Compile Include="Controls\HorizontalShadowDivider.xaml.cs">
-      <DependentUpon>HorizontalShadowDivider.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Octicons\OcticonImage.cs" />
-    <Compile Include="Controls\Octicons\OcticonPath.cs" />
-    <Compile Include="Controls\Octicons\OcticonPaths.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OcticonPaths.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Panels\FixedAspectRatioPanel.cs" />
-    <Compile Include="Controls\TwoFactorControl.xaml.cs">
-      <DependentUpon>TwoFactorControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TwoFactorInput.xaml.cs">
-      <DependentUpon>TwoFactorInput.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Octicon.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Compile Update="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="TwoFactorWindow.xaml.cs">
-      <DependentUpon>TwoFactorWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
+      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Controls\Octicons\OcticonPaths.resx">
-      <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>OcticonPaths.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <InProject>false</InProject>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Src\Microsoft.Alm.Authentication.csproj">
-      <Project>{19770407-B493-459D-BB4F-04FBEFB1BA13}</Project>
-      <Name>Microsoft.Alm.Authentication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Win32\Microsoft.Alm.Authentication.Win32.csproj">
-      <Project>{59289F97-3A84-4365-8642-88491F971546}</Project>
-      <Name>Microsoft.Alm.Authentication.Win32</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\octocat-mark.ico" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="..\..\Shared\Gui\Gui-Shared.projitems" Label="Shared" />
-  <Import Project="..\..\Shared\Gui.Win32\Gui.Win32.projitems" Label="Shared" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props'))" />
-  </Target>
 </Project>

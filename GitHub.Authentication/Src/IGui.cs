@@ -23,18 +23,27 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 **/
 
+using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using GitHub.Shared.Controls;
+using GitHub.Shared.ViewModels;
 using Microsoft.Alm.Authentication;
 
 namespace GitHub.Authentication
 {
-    public abstract class Base : Microsoft.Alm.Authentication.Base
+    public interface IGui : IRuntimeService
     {
-        protected Base(RuntimeContext context)
-            : base(context)
-        {
-        }
-
-        protected IGui Gui
-            => GetService<IGui>();
+        /// <summary>
+        /// Presents the user with `<paramref name="windowCreator"/>` with the `<paramref name="viewModel"/>`.
+        /// <para/>
+        /// Returns `<see langword="true"/>` if the user completed the dialog; otherwise `<see langword="false"/>` if the user canceled or abandoned the dialog.
+        /// </summary>
+        /// <param name="viewModel">The view model passed to the presented window.</param>
+        /// <param name="windowCreator">Creates the window `<paramref name="viewModel"/>` is passed to.</param>
+        bool ShowViewModel(DialogViewModel viewModel, Func<IAuthenticationDialogWindow> windowCreator);
     }
 }

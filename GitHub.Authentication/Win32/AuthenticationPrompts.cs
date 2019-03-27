@@ -34,6 +34,17 @@ namespace GitHub.Authentication
         public AuthenticationPrompts(RuntimeContext context, IntPtr parentHwnd)
             : base(context)
         {
+            var gui = GetService<IGui>();
+
+            if (gui is null)
+            {
+                // Since there's no pre-existing Gui service registered with the current
+                // context, we'll need to allocate and add one to it.
+                gui = new Gui(Context);
+
+                SetService(gui);
+            }
+
             _parentHwnd = parentHwnd;
         }
 

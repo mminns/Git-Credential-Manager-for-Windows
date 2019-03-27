@@ -35,18 +35,6 @@ using Microsoft.Alm.Authentication;
 
 namespace GitHub.Authentication
 {
-    public interface IGui : IRuntimeService
-    {
-        /// <summary>
-        /// Presents the user with `<paramref name="windowCreator"/>` with the `<paramref name="viewModel"/>`.
-        /// <para/>
-        /// Returns `<see langword="true"/>` if the user completed the dialog; otherwise `<see langword="false"/>` if the user canceled or abandoned the dialog.
-        /// </summary>
-        /// <param name="viewModel">The view model passed to the presented window.</param>
-        /// <param name="windowCreator">Creates the window `<paramref name="viewModel"/>` is passed to.</param>
-        bool ShowViewModel(DialogViewModel viewModel, Func<AuthenticationDialogWindow> windowCreator);
-    }
-
     internal class Gui : Microsoft.Alm.Authentication.Base, IGui
     {
         public Gui(RuntimeContext context)
@@ -56,7 +44,7 @@ namespace GitHub.Authentication
         public Type ServiceType
             => typeof(IGui);
 
-        public bool ShowViewModel(DialogViewModel viewModel, Func<AuthenticationDialogWindow> windowCreator)
+        public bool ShowViewModel(DialogViewModel viewModel, Func<IAuthenticationDialogWindow> windowCreator)
         {
             StartSTATask(() =>
             {
@@ -81,7 +69,7 @@ namespace GitHub.Authentication
                 UriParser.Register(new GenericUriParser(GenericUriParserOptions.GenericAuthority), "pack", -1);
             }
 
-            var appResourcesUri = new Uri("pack://application:,,,/GitHub.Authentication;component/AppResources.xaml", UriKind.RelativeOrAbsolute);
+            var appResourcesUri = new Uri("pack://application:,,,/GitHub.Authentication.Win32;component/AppResources.xaml", UriKind.RelativeOrAbsolute);
 
             // If we launch two dialogs in the same process (Credential followed by 2fa), calling new
             // App() throws an exception stating the Application class can't be created twice.

@@ -8,6 +8,7 @@
     xmlns:properties="clr-namespace:GitHub.Authentication.Properties"
     xmlns:sharedHelpers="clr-namespace:GitHub.Shared.Helpers"
     xmlns:sharedControls="clr-namespace:GitHub.Shared.Controls"
+    xmlns:properties1="clr-namespace:GitHub.Authentication.Properties;assembly=GitHub.Authentication"
     mc:Ignorable="d"
     d:DesignWidth="414"
     d:DesignHeight="440"
@@ -19,7 +20,7 @@
         <controls:OcticonImage Icon="logo_github" Style="{StaticResource GitHubLogo}" />
         <WrapPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="0,0,0,12">
             <TextBlock
-                Text="{x:Static properties:Resources.TwoFactorAuthText}"
+                Text="{x:Static properties1:Resources.TwoFactorAuthText}"
                 Padding="0"
                 Margin="0,0,12,0"
                 Style="{DynamicResource GitHubH1TextBlock}"
@@ -42,7 +43,7 @@
                     RelativeSource={RelativeSource Self},
                     Path=ToolTip}"
                 ToolTip="https://help.github.com/articles/about-two-factor-authentication/">
-                <TextBlock Text="{x:Static properties:Resources.LearnMoreLink}" />
+                <TextBlock Text="{x:Static properties1:Resources.LearnMoreLink}" />
             </Hyperlink>
         </TextBlock>
         <controls:TwoFactorInput
@@ -59,7 +60,7 @@
                 IsDefault="True"
                 Command="{Binding OkCommand}"
                 IsEnabled="{Binding IsValid, Mode=OneWay}"
-                Content="{x:Static properties:Resources.VerifyText}" />
+                Content="{x:Static properties1:Resources.VerifyText}" />
             <controls:OcticonCircleButton
                 TabIndex="3"
                 FontSize="12"
@@ -67,7 +68,7 @@
                 IsCancel="True"
                 Command="{Binding CancelCommand}"
                 Margin="18,0,0,0"
-                Content="{x:Static properties:Resources.CancelText}" />
+                Content="{x:Static properties1:Resources.CancelText}" />
         </StackPanel>
     </StackPanel>
 </sharedControls:DialogUserControl>

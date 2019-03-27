@@ -74,6 +74,10 @@
       <Project>{19770407-b493-459d-bb4f-04fbefb1ba13}</Project>
       <Name>Microsoft.Alm.Authentication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Win32\GitHub.Authentication.Win32.csproj">
+      <Project>{9ff7ef18-d1b8-4ecf-85d3-ea202004b1e7}</Project>
+      <Name>GitHub.Authentication.Win32</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

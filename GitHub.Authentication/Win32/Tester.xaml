@@ -9,7 +9,7 @@
         UseLayoutRounding="True"
         ResizeMode="NoResize"
         Title="GitHub Authentication Dialog Tester"
-        Icon="Assets/octocat-mark.ico"
+        Icon="pack://application:,,,/GitHub.Authentication.Win32;component/Assets/octocat-mark.ico"
         Height="420"
         Width="420">
     <DockPanel>

@@ -23,6 +23,10 @@
       <Project>{cf306116-bbf0-4cc7-afce-a506ac4752cb}</Project>
       <Name>GitHub.Authentication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Win32\GitHub.Authentication.Win32.csproj">
+      <Project>{9ff7ef18-d1b8-4ecf-85d3-ea202004b1e7}</Project>
+      <Name>GitHub.Authentication.Win32</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">

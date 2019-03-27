@@ -62,7 +62,7 @@ namespace GitHub.Authentication.Test
         public Type ServiceType
             => typeof(IGui);
 
-        public bool ShowViewModel(DialogViewModel viewModel, Func<AuthenticationDialogWindow> windowCreator)
+        public bool ShowViewModel(DialogViewModel viewModel, Func<IAuthenticationDialogWindow> windowCreator)
         {
             _context.Trace.WriteLine($"capture {nameof(ShowViewModel)}.");
 

@@ -58,7 +58,7 @@ namespace GitHub.Authentication.Test
         public Type ServiceType
             => typeof(IGui);
 
-        public bool ShowViewModel(DialogViewModel viewModel, Func<AuthenticationDialogWindow> windowCreator)
+        public bool ShowViewModel(DialogViewModel viewModel, Func<IAuthenticationDialogWindow> windowCreator)
         {
             if (!TryGetNext(out CapturedGuiOperation operation))
                 throw new ReplayNotFoundException($"Failed to find next `{nameof(CapturedGuiOperation)}`.");
