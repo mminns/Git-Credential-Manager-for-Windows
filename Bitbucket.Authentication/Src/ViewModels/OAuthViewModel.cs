@@ -44,7 +44,11 @@ namespace Atlassian.Bitbucket.Authentication.ViewModels
         {
             _resultType = resultType;
 
-            OkCommand = new ActionCommand(_ => Result = AuthenticationDialogResult.Ok);
+            OkCommand = new ActionCommand(_ =>
+            {
+
+                Result = AuthenticationDialogResult.Ok;
+            });
             CancelCommand = new ActionCommand(_ => Result = AuthenticationDialogResult.Cancel);
 
             // just a notification dialog so its always valid.

@@ -27,11 +27,11 @@ namespace Microsoft.Alm.Cli
             var logger = new Logger();
             var azurePrompts = new AzureDevOpsAuthenticationPrompts(context);
             var gitHubPrompts = new GitHubAuthenticationPrompts(context);
-            var bitbucketPrompts = new BitbucketAuthenticationPrompts(context, IntPtr.Zero);
-
-            var program = new Program(context, logger, azurePrompts, gitHubPrompts, bitbucketPrompts);
-
-            program.Run(args, new Installer(program));
+            using (var bitbucketPrompts = new BitbucketAuthenticationPrompts(context, IntPtr.Zero))
+            {
+                var program = new Program(context, logger, azurePrompts, gitHubPrompts, bitbucketPrompts);
+                program.Run(args, new Installer(program));
+            }
         }
 
     }

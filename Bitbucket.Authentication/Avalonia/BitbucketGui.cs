@@ -15,7 +15,7 @@ using Rheic;
 
 namespace Atlassian.Bitbucket.Authentication.Avalonia
 {
-    public class BitbucketGui : IGui
+    public class BitbucketGui : IGui, IDisposable
     {
         private RuntimeContext context;
         private AvaloniaGateway _avaloniaGateway = new AvaloniaGateway();
@@ -74,5 +74,9 @@ namespace Atlassian.Bitbucket.Authentication.Avalonia
                 .UseReactiveUI()
                 .LogToDebug();
 
+        public void Dispose()
+        {
+            _avaloniaGateway.Close();
+        }
     }
 }
