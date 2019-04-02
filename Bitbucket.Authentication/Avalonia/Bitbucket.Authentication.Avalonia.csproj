@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFrameworks>netcoreapp2.0;net461</TargetFrameworks>
+    <RootNamespace>Atlassian.Bitbucket.Authentication.Avalonia</RootNamespace>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="**\*.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="**\*.xaml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="App.xaml" />
+    <None Remove="Assets\ADG3\Images\Atlassian-horizontal-white%402x-rgb.png" />
+    <None Remove="Assets\ADG3\Images\Bitbucket-16x16.ico" />
+    <None Remove="Assets\ADG3\Images\error.png" />
+    <None Remove="Controls\CredentialsControl.xaml" />
+    <None Remove="Controls\OAuthControl.xaml" />
+    <None Remove="Views\CredentialsWindow.xaml" />
+    <None Remove="Views\OAuthWindow.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\ADG3\Images\Atlassian-horizontal-white@2x-rgb.png" />
+    <EmbeddedResource Include="Assets\ADG3\Images\Bitbucket-16x16.ico" />
+    <EmbeddedResource Include="Assets\ADG3\Images\error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.7.1-cibuild0001742-beta" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.7.1-cibuild0001742-beta" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.7.1-cibuild0001742-beta" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Src\Microsoft.Alm.Authentication.csproj" />
+    <ProjectReference Include="..\Src\Bitbucket.Authentication.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="App.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\OAuthControl.xaml.cs">
+      <DependentUpon>OAuthControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\OAuthWindow.xaml.cs">
+      <DependentUpon>OAuthWindow.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\OAuthControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\CredentialsControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\OAuthWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\CredentialsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

@@ -30,7 +30,7 @@ namespace Atlassian.Bitbucket.Authentication.Rest
             var apiUrl = new Uri(restRootUrl, UserUrl);
             var requestUri = targetUri.CreateWith(apiUrl);
 
-            using (var response = await Network.HttpGetAsync(requestUri, options))
+            using (var response = await Network.HttpGetAsync(requestUri, options).ConfigureAwait(false))
             {
                 Trace.WriteLine($"server responded with {response.StatusCode}.");
 

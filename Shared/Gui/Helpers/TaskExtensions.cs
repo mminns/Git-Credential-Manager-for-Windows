@@ -32,10 +32,10 @@ namespace Atlassian.Shared.Helpers
     {
         public static async Task<TResult> RunWithCancellation<TResult>(this Task<TResult> task, CancellationToken cancellationToken)
         {
-            var completedTask = await Task.WhenAny(task, cancellationToken.AsTask());
+            var completedTask = await Task.WhenAny(task, cancellationToken.AsTask()).ConfigureAwait(false);
             if (completedTask == task)
             {
-                return await task;  // Very important in order to propagate exceptions
+                return await task.ConfigureAwait(false);  // Very important in order to propagate exceptions
             }
             else
             {

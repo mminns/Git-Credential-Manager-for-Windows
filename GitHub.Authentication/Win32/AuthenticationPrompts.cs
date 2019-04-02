@@ -29,7 +29,7 @@ using Microsoft.Alm.Authentication;
 
 namespace GitHub.Authentication
 {
-    public class AuthenticationPrompts : Base
+    public class AuthenticationPrompts : Base, IAuthenticationPrompts
     {
         public AuthenticationPrompts(RuntimeContext context, IntPtr parentHwnd)
             : base(context)

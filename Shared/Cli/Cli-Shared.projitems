@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AuthorityType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ILogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interactivity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NativeMethods.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OperationArguments.cs" />

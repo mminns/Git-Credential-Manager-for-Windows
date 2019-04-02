@@ -35,7 +35,7 @@ using Git = Microsoft.Alm.Authentication.Git;
 
 namespace Microsoft.Alm.Cli
 {
-    internal class Installer
+    internal class Installer : IInstaller
     {
         internal const string ParamPathKey = "--path";
         internal const string ParamPassiveKey = "--passive";
@@ -227,7 +227,7 @@ namespace Microsoft.Alm.Cli
                 {
                     if (!Program.Storage.DirectoryExists(_customPath))
                     {
-                        Program.LogEvent("No Git installation found, unable to continue deployment.", EventLogEntryType.Error);
+                        Program.LogEvent("No Git installation found, unable to continue deployment.", "Ërror");
                         Program.Out.WriteLine();
                         Program.WriteLine($"Fatal: custom path does not exist: '{_customPath}'. {FailFace}");
                         Pause();
@@ -254,7 +254,7 @@ namespace Microsoft.Alm.Cli
                         };
                     }
 
-                    Program.LogEvent($"Custom path deployed to: '{_customPath}'", EventLogEntryType.Information);
+                    Program.LogEvent($"Custom path deployed to: '{_customPath}'", "Information");
                 }
                 // since no custom installation path was supplied, use default logic
                 else
@@ -273,7 +273,7 @@ namespace Microsoft.Alm.Cli
 
                 if (installations == null)
                 {
-                    Program.LogEvent("No Git installation found, unable to continue.", EventLogEntryType.Error);
+                    Program.LogEvent("No Git installation found, unable to continue.", "Ërror");
                     Program.Out.WriteLine();
                     Program.WriteLine("Fatal: Git was not detected, unable to continue. {FailFace}");
                     Pause();
@@ -314,17 +314,17 @@ namespace Microsoft.Alm.Cli
                             }
                         }
 
-                        Program.LogEvent($"Deployment to '{installation.Path}' succeeded.", EventLogEntryType.Information);
+                        Program.LogEvent($"Deployment to '{installation.Path}' succeeded.", "Information");
                         Program.Out.WriteLine($"     {copiedCount} file(s) copied");
                     }
                     else if (_isForced)
                     {
-                        Program.LogEvent($"Deployment to '{installation.Path}' failed.", EventLogEntryType.Warning);
+                        Program.LogEvent($"Deployment to '{installation.Path}' failed.", "Warning");
                         Program.WriteLine($"  deployment failed. {FailFace}");
                     }
                     else
                     {
-                        Program.LogEvent($"Deployment to '{installation.Path}' failed.", EventLogEntryType.Error);
+                        Program.LogEvent($"Deployment to '{installation.Path}' failed.", "Ërror");
                         Program.WriteLine($"  deployment failed. {FailFace}");
                         Pause();
 
@@ -365,17 +365,17 @@ namespace Microsoft.Alm.Cli
                         }
                     }
 
-                    Program.LogEvent($"Deployment to '{UserBinPath}' succeeded.", EventLogEntryType.Information);
+                    Program.LogEvent($"Deployment to '{UserBinPath}' succeeded.", "Information");
                     Program.Out.WriteLine($"     {copiedCount} file(s) copied");
                 }
                 else if (_isForced)
                 {
-                    Program.LogEvent($"Deployment to '{UserBinPath}' failed.", EventLogEntryType.Warning);
+                    Program.LogEvent($"Deployment to '{UserBinPath}' failed.", "Warning");
                     Program.WriteLine($"  deployment failed. {FailFace}");
                 }
                 else
                 {
-                    Program.LogEvent($"Deployment to '{UserBinPath}' failed.", EventLogEntryType.Error);
+                    Program.LogEvent($"Deployment to '{UserBinPath}' failed.", "Ërror");
                     Program.WriteLine($"  deployment failed. {FailFace}");
                     Pause();
 
@@ -409,17 +409,17 @@ namespace Microsoft.Alm.Cli
                             }
                         }
 
-                        Program.LogEvent($"Deployment to '{CygwinPath}' succeeded.", EventLogEntryType.Information);
+                        Program.LogEvent($"Deployment to '{CygwinPath}' succeeded.", "Information");
                         Program.Out.WriteLine($"     {copiedCount} file(s) copied");
                     }
                     else if (_isForced)
                     {
-                        Program.LogEvent($"Deployment to '{CygwinPath}' failed.", EventLogEntryType.Warning);
+                        Program.LogEvent($"Deployment to '{CygwinPath}' failed.", "Warning");
                         Program.WriteLine($"  deployment failed. {FailFace}");
                     }
                     else
                     {
-                        Program.LogEvent($"Deployment to '{CygwinPath}' failed.", EventLogEntryType.Error);
+                        Program.LogEvent($"Deployment to '{CygwinPath}' failed.", "Ërror");
                         Program.WriteLine($"  deployment failed. {FailFace}");
                         Pause();
 
@@ -450,7 +450,7 @@ namespace Microsoft.Alm.Cli
                 // all necessary content has been deployed to the system
                 Result = ResultValue.Success;
 
-                Program.LogEvent($"{Program.Title} v{Program.Version.ToString(3)} successfully deployed.", EventLogEntryType.Information);
+                Program.LogEvent($"{Program.Title} v{Program.Version.ToString(3)} successfully deployed.", "Information");
                 Program.Out.WriteLine();
                 Program.Out.WriteLine($"Success! {Program.Title} was deployed! {TadaFace}");
                 Pause();
@@ -481,7 +481,7 @@ namespace Microsoft.Alm.Cli
                 || (netfxString = Registry.GetValue(NetFxKeyFull, ValueName, DefaultValue) as string) != null
                     && Version.TryParse(netfxString, out netfxVerson))
             {
-                Program.LogEvent($"NetFx version {netfxVerson.ToString(3)} detected.", EventLogEntryType.Information);
+                Program.LogEvent($"NetFx version {netfxVerson.ToString(3)} detected.", "Information");
                 Program.Trace.WriteLine($"NetFx version {netfxVerson.ToString(3)} detected.");
 
                 version = netfxVerson;
@@ -553,7 +553,7 @@ namespace Microsoft.Alm.Cli
 
                 if (installations == null)
                 {
-                    Program.LogEvent($"Git was not detected, unable to continue with removal.", EventLogEntryType.Error);
+                    Program.LogEvent($"Git was not detected, unable to continue with removal.", "Ërror");
                     Program.Out.WriteLine();
                     Program.WriteLine("fatal: Git was not detected, unable to continue. U_U");
                     Pause();
@@ -714,7 +714,7 @@ namespace Microsoft.Alm.Cli
                 // all necessary content has been deployed to the system
                 Result = ResultValue.Success;
 
-                Program.LogEvent($"{Program.Title} successfully removed.", EventLogEntryType.Information);
+                Program.LogEvent($"{Program.Title} successfully removed.", "Information");
 
                 Program.Out.WriteLine();
                 Program.Out.WriteLine($"Success! {Program.Title} was removed! {TadaFace}");
@@ -1080,19 +1080,7 @@ namespace Microsoft.Alm.Cli
             }
         }
 
-        public enum ResultValue : int
-        {
-            UnknownFailure = -1,
-            Success = 0,
-            InvalidCustomPath,
-            DeploymentFailed,
-            NetFxNotFound,
-            Unprivileged,
-            GitConfigGlobalFailed,
-            GitConfigSystemFailed,
-            GitNotFound,
-            RemovalFailed,
-        }
+        
 
         public enum GitConfigAction
         {

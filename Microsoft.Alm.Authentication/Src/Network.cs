@@ -337,7 +337,7 @@ namespace Microsoft.Alm.Authentication
         Task<INetworkResponseMessage> HttpPostAsync(TargetUri targetUri, StringContent content);
     }
 
-    internal class Network : Base, INetwork
+    public class Network : Base, INetwork
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         private static readonly AuthenticationHeaderValue[] NullResult = new AuthenticationHeaderValue[0];

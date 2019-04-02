@@ -31,7 +31,7 @@ using static System.Diagnostics.Debug;
 
 namespace Microsoft.Alm.Authentication
 {
-    internal class Storage : Base, IStorage
+    public abstract class Storage : Base, IStorage
     {
         public Storage(RuntimeContext context)
             : base(context)
@@ -209,14 +209,8 @@ namespace Microsoft.Alm.Authentication
             return purgeCount;
         }
 
-        public bool TryReadSecureData(string key, out string name, out byte[] data)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract bool TryReadSecureData(string key, out string name, out byte[] data);
 
-        public bool TryWriteSecureData(string key, string name, byte[] data)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract bool TryWriteSecureData(string key, string name, byte[] data);
     }
 }

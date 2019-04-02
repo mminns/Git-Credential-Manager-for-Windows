@@ -45,8 +45,15 @@ namespace Atlassian.Bitbucket.Authentication.ViewModels
 
         public CredentialsViewModel(string username)
         {
-            LoginCommand = new ActionCommand(_ => Result = AuthenticationDialogResult.Ok);
-            CancelCommand = new ActionCommand(_ => Result = AuthenticationDialogResult.Cancel);
+            LoginCommand = new ActionCommand(_ =>
+            {
+                Result = AuthenticationDialogResult.Ok;
+            });
+            CancelCommand = new ActionCommand(_ =>
+            {
+
+                Result = AuthenticationDialogResult.Cancel;
+            });
 
             LoginValidator = PropertyValidator.For(this, x => x.Login).Required(Resources.LoginRequired);
 

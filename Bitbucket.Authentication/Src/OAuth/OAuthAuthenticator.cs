@@ -71,9 +71,9 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
         /// </exception>
         public async Task<AuthenticationResult> GetAuthAsync(TargetUri targetUri, TokenScope scope, CancellationToken cancellationToken)
         {
-            var authToken = await Authorize(targetUri, scope, cancellationToken);
+            var authToken = await Authorize(targetUri, scope, cancellationToken).ConfigureAwait(false);
 
-            return await GetAccessToken(targetUri, authToken);
+            return await GetAccessToken(targetUri, authToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
         /// <returns></returns>
         public async Task<AuthenticationResult> RefreshAuthAsync(TargetUri targetUri, string refreshToken, CancellationToken cancellationToken)
         {
-            return await RefreshAccessToken(targetUri, refreshToken);
+            return await RefreshAccessToken(targetUri, refreshToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
             try
             {
                 // Start a temporary server to handle the callback request and await for the reply.
-                rawUrlData = await SimpleServer.WaitForURLAsync(CallbackUri, cancellationToken);
+                rawUrlData = await SimpleServer.WaitForURLAsync(CallbackUri, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -177,7 +177,7 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
             var requestUri = targetUri.CreateWith(grantUri);
             var content = GetGrantRequestContent(authCode);
 
-            using (var response = await Network.HttpPostAsync(requestUri, content, options))
+            using (var response = await Network.HttpPostAsync(requestUri, content, options).ConfigureAwait(false))
             {
                 Trace.WriteLine($"server responded with {response.StatusCode}.");
 
@@ -228,7 +228,7 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
             };
             var content = GetRefreshRequestContent(currentRefreshToken);
 
-            using (var response = await Network.HttpPostAsync(requestUri, content, options))
+            using (var response = await Network.HttpPostAsync(requestUri, content, options).ConfigureAwait(false))
             {
                 Trace.WriteLine($"server responded with {response.StatusCode}.");
 

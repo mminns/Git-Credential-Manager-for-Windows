@@ -53,14 +53,14 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
             string rawUrl = "";
             try
             {
-                var context = await listener.GetContextAsync().RunWithCancellation(cancellationToken);
+                var context = await listener.GetContextAsync().RunWithCancellation(cancellationToken).ConfigureAwait(false);
                 rawUrl = context.Request.RawUrl;
 
                 // Serve back a simple authentication message.
                 var html = GetSuccessString();
                 var buffer = System.Text.Encoding.UTF8.GetBytes(html);
                 context.Response.ContentLength64 = buffer.Length;
-                await context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length, cancellationToken);
+                await context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false);
                 context.Response.Close();
             }
             catch (TimeoutException ex)

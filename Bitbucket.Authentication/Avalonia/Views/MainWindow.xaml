@@ -1,0 +1,13 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Bitbucket.Authentication.Avalonia.ViewModels;assembly=Bitbucket.Authentication.Avalonia"
+        Icon="resm:Atlassian.Bitbucket.Authentication.Avalonia.Assets.avalonia-logo.ico"
+        Title="Bitbucket.Authentication.Avalonia">
+
+  <Design.DataContext>
+    <vm:MainWindowViewModel/>
+  </Design.DataContext>
+  
+  <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+  
+</Window>

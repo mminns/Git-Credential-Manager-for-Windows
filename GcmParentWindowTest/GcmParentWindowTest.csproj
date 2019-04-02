@@ -99,9 +99,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cli\Manager\Cli-Manager.csproj">
+    <ProjectReference Include="..\Cli\Manager.Win32\Cli-Manager.Win32.csproj">
       <Project>{19770407-63d4-40a8-a9df-f1c4b473308a}</Project>
-      <Name>Cli-Manager</Name>
+      <Name>Cli-Manager.Win32</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

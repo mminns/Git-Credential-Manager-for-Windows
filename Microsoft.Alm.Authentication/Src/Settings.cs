@@ -38,7 +38,7 @@ namespace Microsoft.Alm.Authentication
         string GetFolderPath(Environment.SpecialFolder folder);
     }
 
-    internal class Settings : Base, ISettings
+    public class Settings : Base, ISettings
     {
         public Settings(RuntimeContext context)
             : base(context)

@@ -53,7 +53,7 @@ namespace Microsoft.Alm.Cli
             return false;
         }
 
-        public static bool OAuthPrompt(Program program, string title, TargetUri targetUri, Bitbucket.AuthenticationResultType resultType, string username)
+        public static bool OAuthPrompt(Program program, string title, TargetUri targetUri, Atlassian.Bitbucket.Authentication.AuthenticationResultType resultType, string username)
         {
             const int BufferReadSize = 16 * 1024;
 

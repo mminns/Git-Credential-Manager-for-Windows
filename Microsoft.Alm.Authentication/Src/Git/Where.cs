@@ -150,7 +150,7 @@ namespace Microsoft.Alm.Authentication.Git
         string Home();
     }
 
-    internal abstract class Where : Base, IWhere
+    public abstract class Where : Base, IWhere
     {
         public Where(RuntimeContext context)
             : base(context)

@@ -12,6 +12,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Functions\**" />
+    <EmbeddedResource Remove="Functions\**" />
+    <None Remove="Functions\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Assets\auth.html" />
   </ItemGroup>
   <ItemGroup>

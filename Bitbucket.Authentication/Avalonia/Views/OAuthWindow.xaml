@@ -1,0 +1,18 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:bbvm="clr-namespace:Atlassian.Bitbucket.Authentication.ViewModels;assembly=Bitbucket.Authentication"
+        xmlns:bbc="clr-namespace:Atlassian.Bitbucket.Authentication.Avalonia.Controls;assembly=Bitbucket.Authentication.Avalonia"
+        Icon="resm:Atlassian.Bitbucket.Authentication.Avalonia.Assets.ADG3.Images.Bitbucket-16x16.ico"
+        Title="Bitbucket Login"
+        MinHeight="380"
+        Height="420"
+        Width="420">
+
+  <Design.DataContext>
+    <bbvm:OAuthViewModel/>
+  </Design.DataContext>
+
+  <Grid>
+    <bbc:OAuthControl/>
+  </Grid>
+</Window>

@@ -19,7 +19,7 @@ namespace Atlassian.Bitbucket.Authentication.BasicAuth
         public async Task<AuthenticationResult> GetAuthAsync(TargetUri targetUri, TokenScope scope, int requestTimeout, Uri restRootUrl, Credential credentials)
         {
             // Use the provided username and password and attempt a basic authentication request to a known REST API resource.
-            var result = await ( new RestClient(Context)).TryGetUser(targetUri, requestTimeout, restRootUrl, credentials);
+            var result = await ( new RestClient(Context)).TryGetUser(targetUri, requestTimeout, restRootUrl, credentials).ConfigureAwait(false);
 
             if (result.Type.Equals(AuthenticationResultType.Success))
             {

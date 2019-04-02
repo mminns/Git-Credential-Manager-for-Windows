@@ -29,7 +29,6 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Alm.Authentication;
-using Microsoft.Alm.Authentication.Win32;
 using static System.Globalization.CultureInfo;
 using Azure = AzureDevOps.Authentication;
 using Git = Microsoft.Alm.Authentication.Git;
@@ -56,15 +55,6 @@ namespace Microsoft.Alm.Cli
             _validateCredentials = true;
             _devopsTokenScope = Program.DevOpsCredentialScope;
         }
-
-        /// <summary>
-        /// Creates a new instance of `<see cref="OperationArguments"/>` using `<seealso cref="RuntimeContext.Default"/>`, and with default values.
-        /// <para/>
-        /// Use `<see cref="ReadInput(Stream)"/>` to populate the instance's properties.
-        /// </summary>
-        public OperationArguments()
-            : this(Win32RuntimeContext.Default)
-        { }
 
         private AuthorityType _authorityType;
         private Git.Configuration _configuration;

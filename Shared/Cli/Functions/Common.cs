@@ -31,7 +31,7 @@ using System.Threading.Tasks;
 using AzureDevOps.Authentication;
 using Microsoft.Alm.Authentication;
 using Azure = AzureDevOps.Authentication;
-using Bitbucket = Atlassian.Bitbucket.Authentication;
+using AtlassianBitbucket = Atlassian.Bitbucket.Authentication;
 using Git = Microsoft.Alm.Authentication.Git;
 using Github = GitHub.Authentication;
 
@@ -58,18 +58,18 @@ namespace Microsoft.Alm.Cli
             var basicCredentialCallback = (operationArguments.UseModalUi)
                     ? new AcquireCredentialsDelegate(program.ModalPromptForCredentials)
                     : new AcquireCredentialsDelegate(program.BasicCredentialPrompt);
-            
-            var bitbucketPrompts = new Bitbucket.AuthenticationPrompts(program.Context, operationArguments.ParentHwnd);
+
+            var bitbucketPrompts = program.BitbucketPrompts; // new Bitbucket.AuthenticationPrompts(program.Context, operationArguments.ParentHwnd);
 
             var bitbucketCredentialCallback = (operationArguments.UseModalUi)
                     ? bitbucketPrompts.CredentialModalPrompt
-                    : new Bitbucket.Authentication.AcquireCredentialsDelegate(program.BitbucketCredentialPrompt);
+                    : new AtlassianBitbucket.Authentication.AcquireCredentialsDelegate(program.BitbucketCredentialPrompt);
 
             var bitbucketOauthCallback = (operationArguments.UseModalUi)
                     ? bitbucketPrompts.AuthenticationOAuthModalPrompt
-                    : new Bitbucket.Authentication.AcquireAuthenticationOAuthDelegate(program.BitbucketOAuthPrompt);
+                    : new AtlassianBitbucket.Authentication.AcquireAuthenticationOAuthDelegate(program.BitbucketOAuthPrompt);
 
-            var githubPrompts = new Github.AuthenticationPrompts(program.Context, operationArguments.ParentHwnd);
+            var githubPrompts = program.GitHubPrompts; // new Github.AuthenticationPrompts(program.Context, operationArguments.ParentHwnd);
 
             var githubCredentialCallback = (operationArguments.UseModalUi)
                     ? new Github.Authentication.AcquireCredentialsDelegate(githubPrompts.CredentialModalPrompt)
@@ -91,13 +91,15 @@ namespace Microsoft.Alm.Cli
                                                                              Program.DevOpsCredentialScope,
                                                                              new SecretStore(program.Context,
                                                                                              secretsNamespace,
-                                                                                             Azure.Authentication.UriNameConversion),
-                                                                             () =>
-                                                                             {
-                                                                                 //TODO HACK MMINNS WIN32 - forces the creation of the Adal instance
-                                                                                 // consider extending to use the same callback pattern as the other providers?
-                                                                                 var azurePrompts = new Azure.AuthenticationPrompts(program.Context);
-                                                                             })
+                                                                                             Azure.Authentication.UriNameConversion)
+                                                                             // ,
+                                                                             //() =>
+                                                                             //{
+                                                                             //    //TODO HACK MMINNS WIN32 - forces the creation of the Adal instance
+                                                                             //    // consider extending to use the same callback pattern as the other providers?
+                                                                             //    var azurePrompts = new AuthenticationPrompts(program.Context);
+                                                                             //}
+                                                                             )
                              ?? Github.Authentication.GetAuthentication(program.Context,
                                                                         operationArguments.TargetUri,
                                                                         Program.GitHubCredentialScope,
@@ -107,7 +109,7 @@ namespace Microsoft.Alm.Cli
                                                                         githubCredentialCallback,
                                                                         githubAuthcodeCallback,
                                                                         null)
-                            ?? Bitbucket.Authentication.GetAuthentication(program.Context,
+                            ?? AtlassianBitbucket.Authentication.GetAuthentication(program.Context,
                                                                           operationArguments.TargetUri,
                                                                           new SecretStore(program.Context, 
                                                                                           secretsNamespace, 
@@ -133,7 +135,7 @@ namespace Microsoft.Alm.Cli
                             operationArguments.Authority = AuthorityType.GitHub;
                             goto case AuthorityType.GitHub;
                         }
-                        else if (authority is Bitbucket.Authentication)
+                        else if (authority is AtlassianBitbucket.Authentication)
                         {
                             operationArguments.Authority = AuthorityType.Bitbucket;
                             goto case AuthorityType.Bitbucket;
@@ -199,7 +201,7 @@ namespace Microsoft.Alm.Cli
                     program.Trace.WriteLine($"authority for '{operationArguments.TargetUri}'  is Bitbucket.");
 
                     // Return a Bitbucket authentication object.
-                    return authority ?? new Bitbucket.Authentication(program.Context,
+                    return authority ?? new AtlassianBitbucket.Authentication(program.Context,
                                                                      new SecretStore(program.Context,
                                                                                      secretsNamespace,
                                                                                      Secret.UriToIdentityUrl),
@@ -278,7 +280,7 @@ namespace Microsoft.Alm.Cli
                 case AuthorityType.Bitbucket:
                 {
                     program.Trace.WriteLine($"deleting Bitbucket credentials for '{operationArguments.TargetUri}'.");
-                    var bbAuth = authentication as Bitbucket.Authentication;
+                    var bbAuth = authentication as AtlassianBitbucket.Authentication;
                     return await bbAuth.DeleteCredentials(operationArguments.TargetUri, operationArguments.Username);
                 }
             }
@@ -292,7 +294,7 @@ namespace Microsoft.Alm.Cli
                 throw new ArgumentNullException(nameof(exception));
 
             program.Trace.WriteException(exception, path, line, name);
-            program.LogEvent(exception.ToString(), EventLogEntryType.Error);
+            program.LogEvent(exception.ToString(), "Error");
 
             string message = string.IsNullOrWhiteSpace(exception.Message)
                 ? $"{exception.GetType().Name} encountered."
@@ -704,24 +706,6 @@ namespace Microsoft.Alm.Cli
             }
         }
 
-        public static void LogEvent(Program program, string message, EventLogEntryType eventType)
-        {
-            if (program is null)
-                throw new ArgumentNullException(nameof(program));
-            if (message is null)
-                throw new ArgumentNullException(nameof(message));
-
-            /*** try-squelch due to UAC issues which require a proper installer to work around ***/
-
-            program.Trace.WriteLine(message);
-
-            try
-            {
-                EventLog.WriteEntry(Program.EventSource, message, eventType);
-            }
-            catch { /* squelch */ }
-        }
-
         public static void PrintArgs(Program program, string[ ] args)
         {
             if (program is null)
@@ -791,7 +775,7 @@ namespace Microsoft.Alm.Cli
                     else
                     {
                         program.Trace.WriteLine($"credentials for '{operationArguments.TargetUri}' not found.");
-                        program.LogEvent($"Failed to retrieve credentials for '{operationArguments.TargetUri}'.", EventLogEntryType.FailureAudit);
+                        program.LogEvent($"Failed to retrieve credentials for '{operationArguments.TargetUri}'.", "FailureAudit");
                     }
                 }
                 break;
@@ -822,12 +806,12 @@ namespace Microsoft.Alm.Cli
                                 || await aadAuth.ValidateCredentials(operationArguments.TargetUri, credentials))))
                     {
                         program.Trace.WriteLine($"credentials for '{operationArguments.TargetUri}' found.");
-                        program.LogEvent($"Azure Directory credentials  for '{operationArguments.TargetUri}' successfully retrieved.", EventLogEntryType.SuccessAudit);
+                        program.LogEvent($"Azure Directory credentials  for '{operationArguments.TargetUri}' successfully retrieved.", "SuccessAudit");
                     }
                     else
                     {
                         program.Trace.WriteLine($"credentials for '{operationArguments.TargetUri}' not found.");
-                        program.LogEvent($"Failed to retrieve Azure Directory credentials for '{operationArguments.TargetUri}'.", EventLogEntryType.FailureAudit);
+                        program.LogEvent($"Failed to retrieve Azure Directory credentials for '{operationArguments.TargetUri}'.", "FailureAudit");
                     }
                 }
                 break;
@@ -854,12 +838,12 @@ namespace Microsoft.Alm.Cli
                                 || await msaAuth.ValidateCredentials(operationArguments.TargetUri, credentials))))
                     {
                         program.Trace.WriteLine($"credentials for '{operationArguments.TargetUri}' found.");
-                        program.LogEvent($"Microsoft Live credentials for '{operationArguments.TargetUri}' successfully retrieved.", EventLogEntryType.SuccessAudit);
+                        program.LogEvent($"Microsoft Live credentials for '{operationArguments.TargetUri}' successfully retrieved.", "SuccessAudit");
                     }
                     else
                     {
                         program.Trace.WriteLine($"credentials for '{operationArguments.TargetUri}' not found.");
-                        program.LogEvent($"Failed to retrieve Microsoft Live credentials for '{operationArguments.TargetUri}'.", EventLogEntryType.FailureAudit);
+                        program.LogEvent($"Failed to retrieve Microsoft Live credentials for '{operationArguments.TargetUri}'.", "FailureAudit");
                     }
                 }
                 break;
@@ -878,19 +862,19 @@ namespace Microsoft.Alm.Cli
                                 || await ghAuth.ValidateCredentials(operationArguments.TargetUri, credentials))))
                     {
                         program.Trace.WriteLine($"credentials for '{operationArguments.TargetUri}' found.");
-                        program.LogEvent($"GitHub credentials for '{operationArguments.TargetUri}' successfully retrieved.", EventLogEntryType.SuccessAudit);
+                        program.LogEvent($"GitHub credentials for '{operationArguments.TargetUri}' successfully retrieved.", "SuccessAudit");
                     }
                     else
                     {
                         program.Trace.WriteLine($"credentials for '{operationArguments.TargetUri}' not found.");
-                        program.LogEvent($"Failed to retrieve GitHub credentials for '{operationArguments.TargetUri}'.", EventLogEntryType.FailureAudit);
+                        program.LogEvent($"Failed to retrieve GitHub credentials for '{operationArguments.TargetUri}'.", "FailureAudit");
                     }
                 }
                 break;
 
                 case AuthorityType.Bitbucket:
                 {
-                    var bbcAuth = authentication as Bitbucket.Authentication;
+                    var bbcAuth = authentication as AtlassianBitbucket.Authentication;
 
                     if (((operationArguments.Interactivity != Interactivity.Always)
                             && ((credentials = await bbcAuth.GetCredentials(operationArguments.TargetUri, operationArguments.Username)) != null)
@@ -908,11 +892,11 @@ namespace Microsoft.Alm.Cli
                         {
                             credentials = new Credential(operationArguments.Username, credentials.Password);
                         }
-                        program.LogEvent($"Bitbucket credentials for '{operationArguments.TargetUri}' successfully retrieved.", EventLogEntryType.SuccessAudit);
+                        program.LogEvent($"Bitbucket credentials for '{operationArguments.TargetUri}' successfully retrieved.", "SuccessAudit");
                     }
                     else
                     {
-                        program.LogEvent($"Failed to retrieve Bitbucket credentials for '{operationArguments.TargetUri}'.", EventLogEntryType.FailureAudit);
+                        program.LogEvent($"Failed to retrieve Bitbucket credentials for '{operationArguments.TargetUri}'.", "FailureAudit");
                     }
                 }
                 break;

@@ -39,7 +39,7 @@ namespace Microsoft.Alm.Cli
 
         internal delegate bool BitbucketCredentialPromptDelegate(Program program, string titleMessage, TargetUri targetUri, out string username, out string password);
 
-        internal delegate bool BitbucketOAuthPromptDelegate(Program program, string title, TargetUri targetUri, Bitbucket.AuthenticationResultType resultType, string username);
+        internal delegate bool BitbucketOAuthPromptDelegate(Program program, string title, TargetUri targetUri, Atlassian.Bitbucket.Authentication.AuthenticationResultType resultType, string username);
 
         internal delegate Task<BaseAuthentication> CreateAuthenticationDelegate(Program program, OperationArguments operationArguments);
 
@@ -65,7 +65,7 @@ namespace Microsoft.Alm.Cli
 
         internal delegate Task LoadOperationArgumentsDelegate(Program program, OperationArguments operationArguments);
 
-        internal delegate void LogEventDelegate(Program program, string message, EventLogEntryType eventType);
+        internal delegate void LogEventDelegate(Program program, string message, string eventType);
 
         internal delegate bool ModalPromptDisplayDialogDelegate(Program program,
                                                                 ref NativeMethods.CredentialUiInfo credUiInfo,

@@ -2,7 +2,7 @@
 
 namespace AzureDevOps.Authentication
 {
-    public class AuthenticationPrompts : Base
+    public class AuthenticationPrompts : Base, IAuthenticationPrompts
     {
         public AuthenticationPrompts(RuntimeContext context) : base(context)
         {

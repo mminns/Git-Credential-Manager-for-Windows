@@ -1,89 +1,48 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>git-credential-manager</AssemblyName>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <NuGetPackageImportStamp />
     <OutputType>Exe</OutputType>
-    <ProjectGuid>{19770407-63D4-40A8-A9DF-F1C4B473308A}</ProjectGuid>
-    <ProjectName>Cli-Manager</ProjectName>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>Microsoft.Alm.Cli</RootNamespace>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <AssemblyName>git-credential-manager</AssemblyName>
   </PropertyGroup>
-  <Import Project="..\..\build.props" />
-  <PropertyGroup>
-    <StartupObject>Microsoft.Alm.Cli.Program</StartupObject>
-    <ApplicationIcon>..\..\Assets\gcmicon.ico</ApplicationIcon>
-    <ProjectDir>$(MSBuildThisFileDirectory)</ProjectDir>
-    <OutputPath>$(ProjectDir)$(OutputPath)</OutputPath>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <StartArguments Condition=" '$(StartArguments)' == '' OR '$(StartArguments)' == '*Undefined*' ">get</StartArguments>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\AzureDevOps.Authentication\Win32\AzureDevOps.Authentication.Win32.csproj">
-      <Project>{238C0EFD-6DD5-4687-9BFD-FAF0A2CE3BD1}</Project>
-      <Name>AzureDevOps.Authentication.Win32</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Bitbucket.Authentication\Src\Bitbucket.Authentication.csproj">
-      <Project>{ee663736-5bad-4ca6-a4f8-99978925ad8a}</Project>
-      <Name>Bitbucket.Authentication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Bitbucket.Authentication\Win32\Bitbucket.Authentication.Win32.csproj">
-      <Project>{2266ce7d-c608-4921-a99d-7308b79f800f}</Project>
-      <Name>Bitbucket.Authentication.Win32</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GitHub.Authentication\Src\GitHub.Authentication.csproj">
-      <Project>{cf306116-bbf0-4cc7-afce-a506ac4752cb}</Project>
-      <Name>GitHub.Authentication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GitHub.Authentication\Win32\GitHub.Authentication.Win32.csproj">
-      <Project>{9ff7ef18-d1b8-4ecf-85d3-ea202004b1e7}</Project>
-      <Name>GitHub.Authentication.Win32</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Src\Microsoft.Alm.Authentication.csproj">
-      <Project>{19770407-b493-459d-bb4f-04fbefb1ba13}</Project>
-      <Name>Microsoft.Alm.Authentication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\AzureDevOps.Authentication\Src\AzureDevOps.Authentication.csproj">
-      <Project>{19770407-d7d8-4a37-914c-f552ff4b90d4}</Project>
-      <Name>AzureDevOps.Authentication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Win32\Microsoft.Alm.Authentication.Win32.csproj">
-      <Project>{59289F97-3A84-4365-8642-88491F971546}</Project>
-      <Name>Microsoft.Alm.Authentication.Win32</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Installer.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config">
-      <InProject>false</InProject>
-    </None>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <Import Project="..\..\Shared\Manager\Manager-Shared.projitems" Label="Shared" />
+
   <Import Project="..\..\Shared\Cli\Cli-Shared.projitems" Label="Shared" />
-  <Import Project="..\..\build.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props'))" />
-  </Target>
+
+  <ItemGroup>
+    <None Remove="App.xaml" />
+    <None Remove="Assets\avalonia-logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Assets\avalonia-logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\AzureDevOps.Authentication\AzureDevOps.Authentication.Avalonia\AzureDevOps.Authentication.Avalonia.csproj" />
+    <ProjectReference Include="..\..\AzureDevOps.Authentication\Src\AzureDevOps.Authentication.csproj" />
+    <ProjectReference Include="..\..\Bitbucket.Authentication\Avalonia\Bitbucket.Authentication.Avalonia.csproj" />
+    <ProjectReference Include="..\..\Bitbucket.Authentication\Src\Bitbucket.Authentication.csproj" />
+    <ProjectReference Include="..\..\GitHub.Authentication\GitHub.Authentication.Avalonia\GitHub.Authentication.Avalonia.csproj" />
+    <ProjectReference Include="..\..\GitHub.Authentication\Src\GitHub.Authentication.csproj" />
+    <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Src\Microsoft.Alm.Authentication.csproj" />
+    <ProjectReference Include="..\..\Prototype\Prototype.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="App.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

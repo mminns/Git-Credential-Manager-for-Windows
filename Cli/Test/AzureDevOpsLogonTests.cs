@@ -49,7 +49,7 @@ namespace Microsoft.Alm.Cli.Test
 
             var errorBuffer = new byte[4096];
             var outputBuffer = new byte[4096];
-            var program = new Program(Context);
+            var program = new Program(Context, new Win32Logger() );
 
             using (var inputStream = new MemoryStream())
             using (var outputStream = new MemoryStream(outputBuffer))

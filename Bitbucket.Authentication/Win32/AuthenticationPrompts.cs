@@ -23,25 +23,18 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."
 **/
 
-using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
 using Atlassian.Bitbucket.Authentication.ViewModels;
 using Atlassian.Bitbucket.Authentication.Views;
-using GitHub.Shared.Controls;
-using GitHub.Shared.ViewModels;
 using Microsoft.Alm.Authentication;
+using System;
+using System.Text.RegularExpressions;
 
 namespace Atlassian.Bitbucket.Authentication
 {
     /// <summary>
     /// Defines how to call the UI elements to request authentication details from the user.
     /// </summary>
-    public class AuthenticationPrompts : Base
+    public class AuthenticationPrompts : Base, IAuthenticationPrompts
     {
         public AuthenticationPrompts(RuntimeContext context, IntPtr parentHwnd)
             : base(context)
@@ -62,7 +55,8 @@ namespace Atlassian.Bitbucket.Authentication
 
         public AuthenticationPrompts(RuntimeContext context)
             : this(context, IntPtr.Zero)
-        { }
+        {
+        }
 
         private IntPtr _parentHwnd;
 

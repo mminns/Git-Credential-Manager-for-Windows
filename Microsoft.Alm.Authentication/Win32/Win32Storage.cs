@@ -215,7 +215,7 @@ namespace Microsoft.Alm.Authentication.Win32
 
         #region SecureData
 
-        public bool TryReadSecureData(string key, out string name, out byte[] data)
+        public override bool TryReadSecureData(string key, out string name, out byte[] data)
         {
             const string NoSuchSessionMessage = "The logon session does not exist or there is no credential set associated with this logon session. Network logon sessions do not have an associated credential set.";
 
@@ -262,7 +262,7 @@ namespace Microsoft.Alm.Authentication.Win32
             return false;
         }
 
-        public bool TryWriteSecureData(string key, string name, byte[] data)
+        public override bool TryWriteSecureData(string key, string name, byte[] data)
         {
             const string BadUsernameMessage = "The UserName member of the passed in Credential structure is not valid.";
             const string NoSuchSessionMessage = "The logon session does not exist or there is no credential set associated with this logon session. Network logon sessions do not have an associated credential set.";

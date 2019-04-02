@@ -39,7 +39,7 @@ using Github = GitHub.Authentication;
 
 namespace Microsoft.Alm.Cli
 {
-    enum KeyType
+    public enum KeyType
     {
         Authority,
         ConfigNoLocal,
@@ -63,7 +63,7 @@ namespace Microsoft.Alm.Cli
         Writelog,
     }
 
-    partial class Program
+    public partial class Program
     {
         public const string SourceUrl = "https://github.com/Microsoft/Git-Credential-Manager-for-Windows";
         public const string EventSource = "Git Credential Manager";
@@ -95,7 +95,6 @@ namespace Microsoft.Alm.Cli
         internal GitHubAuthCodePromptDelegate _gitHubAuthCodePrompt = GitHubFunctions.AuthCodePrompt;
         internal GitHubCredentialPromptDelegate _gitHubCredentialPrompt = GitHubFunctions.CredentialPrompt;
         internal LoadOperationArgumentsDelegate _loadOperationArguments = CommonFunctions.LoadOperationArguments;
-        internal LogEventDelegate _logEvent = CommonFunctions.LogEvent;
         internal ModalPromptDisplayDialogDelegate _modalPromptDisplayDialog = DialogFunctions.DisplayModal;
         internal ModalPromptForCredentialsDelegate _modalPromptForCredentials = DialogFunctions.CredentialPrompt;
         internal ModalPromptForPasswordDelegate _modalPromptForPassword = DialogFunctions.PasswordPrompt;
@@ -166,6 +165,7 @@ namespace Microsoft.Alm.Cli
 
         private string _executablePath;
         private readonly RuntimeContext _context;
+        private readonly ILogger _logger;
         private string _location;
         private string _name;
         private char[] _newlineChars;
@@ -448,6 +448,10 @@ namespace Microsoft.Alm.Cli
         internal Git.IWhere Where
             => _context.Where;
 
+        public Atlassian.Bitbucket.Authentication.IAuthenticationPrompts BitbucketPrompts { get; set; }
+        public GitHub.Authentication.IAuthenticationPrompts GitHubPrompts { get; set; }
+        public Azure.IAuthenticationPrompts AzurePrompts { get; set; }
+
         internal static void DebuggerLaunch(Program program)
         {
             if (program is null)
@@ -521,8 +525,8 @@ namespace Microsoft.Alm.Cli
         internal Task LoadOperationArguments(OperationArguments operationArguments)
             => _loadOperationArguments(this, operationArguments);
 
-        internal void LogEvent(string message, EventLogEntryType eventType)
-            => _logEvent(this, message, eventType);
+        internal void LogEvent(string message, string eventType)
+            => _logger.LogEvent(this, message, eventType);
 
         internal Task<Credential> QueryCredentials(OperationArguments operationArguments)
             => _queryCredentials(this, operationArguments);
@@ -571,7 +575,7 @@ namespace Microsoft.Alm.Cli
         internal bool BitbucketCredentialPrompt(string titleMessage, TargetUri targetUri, out string username, out string password)
             => _bitbucketCredentialPrompt(this, titleMessage, targetUri, out username, out password);
 
-        internal bool BitbucketOAuthPrompt(string title, TargetUri targetUri, Bitbucket.AuthenticationResultType resultType, string username)
+        internal bool BitbucketOAuthPrompt(string title, TargetUri targetUri, Atlassian.Bitbucket.Authentication.AuthenticationResultType resultType, string username)
             => _bitbucketOauthPrompt(this, title, targetUri, resultType, username);
 
         internal string KeyTypeName(KeyType type)

@@ -74,7 +74,7 @@ namespace Microsoft.Alm.Authentication.Git
             [System.Runtime.CompilerServices.CallerMemberName] string memberName = "");
     }
 
-    internal class Trace : Base, ITrace, IDisposable
+    public class Trace : Base, ITrace, IDisposable
     {
         public Trace(RuntimeContext context)
             : base(context)

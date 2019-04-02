@@ -45,7 +45,7 @@ namespace Microsoft.Alm.Authentication.Git
         bool TryReadGitRemoteHttpDetails(out string commandLine, out string imagePath);
     }
 
-    internal abstract class Utilities : Base, IUtilities
+    public abstract class Utilities : Base, IUtilities
     {
         public Utilities(RuntimeContext context)
             : base(context)

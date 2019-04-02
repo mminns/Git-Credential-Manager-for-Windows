@@ -81,7 +81,7 @@ namespace Atlassian.Bitbucket.Authentication
                 var oauth = new OAuth.OAuthAuthenticator(Context);
                 try
                 {
-                    var result = await oauth.GetAuthAsync(targetUri, scope, CancellationToken.None);
+                    var result = await oauth.GetAuthAsync(targetUri, scope, CancellationToken.None).ConfigureAwait(false);
 
                     if (!result.IsSuccess)
                     {
@@ -91,7 +91,7 @@ namespace Atlassian.Bitbucket.Authentication
 
                     // We got a toke but lets check to see the usernames match.
                     var restRootUri = new Uri(_restRootUrl);
-                    var userResult = await (new RestClient(Context)).TryGetUser(targetUri, RequestTimeout, restRootUri, result.Token);
+                    var userResult = await (new RestClient(Context)).TryGetUser(targetUri, RequestTimeout, restRootUri, result.Token).ConfigureAwait(false);
 
                     if (!userResult.IsSuccess)
                     {
@@ -121,7 +121,7 @@ namespace Atlassian.Bitbucket.Authentication
                 try
                 {
                     var restRootUri = new Uri(_restRootUrl);
-                    return await basicauth.GetAuthAsync(targetUri, scope, RequestTimeout, restRootUri, credentials);
+                    return await basicauth.GetAuthAsync(targetUri, scope, RequestTimeout, restRootUri, credentials).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
@@ -138,7 +138,7 @@ namespace Atlassian.Bitbucket.Authentication
             var oauth = new OAuth.OAuthAuthenticator(Context);
             try
             {
-                return await oauth.RefreshAuthAsync(targetUri, refreshToken, CancellationToken.None);
+                return await oauth.RefreshAuthAsync(targetUri, refreshToken, CancellationToken.None).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -160,13 +160,13 @@ namespace Atlassian.Bitbucket.Authentication
 
             // Try the simplest basic authentication first
             var authEncode = GetEncodedCredentials(username, credentials);
-            if (await ValidateCredentials(targetUri, credentials))
+            if (await ValidateCredentials(targetUri, credentials).ConfigureAwait(false))
             {
                 return true;
             }
 
             // If the basic authentication test failed then try again as OAuth
-            if (await ValidateCredentials(targetUri, new Token(credentials.Password, TokenType.BitbucketAccess)))
+            if (await ValidateCredentials(targetUri, new Token(credentials.Password, TokenType.BitbucketAccess)).ConfigureAwait(false))
             {
                 return true;
             }
@@ -214,7 +214,7 @@ namespace Atlassian.Bitbucket.Authentication
             Trace.WriteLine($"authentication type = '{authorization.GetType().Name}'.");
 
             var restRootUrl = new Uri(_restRootUrl);
-            var result = await (new RestClient(Context)).TryGetUser(targetUri, RequestTimeout, restRootUrl, authorization);
+            var result = await (new RestClient(Context)).TryGetUser(targetUri, RequestTimeout, restRootUrl, authorization).ConfigureAwait(false);
 
             if (result.Type.Equals(AuthenticationResultType.Success))
             {

@@ -1,0 +1,47 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:properties="clr-namespace:Atlassian.Bitbucket.Authentication.Properties;assembly=Bitbucket.Authentication">
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Bottom" Margin="0">
+
+      <StackPanel>
+        <TextBlock
+
+            HorizontalAlignment="Center" Margin="0,0,0,0"
+            Text="{x:Static properties:Resources.ForgotPasswordText}" >
+        </TextBlock>
+        <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center"  Margin="0,11,0,0"
+              Text="{x:Static properties:Resources.SignUpLinkText}" >
+        </TextBlock>
+      </StackPanel>
+    </StackPanel>
+    <StackPanel DockPanel.Dock="Top">
+      <Image
+             HorizontalAlignment="Center" />
+      <TextBlock
+                 HorizontalAlignment="Center"
+                 Text="{x:Static properties:Resources.OAuthAuthText}"/>
+    </StackPanel>
+
+    <Border
+            Margin="0,10,0,0">
+      <StackPanel>
+        <TextBlock
+            Margin="0,44,0,11"
+            TextAlignment="Center"
+            HorizontalAlignment="Center"
+            TextWrapping="Wrap"
+            VerticalAlignment="Center"
+            Text="{x:Static properties:Resources.LearnMoreLink}">
+        </TextBlock>
+        <Button
+                    IsDefault="True"
+                    Command="{Binding OkCommand}"
+                    IsEnabled="{Binding IsValid, Mode=OneWay}"
+                    Content="{x:Static properties:Resources.AuthorizeLabel}"
+                    Width="280"
+                    Margin="0,22,0,0"/>
+      </StackPanel>
+    </Border>
+  </DockPanel>
+</UserControl>
