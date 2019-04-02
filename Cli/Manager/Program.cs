@@ -16,7 +16,7 @@ namespace Microsoft.Alm.Cli
     {
         private static void Main(string[] args)
         {
-            var context = new Prototype.PrototypeRuntimeContext(
+            var context = new Prototype.GenericRuntimeContext(
                 c => { return new Network(c);},
                 c => { return new Settings(c);},
                 c => { return new SimpleFileStorage(c); },
@@ -24,54 +24,15 @@ namespace Microsoft.Alm.Cli
                 c => { return new PrototypeUtilities(c); },
                 c => { return new PrototypeWhere(c); }
             );
-            var logger = new CoreLogger();
+            var logger = new Logger();
             var azurePrompts = new AzureDevOpsAuthenticationPrompts(context);
             var gitHubPrompts = new GitHubAuthenticationPrompts(context);
-            //BuildAvaloniaApp().SetupWithoutStarting();
-            var bitbucketPrompts = new BAP(context, IntPtr.Zero);
+            var bitbucketPrompts = new BitbucketAuthenticationPrompts(context, IntPtr.Zero);
+
             var program = new Program(context, logger, azurePrompts, gitHubPrompts, bitbucketPrompts);
 
-            program.Run(args, new CoreInstaller(program));
+            program.Run(args, new Installer(program));
         }
 
-        public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .UseReactiveUI()
-                .LogToDebug();
-    }
-
-    internal class CoreInstaller : IInstaller
-    {
-        private Program _program;
-
-        public CoreInstaller(Program program)
-        {
-            _program = program;
-        }
-
-        public ResultValue Result => throw new NotImplementedException();
-
-        public int ExitCode { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public void DeployConsole()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveConsole()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    internal class CoreLogger : ILogger
-    {
-        public void LogEvent(Program program, string message, string eventTypeName)
-        {
-            // TODO MMINNS do nothing for now
-            // use Msft.Ext.Logging
-            // throw new NotImplementedException();
-        }
     }
 }

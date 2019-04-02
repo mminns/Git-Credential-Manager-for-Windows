@@ -52,7 +52,7 @@ namespace Atlassian.Bitbucket.Authentication
         {
         }
 
-        private IntPtr _parentHwnd;
+        protected IntPtr _parentHwnd;
 
         /// <summary>
         /// Utility method used to extract a username from a URL of the form http(s)://username@domain/

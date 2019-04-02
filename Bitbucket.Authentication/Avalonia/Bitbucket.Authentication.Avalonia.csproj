@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Src\Microsoft.Alm.Authentication.csproj" />
+    <ProjectReference Include="..\..\Rheic\Rheic.csproj" />
     <ProjectReference Include="..\Src\Bitbucket.Authentication.csproj" />
   </ItemGroup>
   <ItemGroup>
