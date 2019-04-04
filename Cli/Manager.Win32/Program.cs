@@ -1,4 +1,5 @@
 ﻿using System;
+using Basic.Authentication;
 using Microsoft.Alm.Authentication.Win32;
 using Microsoft.Alm.Cli;
 
@@ -14,7 +15,9 @@ namespace Microsoft.Alm.Cli
             var azurePrompts = new AzureDevOps.Authentication.AuthenticationPrompts(context);
             var gitHubPrompts = new GitHub.Authentication.AuthenticationPrompts(context);
             var bitbucketPrompts = new Atlassian.Bitbucket.Authentication.AuthenticationPrompts(context);
-            var program = new Program(context, logger, azurePrompts, gitHubPrompts, bitbucketPrompts);
+            var basicPrompts = new BasicAuthenticationPrompts();
+            ;
+            var program = new Program(context, logger, azurePrompts, gitHubPrompts, bitbucketPrompts, basicPrompts);
 
             program.Run(args, new Installer(program));
         }

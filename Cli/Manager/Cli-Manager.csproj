@@ -31,6 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\AzureDevOps.Authentication\AzureDevOps.Authentication.Avalonia\AzureDevOps.Authentication.Avalonia.csproj" />
     <ProjectReference Include="..\..\AzureDevOps.Authentication\Src\AzureDevOps.Authentication.csproj" />
+    <ProjectReference Include="..\..\Basic.Authentications\Src\Basic.Authentication.Avalonia.csproj" />
     <ProjectReference Include="..\..\Bitbucket.Authentication\Avalonia\Bitbucket.Authentication.Avalonia.csproj" />
     <ProjectReference Include="..\..\Bitbucket.Authentication\Src\Bitbucket.Authentication.csproj" />
     <ProjectReference Include="..\..\GitHub.Authentication\GitHub.Authentication.Avalonia\GitHub.Authentication.Avalonia.csproj" />

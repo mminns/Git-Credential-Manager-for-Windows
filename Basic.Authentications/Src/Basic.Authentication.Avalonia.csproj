@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RootNamespace>Basic.Authentication.Avalonia</RootNamespace>
+    <AssemblyName>Basic.Authentication.Avalonia</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="App.xaml" />
+    <None Remove="Controls\BasicPromptControl.xaml" />
+    <None Remove="Views\BasicPromptWindow.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\BasicPromptControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\BasicPromptWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.7.1-cibuild0001742-beta" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.7.1-cibuild0001742-beta" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.7.1-cibuild0001742-beta" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Microsoft.Alm.Authentication\Src\Microsoft.Alm.Authentication.csproj" />
+    <ProjectReference Include="..\..\Rheic\Rheic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="App.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <Import Project="..\..\Shared\Gui\Gui-Shared.projitems" Label="Shared" />
+
+</Project>

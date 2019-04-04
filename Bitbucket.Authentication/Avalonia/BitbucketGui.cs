@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Atlassian.Bitbucket.Authentication;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Logging.Serilog;
-using Avalonia.Threading;
 using GitHub.Shared.Controls;
 using GitHub.Shared.ViewModels;
 using Microsoft.Alm.Authentication;
 using Rheic;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Atlassian.Bitbucket.Authentication.Avalonia
 {
@@ -23,10 +19,6 @@ namespace Atlassian.Bitbucket.Authentication.Avalonia
         {
             this.context = context;
 
-            _avaloniaGateway.Open(() =>
-            {
-                BuildAvaloniaApp().SetExitMode(ExitMode.OnExplicitExit).SetupWithoutStarting();
-            });
         }
 
         public Type ServiceType
@@ -36,12 +28,24 @@ namespace Atlassian.Bitbucket.Authentication.Avalonia
         {
             StartSTATask(() =>
                 {
+                    OptionallyStartGui();
                     _avaloniaGateway.Show(viewModel, () => { return windowCreator() as Window;});
                 })
                 .Wait();
             
             return viewModel.Result == AuthenticationDialogResult.Ok
                    && viewModel.IsValid;
+        }
+
+        private void OptionallyStartGui()
+        {
+            if (!_avaloniaGateway.Running)
+            {
+                _avaloniaGateway.Open(() =>
+                {
+                    BuildAvaloniaApp().SetExitMode(ExitMode.OnExplicitExit).SetupWithoutStarting();
+                });
+            }
         }
 
         private static Task StartSTATask(Action action)

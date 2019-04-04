@@ -67,22 +67,6 @@ namespace Microsoft.Alm.Cli
 
         internal delegate void LogEventDelegate(Program program, string message, string eventType);
 
-        internal delegate bool ModalPromptDisplayDialogDelegate(Program program,
-                                                                ref NativeMethods.CredentialUiInfo credUiInfo,
-                                                                ref NativeMethods.CredentialPackFlags authPackage,
-                                                                IntPtr packedAuthBufferPtr,
-                                                                uint packedAuthBufferSize,
-                                                                IntPtr inBufferPtr,
-                                                                int inBufferSize,
-                                                                bool saveCredentials,
-                                                                NativeMethods.CredentialUiWindowsFlags flags,
-                                                                out string username,
-                                                                out string password);
-
-        internal delegate Credential ModalPromptForCredentialsDelegate(Program program, TargetUri targetUri, string message);
-
-        internal delegate Credential ModalPromptForPasswordDelegate(Program program, TargetUri targetUri, string message, string username);
-
         internal delegate Stream OpenStandardHandleDelegate(Program program);
 
         internal delegate void PrintArgsDelegate(Program program, string[] args);

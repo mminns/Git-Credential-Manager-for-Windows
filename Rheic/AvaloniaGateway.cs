@@ -13,6 +13,7 @@ namespace Rheic
     {
         private CancellationTokenSource taskSchedulerCancellationTokenSource = new CancellationTokenSource();
         private SingleThreadTaskScheduler taskScheduler;
+        public bool Running { get; private set; } = false;
 
         public void Open(Action initializationAction)
         {
@@ -20,11 +21,19 @@ namespace Rheic
             taskScheduler = new SingleThreadTaskScheduler(taskSchedulerCancellationTokenSource.Token);
             taskScheduler.Schedule(initializationAction);
             taskScheduler.Start();
+
+            Running = true;
         }
 
         public void Close()
         {
-            var task = taskScheduler.Schedule(() => {
+            if (taskScheduler == null)
+            {
+                // never opened
+                return;
+            }
+
+             var task = taskScheduler.Schedule(() => {
                 Application.Current.Exit();
             });
 
@@ -32,6 +41,8 @@ namespace Rheic
             task.GetAwaiter().GetResult();
 
             taskScheduler.Complete();
+
+            Running = false;
         }
 
         /// <summary>

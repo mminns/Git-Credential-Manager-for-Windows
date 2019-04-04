@@ -79,7 +79,8 @@ namespace Microsoft.Alm.Cli
         internal Program(RuntimeContext context, ILogger logger, 
             AzureDevOps.Authentication.IAuthenticationPrompts azurePrompts,
             GitHub.Authentication.IAuthenticationPrompts gitHubPrompts,
-            Atlassian.Bitbucket.Authentication.IAuthenticationPrompts bitbucketPrompts)
+            Atlassian.Bitbucket.Authentication.IAuthenticationPrompts bitbucketPrompts,
+            Microsoft.Alm.Authentication.IAuthenticationPrompts basicPrompts)
         {
             if (context is null)
                 throw new ArgumentNullException(nameof(context));
@@ -91,6 +92,8 @@ namespace Microsoft.Alm.Cli
                 throw new ArgumentNullException(nameof(gitHubPrompts));
             if (bitbucketPrompts is null)
                 throw new ArgumentNullException(nameof(bitbucketPrompts));
+            if (basicPrompts is null)
+                throw new ArgumentNullException(nameof(basicPrompts));
 
             _context = context;
             _logger = logger;
@@ -98,6 +101,7 @@ namespace Microsoft.Alm.Cli
             AzurePrompts = azurePrompts;
             GitHubPrompts = gitHubPrompts;
             BitbucketPrompts = bitbucketPrompts;
+            BasicPrompts = basicPrompts;
 
             Title = AssemblyTitle;
 

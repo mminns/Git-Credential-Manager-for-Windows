@@ -34,8 +34,7 @@ namespace Microsoft.Alm.Cli
 {
     internal static class DialogFunctions
     {
-        public static bool DisplayModal(Program program,
-                                        ref CredentialUiInfo credUiInfo,
+        public static bool DisplayModal(Git.Trace trace, ref CredentialUiInfo credUiInfo,
                                         ref CredentialPackFlags authPackage,
                                         IntPtr packedAuthBufferPtr,
                                         uint packedAuthBufferSize,
@@ -46,8 +45,8 @@ namespace Microsoft.Alm.Cli
                                         out string username,
                                         out string password)
         {
-            if (program is null)
-                throw new ArgumentNullException(nameof(program));
+            if (trace is null)
+                throw new ArgumentNullException(nameof(trace));
 
             int error;
 
@@ -64,7 +63,7 @@ namespace Microsoft.Alm.Cli
                                                                       saveCredentials: ref saveCredentials,
                                                                                 flags: flags)) != Win32Error.Success)
                 {
-                    program.Trace.WriteLine($"credential prompt failed ('{Win32Error.GetText(error)}').");
+                    trace.WriteLine($"credential prompt failed ('{Win32Error.GetText(error)}').");
 
                     username = null;
                     password = null;
@@ -95,12 +94,12 @@ namespace Microsoft.Alm.Cli
                     password = null;
 
                     error = Marshal.GetLastWin32Error();
-                    program.Trace.WriteLine($"failed to unpack buffer ('{Win32Error.GetText(error)}').");
+                    trace.WriteLine($"failed to unpack buffer ('{Win32Error.GetText(error)}').");
 
                     return false;
                 }
 
-                program.Trace.WriteLine("successfully acquired credentials from user.");
+                trace.WriteLine("successfully acquired credentials from user.");
 
                 username = usernameBuffer.ToString();
                 password = passwordBuffer.ToString();
@@ -116,10 +115,12 @@ namespace Microsoft.Alm.Cli
             }
         }
 
-        public static Credential CredentialPrompt(Program program, TargetUri targetUri, string message)
+        public static Credential CredentialPrompt(Git.Trace trace, string programTitle, IntPtr parentHwnd, TargetUri targetUri, string message)
         {
-            if (program is null)
-                throw new ArgumentNullException(nameof(program));
+            if (trace is null)
+                throw new ArgumentNullException(nameof(trace));
+            if (programTitle is null)
+                throw new ArgumentNullException(nameof(programTitle));
             if (targetUri is null)
                 throw new ArgumentNullException(nameof(targetUri));
             if (message is null)
@@ -128,8 +129,8 @@ namespace Microsoft.Alm.Cli
             var credUiInfo = new CredentialUiInfo
             {
                 BannerArt = IntPtr.Zero,
-                CaptionText = program.Title,
-                Parent = program.ParentHwnd,
+                CaptionText = programTitle,
+                Parent = parentHwnd,
                 MessageText = message,
                 Size = Marshal.SizeOf(typeof(CredentialUiInfo))
             };
@@ -143,7 +144,7 @@ namespace Microsoft.Alm.Cli
             string username;
             string password;
 
-            if (program.ModalPromptDisplayDialog(ref credUiInfo,
+            if (DisplayModal(trace, ref credUiInfo,
                                                  ref authPackage,
                                                  packedAuthBufferPtr,
                                                  packedAuthBufferSize,
@@ -160,10 +161,12 @@ namespace Microsoft.Alm.Cli
             return null;
         }
 
-        public static Credential PasswordPrompt(Program program, TargetUri targetUri, string message, string username)
+        public static Credential PasswordPrompt(Git.Trace trace, string programTitle, IntPtr parentHwnd, TargetUri targetUri, string message, string username)
         {
-            if (program is null)
-                throw new ArgumentNullException(nameof(program));
+            if (trace is null)
+                throw new ArgumentNullException(nameof(trace));
+            if (programTitle is null)
+                throw new ArgumentNullException(nameof(programTitle));
             if (targetUri is null)
                 throw new ArgumentNullException(nameof(targetUri));
             if (message is null)
@@ -174,9 +177,9 @@ namespace Microsoft.Alm.Cli
             var credUiInfo = new CredentialUiInfo
             {
                 BannerArt = IntPtr.Zero,
-                CaptionText = program.Title,
+                CaptionText = programTitle,
                 MessageText = message,
-                Parent = program.ParentHwnd,
+                Parent = parentHwnd,
                 Size = Marshal.SizeOf(typeof(CredentialUiInfo))
             };
             var flags = CredentialUiWindowsFlags.Generic;
@@ -202,7 +205,7 @@ namespace Microsoft.Alm.Cli
                 if (inBufferSize <= 0)
                 {
                     error = Marshal.GetLastWin32Error();
-                    program.Trace.WriteLine($"unable to determine credential buffer size ('{Win32Error.GetText(error)}').");
+                    trace.WriteLine($"unable to determine credential buffer size ('{Win32Error.GetText(error)}').");
 
                     return null;
                 }
@@ -216,12 +219,12 @@ namespace Microsoft.Alm.Cli
                                   packedCredentialsSize: ref inBufferSize))
                 {
                     error = Marshal.GetLastWin32Error();
-                    program.Trace.WriteLine($"unable to write to credential buffer ('{Win32Error.GetText(error)}').");
+                    trace.WriteLine($"unable to write to credential buffer ('{Win32Error.GetText(error)}').");
 
                     return null;
                 }
 
-                if (program.ModalPromptDisplayDialog(ref credUiInfo,
+                if (DisplayModal(trace, ref credUiInfo,
                                                      ref authPackage,
                                                      packedAuthBufferPtr,
                                                      packedAuthBufferSize,

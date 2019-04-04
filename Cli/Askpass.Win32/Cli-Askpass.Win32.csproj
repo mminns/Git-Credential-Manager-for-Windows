@@ -103,6 +103,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\Shared\Cli\Cli-Shared.projitems" Label="Shared" />
+  <Import Project="..\..\Shared\Cli.Win32\Cli.Win32.projitems" Label="Shared" />
   <Import Project="..\..\build.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

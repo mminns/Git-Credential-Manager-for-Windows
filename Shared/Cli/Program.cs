@@ -95,9 +95,9 @@ namespace Microsoft.Alm.Cli
         internal GitHubAuthCodePromptDelegate _gitHubAuthCodePrompt = GitHubFunctions.AuthCodePrompt;
         internal GitHubCredentialPromptDelegate _gitHubCredentialPrompt = GitHubFunctions.CredentialPrompt;
         internal LoadOperationArgumentsDelegate _loadOperationArguments = CommonFunctions.LoadOperationArguments;
-        internal ModalPromptDisplayDialogDelegate _modalPromptDisplayDialog = DialogFunctions.DisplayModal;
-        internal ModalPromptForCredentialsDelegate _modalPromptForCredentials = DialogFunctions.CredentialPrompt;
-        internal ModalPromptForPasswordDelegate _modalPromptForPassword = DialogFunctions.PasswordPrompt;
+        //internal ModalPromptDisplayDialogDelegate _modalPromptDisplayDialog = DialogFunctions.DisplayModal;
+        //internal ModalPromptForCredentialsDelegate _modalPromptForCredentials = DialogFunctions.CredentialPrompt;
+        //internal ModalPromptForPasswordDelegate _modalPromptForPassword = DialogFunctions.PasswordPrompt;
         internal OpenStandardHandleDelegate _openStandardErrorStream = ConsoleFunctions.OpenStandardErrorStream;
         internal GetStandardWriterDelegate _openStandardErrorWriter = ConsoleFunctions.OpenStandardErrorWriter;
         internal OpenStandardHandleDelegate _openStandardInputStream = ConsoleFunctions.OpenStandardInputStream;
@@ -451,6 +451,7 @@ namespace Microsoft.Alm.Cli
         public Atlassian.Bitbucket.Authentication.IAuthenticationPrompts BitbucketPrompts { get; set; }
         public GitHub.Authentication.IAuthenticationPrompts GitHubPrompts { get; set; }
         public Azure.IAuthenticationPrompts AzurePrompts { get; set; }
+        public Microsoft.Alm.Authentication.IAuthenticationPrompts BasicPrompts { get; set; }
 
         internal static void DebuggerLaunch(Program program)
         {
@@ -610,31 +611,10 @@ namespace Microsoft.Alm.Cli
             _version = asseName.Version;
         }
 
-        internal bool ModalPromptDisplayDialog(
-            ref NativeMethods.CredentialUiInfo credUiInfo,
-            ref NativeMethods.CredentialPackFlags authPackage,
-            IntPtr packedAuthBufferPtr,
-            uint packedAuthBufferSize,
-            IntPtr inBufferPtr,
-            int inBufferSize,
-            bool saveCredentials,
-            NativeMethods.CredentialUiWindowsFlags flags,
-            out string username,
-            out string password)
-            => _modalPromptDisplayDialog(this,
-                                         ref credUiInfo,
-                                         ref authPackage,
-                                         packedAuthBufferPtr,
-                                         packedAuthBufferSize,
-                                         inBufferPtr,
-                                         inBufferSize,
-                                         saveCredentials,
-                                         flags,
-                                         out username,
-                                         out password);
+
 
         internal Credential ModalPromptForCredentials(TargetUri targetUri, string message)
-            => _modalPromptForCredentials(this, targetUri, message);
+            => BasicPrompts.ModalPromptForCredentials(this.Trace, this.Title, this.ParentHwnd, targetUri, message); //TODO mminns _modalPromptForCredentials(this, targetUri, message);
 
         internal Credential ModalPromptForCredentials(TargetUri targetUri)
         {
@@ -656,7 +636,7 @@ namespace Microsoft.Alm.Cli
         }
 
         private Credential ModalPromptForPassword(TargetUri targetUri, string message, string username)
-            => _modalPromptForPassword(this, targetUri, message, username);
+            => BasicPrompts.ModalPromptForPassword(this.Trace, this.Title, this.ParentHwnd, targetUri, message, username);
 
         internal void PrintVersion()
         {

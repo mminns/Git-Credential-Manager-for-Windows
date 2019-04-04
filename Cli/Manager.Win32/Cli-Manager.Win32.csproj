@@ -35,6 +35,10 @@
       <Project>{238c0efd-6dd5-4687-9bfd-faf0a2ce3bd1}</Project>
       <Name>AzureDevOps.Authentication.Win32</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Basic.Authentication\Win32\Basic.Authentication.Win32.csproj">
+      <Project>{d18ca42d-f898-4356-92f1-d25ed9bd15be}</Project>
+      <Name>Basic.Authentication.Win32</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Bitbucket.Authentication\Src\Bitbucket.Authentication.csproj">
       <Project>{ee663736-5bad-4ca6-a4f8-99978925ad8a}</Project>
       <Name>Bitbucket.Authentication</Name>

@@ -6,7 +6,7 @@
     <SharedGUID>dbd202c3-94d5-49d3-8ed1-c72637ba7d90</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Cli_Shared</Import_RootNamespace>
+    <Import_RootNamespace>Microsoft.Alm.Cli</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AuthorityType.cs" />
@@ -19,10 +19,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Functions\Common.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Functions\Console.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Delegates.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Functions\Dialog.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Functions\GitHub.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Authentication\" />
     <Folder Include="$(MSBuildThisFileDirectory)Functions\" />
   </ItemGroup>
 </Project>
