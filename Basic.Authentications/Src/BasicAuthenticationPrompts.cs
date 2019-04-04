@@ -29,7 +29,7 @@ namespace Basic.Authentication.Avalonia
 
         public Credential ModalPromptForCredentials(ITrace trace, string programTitle, IntPtr parentparentHwnd, TargetUri targetUri, string message)
         {
-            var viewModel = new BasicPromptViewModel(null);
+            var viewModel = new BasicPromptViewModel(null, message);
             StartSTATask(() =>
             {
                 OptionallyStartGui();
@@ -41,7 +41,7 @@ namespace Basic.Authentication.Avalonia
 
         public Credential ModalPromptForPassword(ITrace trace, string programTitle, IntPtr parentparentHwnd, TargetUri targetUri, string message, string username)
         {
-            var viewModel = new BasicPromptViewModel(username);
+            var viewModel = new BasicPromptViewModel(username, message);
             StartSTATask(() =>
             {
                 OptionallyStartGui();

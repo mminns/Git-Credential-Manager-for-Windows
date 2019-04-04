@@ -7,14 +7,14 @@ namespace Basic.Authentication.Avalonia.ViewModels
 {
     public class BasicPromptViewModel : DialogViewModel
     {
-        public BasicPromptViewModel() : this(string.Empty)
+        public BasicPromptViewModel() : this(string.Empty, string.Empty)
         {
             // without this default constructor get nullreferenceexceptions during binding i guess
             // 'cos the view is built before the 'official' viewmodel and hence generates it own
             // viewmodel while building?
         }
 
-        public BasicPromptViewModel(string username)
+        public BasicPromptViewModel(string username, string message)
         {
             LoginCommand = new ActionCommand(_ =>
             {
@@ -44,6 +44,11 @@ namespace Basic.Authentication.Avalonia.ViewModels
             {
                 Login = username;
             }
+
+            if (!string.IsNullOrWhiteSpace(message))
+            {
+                _message = message;
+            }
         }
         private string _login;
 
@@ -58,6 +63,16 @@ namespace Basic.Authentication.Avalonia.ViewModels
                 _login = value;
                 RaisePropertyChangedEvent(nameof(Login));
             }
+        }
+
+        private string _message;
+
+        /// <summary>
+        /// Message
+        /// </summary>
+        public string Message
+        {
+            get { return _message; }
         }
 
         public PropertyValidator<string> LoginValidator { get; }
