@@ -94,12 +94,21 @@ namespace Atlassian.Bitbucket.Authentication
 
             Trace.WriteLine("prompting user for credentials.");
 
-            bool credentialValid = Gui.ShowViewModel(credentialViewModel, GetCredentialWindowCreator());
+            try
+            {
+                bool credentialValid = Gui.ShowViewModel(credentialViewModel, GetCredentialWindowCreator());
 
-            username = credentialViewModel.Login;
-            password = credentialViewModel.Password;
+                username = credentialViewModel.Login;
+                password = credentialViewModel.Password;
 
-            return credentialValid;
+
+                return credentialValid;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteException(ex);
+                throw;
+            }
         }
 
         public abstract Func<IAuthenticationDialogWindow> GetCredentialWindowCreator();

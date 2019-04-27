@@ -363,10 +363,11 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
         /// https://github.com/dotnet/corefx/issues/10361
         /// </summary>
         /// <param name="url"></param>
-        public static void OpenBrowser(string url)
+        public void OpenBrowser(string url)
         {
             try
             {
+                Trace.WriteLine($"open browser with {url}.");
                 Process.Start(url);
             }
             catch
@@ -375,14 +376,17 @@ namespace Atlassian.Bitbucket.Authentication.OAuth
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
                     url = url.Replace("&", "^&");
+                    Trace.WriteLine($"run cmd start with {url}.");
                     Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 {
+                    Trace.WriteLine($"run xdg-open with {url}.");
                     Process.Start("xdg-open", url);
                 }
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 {
+                    Trace.WriteLine($"run open with {url}.");
                     Process.Start("open", url);
                 }
                 else

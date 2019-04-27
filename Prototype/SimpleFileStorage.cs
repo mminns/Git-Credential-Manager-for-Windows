@@ -17,6 +17,7 @@ namespace Prototype
 
         public override bool TryReadSecureData(string key, out string name, out byte[] data)
         {
+            System.Console.WriteLine("read?");
             if (File.Exists(_filename))
             {
                 var lines = File.ReadAllLines(_filename);
@@ -45,6 +46,7 @@ namespace Prototype
 
         public override bool TryWriteSecureData(string key, string name, byte[] data)
         {
+            System.Console.WriteLine("write?");
             var entry = new Entry() {Key = key, Name = name, Data = Encoding.UTF8.GetString(data, 0, data.Length)};
             var lines = new List<string>();
 
