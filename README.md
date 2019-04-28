@@ -103,3 +103,20 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ## License
 
 This project uses the [MIT License](LICENSE.txt).
+
+
+
+## DotNet Core - MMinns
+
+* refactored to split dotnet core compatible code, into .NET STandard projects, from WPF/Win32 code, in NETFX projects
+* created new DotNet Core application projects
+* make sure the existing NETFX/WPF projects/applications build and work
+* make Avalonia versions of WPF UIs
+* make theading model OS dependent
+* Linux - built on WLS
+** Configure
+*** dotnet core
+*** exporting DISPLAY to Xming running on host windows
+*** install arora Browser
+**** needed manual install of wpasupplicant_2.6-15ubuntu2.2_amd64.deb
+**** manual congiure of arora.desktop + xdg-settings/xdg-open
